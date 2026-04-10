@@ -201,3 +201,73 @@ model Subscriber {
   @@index([email])
   @@index([channel])
 }
+
+// ─── 行业服务 ────────────────────────────────────────────────────────────────
+
+model ServiceReport {
+  id          String   @id @default(cuid())
+  title       String
+  summary     String
+  category    String   /// research | whitepaper | guide | compliance
+  author      String?
+  pages       Int?
+  isPremium   Boolean  @default(true)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([isPremium])
+}
+
+model ServiceEvent {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  /// conference | exhibition | seminar | workshop
+  eventType   String
+  location    String
+  city        String
+  startDate   DateTime
+  endDate     DateTime?
+  capacity    Int?
+  status      String    @default("open") /// open | closed | full | cancelled
+  isPremium   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  applications ServiceApplication[]
+
+  @@index([startDate])
+  @@index([status])
+}
+
+model ServiceApplication {
+  id      String  @id @default(cuid())
+
+  // Applicant
+  name    String
+  company String?
+  email   String
+  phone   String?
+
+  /// report_request | association_join | event_register | tech_apply | fund_apply
+  type    String
+
+  // Relations
+  eventId String?
+  event   ServiceEvent? @relation(fields: [eventId], references: [id], onDelete: SetNull)
+
+  /// Extra fields as JSON string (project name, funding stage, etc.)
+  metadata String?
+
+  status  String   @default("pending") /// pending | approved | rejected
+  note    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type])
+  @@index([email])
+  @@index([status])
+  @@index([eventId])
+}
