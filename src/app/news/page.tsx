@@ -98,14 +98,60 @@ export default async function NewsPage({
 
   return (
     <div>
-      <div className="border-b bg-muted/30 py-4">
-        <div className="container">
-          <h1 className="text-xl font-bold">新闻列表</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            追踪塑料回收产业最新动态
+      {/* ── Dark hero header ── */}
+      <div
+        className="relative overflow-hidden py-14 md:py-20"
+        style={{ background: 'linear-gradient(135deg, #020a14 0%, #061220 50%, #030e1a 100%)' }}
+      >
+        {/* Ambient orbs */}
+        <div className="absolute top-0 left-1/3 w-96 h-96 rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.10) 0%, transparent 65%)', filter: 'blur(60px)' }} />
+        <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 65%)', filter: 'blur(50px)' }} />
+        {/* Dot grid */}
+        <div className="absolute inset-0 opacity-[0.025] pointer-events-none"
+          style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+
+        <div className="relative z-10 container max-w-5xl">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 mb-5 text-[13px] text-slate-500">
+            <span>发现资源</span>
+            <span>/</span>
+            <span className="text-emerald-400 font-medium">行业媒体</span>
+          </div>
+
+          <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full border border-emerald-500/25 bg-emerald-500/8 text-emerald-400 text-xs font-semibold tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            实时聚合 · 多维检索
+          </div>
+
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">
+            行业媒体资讯
+          </h1>
+          <p className="text-slate-400 text-base max-w-xl leading-relaxed">
+            聚合全球塑料回收产业动态，覆盖价格行情、政策法规、企业动态与技术突破
           </p>
+
+          {/* Stats row */}
+          <div className="flex flex-wrap gap-6 mt-8">
+            {[
+              { label: '已收录资讯', value: `${initialData.total.toLocaleString()}+` },
+              { label: '信息来源', value: '50+' },
+              { label: '每日更新', value: '实时' },
+            ].map(({ label, value }) => (
+              <div key={label}>
+                <div className="text-xl font-bold text-white">{value}</div>
+                <div className="text-[12px] text-slate-500 mt-0.5">{label}</div>
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none"
+          style={{ background: 'linear-gradient(to bottom, transparent, var(--background, #f8fafc))' }} />
       </div>
+
       <Suspense fallback={<div className="container py-8 text-center text-muted-foreground">加载中...</div>}>
         <NewsListClient
           tagsByCategory={tagsByCategory}
