@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useMemo, useActionState } from 'react'
+import { useState, useMemo } from 'react'
+import { useFormState, useFormStatus } from 'react-dom'
 import { Flame, Clock, Lock, Globe, TrendingUp, Cpu, Building2, FileText, CheckCircle2, AlertCircle, Send, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { subscribe, type SubscribeState } from './actions'
@@ -29,10 +30,25 @@ const CHANNELS = [
   { value: 'whatsapp', label: 'WhatsApp', accent: '#fbbf24' },
 ]
 
+function SubmitButton() {
+  const { pending } = useFormStatus()
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold text-white transition-all duration-200 disabled:opacity-60"
+      style={{ background: 'linear-gradient(135deg, #10b981, #06b6d4)', boxShadow: '0 4px 16px rgba(16,185,129,0.30)' }}
+    >
+      <Send className="h-4 w-4" />
+      {pending ? '提交中...' : '立即订阅'}
+    </button>
+  )
+}
+
 function SubscribeForm() {
   const [channel, setChannel] = useState('email')
   const initialState: SubscribeState = { status: 'idle' }
-  const [state, action, pending] = useActionState(subscribe, initialState)
+  const [state, formAction] = useFormState(subscribe, initialState)
 
   return (
     <div
@@ -67,7 +83,7 @@ function SubscribeForm() {
             <p className="text-[13px] text-emerald-300">{state.message}</p>
           </div>
         ) : (
-          <form action={action} className="space-y-4">
+          <form action={formAction} className="space-y-4">
             <input type="hidden" name="channel" value={channel} />
 
             {/* Channel selector */}
@@ -133,15 +149,7 @@ function SubscribeForm() {
               </div>
             )}
 
-            <button
-              type="submit"
-              disabled={pending}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold text-white transition-all duration-200 disabled:opacity-60"
-              style={{ background: 'linear-gradient(135deg, #10b981, #06b6d4)', boxShadow: '0 4px 16px rgba(16,185,129,0.30)' }}
-            >
-              <Send className="h-4 w-4" />
-              {pending ? '提交中...' : '立即订阅'}
-            </button>
+            <SubmitButton />
           </form>
         )}
       </div>
