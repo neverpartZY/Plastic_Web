@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String      @id @default(cuid())
+  email        String?     @unique
+  phone        String?     @unique
+  passwordHash String
+  name         String
+  avatarUrl    String?
+  role         String      @default("user")
+  isPremium    Boolean     @default(false)
+  isActive     Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  dashboards   Dashboard[]
+  bookmarks    Bookmark[]
+
+  @@index([email])
+  @@index([phone])
+}
+
+model Tag {
+  id            String         @id @default(cuid())
+  name          String         @unique
+  slug          String         @unique
+  /// entity | application | material | process | technology | region | topic
+  category      String
+  color         String         @default("#6B7280")
+  sortOrder     Int            @default(0)
+  createdAt     DateTime       @default(now())
+
+  newsItems     NewsTag[]
+  dashboardTags DashboardTag[]
+
+  @@index([category])
+}
+
+model News {
+  id          String    @id @default(cuid())
+  title       String
+  summary     String
+  content     String
+  coverImage  String?
+  source      String?   // Media source name (e.g. "环球塑化网")
+  sourceUrl   String?
+  author      String?
+  viewCount   Int       @default(0)
+  isPublished Boolean   @default(true)
+
+  /// draft | published | archived
+  status      String    @default("published")
+
+  /// ai | manual | scraper
+  dataSource  String    @default("manual")
+
+  publishedAt DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  tags        NewsTag[]
+  bookmarks   Bookmark[]
+
+  @@index([publishedAt])
+  @@index([viewCount])
+  @@index([isPublished])
+  @@index([status])
+  @@index([dataSource])
+}
+
+model NewsTag {
+  newsId String
+  tagId  String
+
+  news   News @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([newsId, tagId])
+  @@index([tagId])
+}
+
+model Dashboard {
+  id        String         @id @default(cuid())
+  userId    String
+  name      String
+  isDefault Boolean        @default(false)
+  sortOrder Int            @default(0)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tags      DashboardTag[]
+
+  @@index([userId])
+}
+
+model DashboardTag {
+  dashboardId String
+  tagId       String
+
+  dashboard   Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+  tag         Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([dashboardId, tagId])
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  newsId    String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  news      News     @relation(fields: [newsId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, newsId])
+  @@index([userId])
+}

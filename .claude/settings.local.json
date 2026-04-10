@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --app --src-dir --import-alias \"@/*\" --no-git)",
+      "Bash(node -e \"console.log\\(process.cwd\\(\\)\\)\")",
+      "Bash(npm install:*)",
+      "Bash(npx prisma:*)",
+      "Bash(mkdir -p prisma)",
+      "Bash(node ./node_modules/.bin/prisma --version)",
+      "Bash(node_modules/.bin/prisma.cmd --version)",
+      "Bash(node_modules/.bin/prisma.cmd migrate:*)",
+      "Bash(DATABASE_URL=\"file:./dev.db\" node_modules/.bin/prisma.cmd migrate dev --name init)",
+      "Bash(node -e \"require\\('date-fns/locale'\\)\")",
+      "Bash(DATABASE_URL=\"file:./prisma/dev.db\" node_modules/.bin/ts-node.cmd --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts)",
+      "Bash(ls d:/AppData/TestPrograme/Plastic_Web/*.db)",
+      "Bash(ls d:/AppData/TestPrograme/Plastic_Web/prisma/*.db)",
+      "Bash(node_modules/.bin/ts-node.cmd --compiler-options \"{\\\\\"module\\\\\":\\\\\"CommonJS\\\\\"}\" prisma/seed.ts)",
+      "Bash(DATABASE_URL=\"file:D:/AppData/TestPrograme/Plastic_Web/prisma/dev.db\" node_modules/.bin/ts-node.cmd --compiler-options \"{\\\\\"module\\\\\":\\\\\"CommonJS\\\\\"}\" prisma/seed.ts)",
+      "Bash(npm run:*)",
+      "Bash(mv next.config.ts next.config.mjs)",
+      "Bash(node -e ':*)",
+      "Bash(curl -s http://localhost:3000/api/tags)",
+      "Bash(node -e \"const d=require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\); const j=JSON.parse\\(d\\); console.log\\('Tags count:', j.tags.length\\); console.log\\('First tag:', j.tags[0]?.name\\);\")",
+      "Bash(curl -s http://localhost:3002/api/tags)",
+      "Bash(curl -s \"http://localhost:3002/api/news?limit=3\")",
+      "Bash(curl -s \"http://localhost:3002/\")",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}

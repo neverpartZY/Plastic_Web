@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//d/AppData/TestPrograme/Plastic_Web/**)",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}
