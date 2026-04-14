@@ -43,7 +43,6 @@ function CompanyCard({ company }: { company: CompanyItem }) {
             style={{
               background: entity?.bg ?? '#f8fafc',
               color: entity?.color ?? '#475569',
-              ringColor: entity?.border ?? '#e2e8f0',
               border: `2px solid ${entity?.border ?? '#e2e8f0'}`,
             }}
           >
