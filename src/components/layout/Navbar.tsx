@@ -110,14 +110,15 @@ function DropdownRow({ item }: { item: NavItem }) {
   return (
     <Link
       href={item.href}
-      className="group flex items-start gap-3 px-3 py-2.5 rounded-2xl hover:bg-cyan-50 active:bg-cyan-100 transition-colors duration-150"
+      className="group flex items-start gap-3 px-3 py-2.5 rounded-2xl hover:bg-emerald-50 active:bg-emerald-100 transition-colors duration-150"
     >
-      <div className={cn('mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 group-hover:scale-105', item.iconBg)}>
+      {/* Circular colored icon bubble */}
+      <div className={cn('mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full ring-4 ring-white transition-all duration-200 group-hover:scale-105 group-hover:ring-emerald-50', item.iconBg)}>
         <Icon className={cn('h-4 w-4', item.iconColor)} />
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-[13px] font-semibold text-slate-800 group-hover:text-slate-900 transition-colors duration-150 leading-none">
+          <span className="text-[13px] font-semibold text-slate-800 group-hover:text-emerald-700 transition-colors duration-150 leading-none">
             {item.label}
           </span>
           {item.badge && (
