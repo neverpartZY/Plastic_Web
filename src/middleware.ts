@@ -1,13 +1,12 @@
-import { withAuth } from 'next-auth/middleware'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { LOCALES, DEFAULT_LOCALE, isValidLocale } from '@/i18n/config'
+import { getToken } from 'next-auth/jwt'
+import { DEFAULT_LOCALE, isValidLocale } from '@/i18n/config'
 
-// ── i18n helpers ──────────────────────────────────────────────────────────────
+// ── helpers ───────────────────────────────────────────────────────────────────
 
 const PUBLIC_FILE = /\.(.*)$/
 
-/** Paths that should never be locale-prefixed */
 function isInternalPath(pathname: string): boolean {
   return (
     pathname.startsWith('/_next') ||
@@ -17,9 +16,8 @@ function isInternalPath(pathname: string): boolean {
   )
 }
 
-/** Detect preferred locale — cookie wins, then Accept-Language, then default */
 function detectLocale(req: NextRequest): string {
-  // 1. User-set preference cookie (written by LangSwitcher)
+  // 1. Cookie written by LangSwitcher (user preference)
   const cookieLng = req.cookies.get('NEXT_LOCALE')?.value
   if (cookieLng && isValidLocale(cookieLng)) return cookieLng
 
@@ -33,66 +31,62 @@ function detectLocale(req: NextRequest): string {
   return DEFAULT_LOCALE
 }
 
-// ── Merged middleware ─────────────────────────────────────────────────────────
+// ── middleware ────────────────────────────────────────────────────────────────
 
-export default withAuth(
-  function middleware(req) {
-    const { pathname } = req.nextUrl
-    const token = req.nextauth.token
+export async function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl
 
-    // 1. Auth guard: admin role check
-    if (pathname.startsWith('/admin') && token?.role !== 'admin') {
+  // ── 1. Skip internal Next.js & API paths ──────────────────────────────────
+  if (isInternalPath(pathname)) return NextResponse.next()
+
+  // ── 2. Auth guard for protected routes ────────────────────────────────────
+  const isProtected =
+    pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/profile') ||
+    pathname.startsWith('/admin')
+
+  if (isProtected) {
+    const token = await getToken({
+      req,
+      secret: process.env.NEXTAUTH_SECRET,
+    })
+
+    if (!token) {
+      const loginUrl = new URL('/auth/login', req.url)
+      loginUrl.searchParams.set('callbackUrl', req.url)
+      return NextResponse.redirect(loginUrl)
+    }
+
+    if (pathname.startsWith('/admin') && token.role !== 'admin') {
       return NextResponse.redirect(new URL('/', req.url))
     }
-
-    // 2. Skip internal paths
-    if (isInternalPath(pathname)) return NextResponse.next()
-
-    // 3. Skip paths that already have a valid locale prefix
-    const firstSegment = pathname.split('/')[1]
-    if (isValidLocale(firstSegment)) {
-      // Set x-lng header so root layout can read it for <html lang>
-      const res = NextResponse.next()
-      res.headers.set('x-lng', firstSegment)
-      return res
-    }
-
-    // 4. Redirect bare root path to locale-prefixed version
-    if (pathname === '/') {
-      const locale = detectLocale(req)
-      return NextResponse.redirect(new URL(`/${locale}`, req.url))
-    }
-
-    // 5. All other paths (e.g. /news, /explore): pass through
-    //    They are served by (main) route group — no locale prefix needed
-    const res = NextResponse.next()
-    res.headers.set('x-lng', DEFAULT_LOCALE)
-    return res
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        const { pathname } = req.nextUrl
-        if (
-          pathname.startsWith('/dashboard') ||
-          pathname.startsWith('/profile') ||
-          pathname.startsWith('/admin')
-        ) {
-          return !!token
-        }
-        return true
-      },
-    },
   }
-)
+
+  // ── 3. Locale-prefixed path → forward, set x-lng header ──────────────────
+  const firstSegment = pathname.split('/')[1]
+  if (isValidLocale(firstSegment)) {
+    const res = NextResponse.next()
+    res.headers.set('x-lng', firstSegment)
+    return res
+  }
+
+  // ── 4. Root path → redirect to detected locale ───────────────────────────
+  if (pathname === '/') {
+    const locale = detectLocale(req)
+    return NextResponse.redirect(new URL(`/${locale}`, req.url))
+  }
+
+  // ── 5. All other paths (/news, /explore, …) → pass through ───────────────
+  const res = NextResponse.next()
+  res.headers.set('x-lng', DEFAULT_LOCALE)
+  return res
+}
 
 export const config = {
   matcher: [
     /*
-     * Match all paths except:
-     * - _next/static, _next/image
-     * - favicon.ico
-     * - Files with extensions (images, fonts, etc.)
+     * Match every path EXCEPT:
+     *   _next/static, _next/image, favicon.ico, and files with extensions
      */
     '/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)',
   ],

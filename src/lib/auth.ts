@@ -64,6 +64,9 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
+  // NEXTAUTH_URL must match the production domain in Vercel env vars
+  // e.g. https://www.greenplastic.ai
+  ...(process.env.NEXTAUTH_URL ? { url: process.env.NEXTAUTH_URL } : {}),
 }
 
 declare module 'next-auth' {
