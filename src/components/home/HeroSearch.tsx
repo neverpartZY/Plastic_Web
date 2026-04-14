@@ -3,8 +3,35 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, ArrowRight, Waves, Recycle, Globe } from 'lucide-react'
+import type { HeroDictionary } from '@/i18n/types'
 
-export default function HeroSearch() {
+const ZH: HeroDictionary = {
+  badge: '6位1体产业服务体系',
+  headline1: '构建中国塑料循环利用',
+  headline2: '行业数字基石',
+  subtitle: '6位1体服务闭环，引领行业从',
+  subtitleBold1: '经验决策',
+  subtitleBold2: '数据决策',
+  subtitleConnector: '向',
+  subtitleEnd: '跨越',
+  searchPlaceholder: '搜索资讯、企业、技术动态...',
+  searchBtn: '搜索',
+  ctaPrimary: '探索平台',
+  ctaSecondary: '了解体系',
+  stat1Num: '6+',
+  stat1Label: '核心服务模块',
+  stat2Num: '2,400+',
+  stat2Label: '重点跟踪企业',
+  stat3Num: '日更新',
+  stat3Label: '产业情报推送',
+}
+
+interface Props {
+  dict?: HeroDictionary
+}
+
+export default function HeroSearch({ dict }: Props) {
+  const t = dict ?? ZH
   const [query, setQuery] = useState('')
   const router = useRouter()
 
@@ -16,7 +43,7 @@ export default function HeroSearch() {
   return (
     <section className="relative -mt-16 min-h-screen flex flex-col items-center justify-center overflow-hidden bg-white">
 
-      {/* ── Layered gradient wash — ocean-to-land ── */}
+      {/* ── Layered gradient wash ── */}
       <div className="absolute inset-0 bg-gradient-to-br from-white via-cyan-50/60 to-emerald-50/30 pointer-events-none" />
 
       {/* ── Top-center radial cyan glow ── */}
@@ -47,77 +74,72 @@ export default function HeroSearch() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full border border-cyan-200 bg-cyan-50 text-cyan-700 text-sm font-semibold tracking-wide">
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-          6位1体产业服务体系
+          {t.badge}
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
         </div>
 
         {/* Main headline */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.2rem] font-black text-slate-900 mb-6 leading-[1.08] tracking-tight">
-          构建中国塑料循环利用
+          {t.headline1}
           <br />
           <span className="bg-gradient-to-r from-cyan-700 via-teal-500 to-emerald-600 bg-clip-text text-transparent">
-            行业数字基石
+            {t.headline2}
           </span>
         </h1>
 
         {/* Subtitle */}
         <p className="text-base sm:text-lg md:text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
-          6位1体服务闭环，引领行业从
-          <span className="text-slate-700 font-semibold">经验决策</span>
-          {' '}向{' '}
-          <span className="text-cyan-700 font-bold">数据决策</span>
-          {' '}跨越
+          {t.subtitle}
+          <span className="text-slate-700 font-semibold">{t.subtitleBold1}</span>
+          {' '}{t.subtitleConnector}{' '}
+          <span className="text-cyan-700 font-bold">{t.subtitleBold2}</span>
+          {' '}{t.subtitleEnd}
         </p>
 
         {/* ── Search bar ── */}
         <form onSubmit={handleSearch} className="relative max-w-xl mx-auto mb-10 group">
-          {/* Focus glow ring */}
           <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-r from-cyan-400/25 to-teal-400/20 blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
           <div className="relative flex items-center rounded-3xl border border-slate-200 bg-white shadow-[0_2px_16px_-4px_rgba(0,0,0,0.07)] focus-within:border-cyan-400 focus-within:shadow-[0_0_0_3px_rgba(8,145,178,0.10),0_2px_16px_-4px_rgba(0,0,0,0.07)] transition-all duration-300">
             <Search className="absolute left-4 h-4 w-4 text-slate-400 pointer-events-none" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="搜索资讯、企业、技术动态..."
+              placeholder={t.searchPlaceholder}
               className="w-full bg-transparent pl-11 pr-28 py-3.5 text-slate-800 placeholder:text-slate-400 focus:outline-none text-[14px]"
             />
             <button
               type="submit"
               className="absolute right-1.5 px-5 py-2 rounded-2xl bg-cyan-700 hover:bg-cyan-600 text-white text-[13px] font-semibold transition-colors duration-200 shadow-[0_2px_8px_rgba(8,145,178,0.35)]"
             >
-              搜索
+              {t.searchBtn}
             </button>
           </div>
         </form>
 
         {/* ── CTA buttons ── */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-
-          {/* Primary — ocean cyan */}
           <button
             onClick={() => router.push('/database')}
             className="relative overflow-hidden group/btn flex items-center gap-2 px-8 py-3.5 rounded-3xl bg-cyan-700 hover:bg-cyan-600 text-white text-[14px] font-semibold transition-colors duration-200 shadow-[0_4px_20px_rgba(8,145,178,0.30)] hover:shadow-[0_8px_28px_rgba(8,145,178,0.40)]"
           >
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full skew-x-[-20deg] group-hover/btn:translate-x-[300%] transition-transform duration-700 ease-in-out pointer-events-none" />
-            探索平台
+            {t.ctaPrimary}
             <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
           </button>
-
-          {/* Secondary */}
           <button
             onClick={() => router.push('/news')}
             className="flex items-center gap-2 px-8 py-3.5 rounded-3xl border border-cyan-200 hover:border-cyan-300 text-slate-700 hover:text-cyan-700 hover:bg-cyan-50 text-[14px] font-semibold transition-all duration-200"
           >
-            了解体系
+            {t.ctaSecondary}
           </button>
         </div>
 
         {/* ── Stats strip ── */}
         <div className="mt-16 grid grid-cols-3 gap-4 max-w-xl mx-auto">
           {[
-            { num: '6+',      label: '核心服务模块' },
-            { num: '2,400+',  label: '重点跟踪企业' },
-            { num: '日更新',  label: '产业情报推送' },
+            { num: t.stat1Num, label: t.stat1Label },
+            { num: t.stat2Num, label: t.stat2Label },
+            { num: t.stat3Num, label: t.stat3Label },
           ].map(({ num, label }) => (
             <div key={label} className="flex flex-col items-center gap-1 px-4 py-3.5 rounded-3xl bg-white border border-cyan-100 shadow-sm">
               <span className="text-xl font-black text-cyan-700">{num}</span>
@@ -127,7 +149,7 @@ export default function HeroSearch() {
         </div>
       </div>
 
-      {/* ── Bottom fade into section below ── */}
+      {/* ── Bottom fade ── */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
     </section>
   )

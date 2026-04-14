@@ -17,7 +17,7 @@ import {
 import { X, CheckCircle2, AlertCircle } from 'lucide-react'
 import { useFormStatus } from 'react-dom'
 import { cn } from '@/lib/utils'
-import type { ActionState } from '@/app/services/actions'
+import type { ActionState } from '@/app/(main)/services/actions'
 
 // ── Submit button ──────────────────────────────────────────────────────────────
 

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { headers } from 'next/headers'
 import './globals.css'
 import Providers from './providers'
 
@@ -22,8 +23,10 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const lng = headers().get('x-lng') ?? 'zh'
+
   return (
-    <html lang="zh-CN" className="antialiased scroll-smooth">
+    <html lang={lng} className="antialiased scroll-smooth">
       <body className="font-sans bg-background text-foreground">
         <Providers>{children}</Providers>
       </body>
