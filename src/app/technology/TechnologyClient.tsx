@@ -119,14 +119,14 @@ function ProjectCard({ p, onApply }: { p: typeof PROJECTS[0]; onApply: () => voi
   const isRecruiting = p.status === 'recruiting'
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl p-5 flex flex-col gap-4 transition-all duration-300 hover:-translate-y-1 bg-white border border-slate-200 shadow-sm hover:shadow-[0_8px_28px_rgba(0,0,0,0.09)] hover:border-slate-300">
+    <div className="group relative overflow-hidden rounded-3xl p-6 flex flex-col gap-4 transition-all duration-300 hover:-translate-y-1 bg-white border border-slate-100 shadow-xl shadow-slate-100 hover:shadow-2xl hover:shadow-slate-200">
       {/* Top color accent on hover */}
       <div className="absolute top-0 left-0 right-0 h-0.5 w-0 group-hover:w-full transition-all duration-500 rounded-t-2xl"
         style={{ background: field?.color ?? '#e2e8f0' }} />
 
       {/* Header */}
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 border"
+        <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 border"
           style={{ background: field?.bg ?? '#f8fafc', borderColor: field?.border ?? '#e2e8f0' }}>
           <FieldIcon className="h-5 w-5" style={{ color: field?.color ?? '#475569' }} />
         </div>
@@ -196,9 +196,9 @@ export default function TechnologyClient() {
     <div className="bg-white">
 
       {/* ── Hero ── */}
-      <div className="relative overflow-hidden pt-10 pb-16 bg-gradient-to-br from-white via-cyan-50/30 to-teal-50/20">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 65%)', filter: 'blur(70px)' }} />
+      <div className="relative overflow-hidden pt-24 pb-20 bg-gradient-to-br from-white via-cyan-50/40 to-teal-50/20">
+        <div className="absolute top-0 right-1/4 w-[600px] h-[600px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 65%)', filter: 'blur(80px)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 mb-5 text-[13px] text-slate-500">
@@ -229,8 +229,8 @@ export default function TechnologyClient() {
               { icon: Clock,      label: '平均TRL', value: '5.2' },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-cyan-50 border border-cyan-100 flex items-center justify-center">
-                  <Icon className="h-4 w-4 text-cyan-600" />
+                <div className="w-10 h-10 rounded-full bg-cyan-100 ring-4 ring-cyan-100 flex items-center justify-center">
+                  <Icon className="h-4 w-4 text-cyan-700" />
                 </div>
                 <div>
                   <div className="text-xl font-bold text-slate-900">{value}</div>
@@ -253,11 +253,11 @@ export default function TechnologyClient() {
             return (
               <button key={key} onClick={() => setFieldFilter(isActive ? '全部' : key)}
                 className={cn(
-                  'p-4 rounded-2xl flex flex-col gap-3 transition-all duration-200 hover:-translate-y-0.5 border text-left',
-                  isActive ? 'shadow-sm' : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm',
+                  'p-5 rounded-3xl flex flex-col gap-4 transition-all duration-200 hover:-translate-y-0.5 border text-left shadow-xl shadow-slate-100',
+                  isActive ? '' : 'bg-white border-slate-100',
                 )}
                 style={isActive ? { background: bg, borderColor: border } : undefined}>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center border"
+                <div className="w-10 h-10 rounded-full flex items-center justify-center border"
                   style={{ background: isActive ? 'white' : bg, borderColor: border }}>
                   <Icon className="h-4 w-4" style={{ color }} />
                 </div>
@@ -288,8 +288,8 @@ export default function TechnologyClient() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-12 p-8 rounded-2xl text-center bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-100">
-          <div className="w-12 h-12 rounded-2xl bg-white border border-cyan-100 shadow-sm flex items-center justify-center mx-auto mb-4">
+        <div className="mt-16 p-10 rounded-3xl text-center bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-100 shadow-xl shadow-slate-100">
+          <div className="w-14 h-14 rounded-full bg-white border border-cyan-200 shadow-sm flex items-center justify-center mx-auto mb-5">
             <Cpu className="h-6 w-6 text-cyan-600" />
           </div>
           <h3 className="text-[18px] font-bold text-slate-900 mb-2">有项目想联合攻关？</h3>

@@ -134,9 +134,9 @@ export default function AssociationClient() {
     <div className="bg-white">
 
       {/* ── Hero ── */}
-      <div className="relative overflow-hidden pt-10 pb-16 bg-gradient-to-br from-white via-violet-50/30 to-purple-50/20">
-        <div className="absolute top-0 right-1/3 w-[500px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 65%)', filter: 'blur(70px)' }} />
+      <div className="relative overflow-hidden pt-24 pb-20 bg-gradient-to-br from-white via-violet-50/40 to-purple-50/20">
+        <div className="absolute top-0 right-1/3 w-[600px] h-[600px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 65%)', filter: 'blur(80px)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 mb-5 text-[13px] text-slate-500">
@@ -177,7 +177,7 @@ export default function AssociationClient() {
               { icon: Newspaper, label: '发布报告', value: '94' },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-violet-50 border border-violet-100 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-violet-100 ring-4 ring-violet-100 flex items-center justify-center">
                   <Icon className="h-4 w-4 text-violet-600" />
                 </div>
                 <div>
@@ -190,7 +190,7 @@ export default function AssociationClient() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-24 space-y-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-32 space-y-20">
 
         {/* ── Membership tiers ── */}
         <section>
@@ -198,7 +198,7 @@ export default function AssociationClient() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {MEMBER_TIERS.map((tier) => (
               <div key={tier.tier}
-                className="rounded-2xl p-6 flex flex-col gap-5 transition-all duration-300 hover:-translate-y-1 border shadow-sm"
+                className="rounded-3xl p-8 flex flex-col gap-5 transition-all duration-300 hover:-translate-y-1 border shadow-xl shadow-slate-100"
                 style={{ background: tier.bg, borderColor: tier.border }}>
                 <div>
                   <span className="text-[12px] font-bold px-2.5 py-1 rounded-full border"
@@ -236,8 +236,8 @@ export default function AssociationClient() {
               const tierInfo = MEMBER_TIERS.find(t => t.tier === m.tier)
               return (
                 <div key={m.name}
-                  className="p-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-slate-50 bg-white border border-slate-200">
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0 border"
+                  className="p-5 rounded-2xl flex items-center gap-3 transition-all duration-200 hover:-translate-y-0.5 bg-white border border-slate-100 shadow-xl shadow-slate-100">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 border"
                     style={{ background: tierInfo?.bg ?? '#f8fafc', color: tierInfo?.color ?? '#475569', borderColor: tierInfo?.border ?? '#e2e8f0' }}>
                     {m.name.charAt(0)}
                   </div>
@@ -265,7 +265,7 @@ export default function AssociationClient() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {REPORTS.map((r) => (
               <div key={r.id}
-                className="group flex items-start gap-4 p-5 rounded-2xl transition-all duration-200 hover:bg-slate-50 bg-white border border-slate-200 shadow-sm hover:shadow-[0_4px_20px_rgba(0,0,0,0.07)]">
+                className="group flex items-start gap-4 p-6 rounded-3xl transition-all duration-200 hover:-translate-y-0.5 bg-white border border-slate-100 shadow-xl shadow-slate-100 hover:shadow-2xl hover:shadow-slate-200">
                 <div className="w-10 h-14 rounded-lg flex-shrink-0 flex items-center justify-center"
                   style={{ background: 'linear-gradient(135deg, #ede9fe, #ddd6fe)', border: '1px solid #c4b5fd' }}>
                   <BookOpen className="h-5 w-5 text-violet-600" />

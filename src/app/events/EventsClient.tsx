@@ -165,7 +165,7 @@ function EventCard({ event, onRegister }: { event: EventItem; onRegister: (e: Ev
   const canRegister = event.status === 'open'
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl flex flex-col transition-all duration-300 hover:-translate-y-1 bg-white border border-slate-200 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.10)] hover:border-slate-300">
+    <div className="group relative overflow-hidden rounded-3xl flex flex-col transition-all duration-300 hover:-translate-y-1 bg-white border border-slate-100 shadow-xl shadow-slate-100 hover:shadow-2xl hover:shadow-slate-200">
       {/* Top accent */}
       <div className="h-0.5 w-0 group-hover:w-full transition-all duration-500 rounded-t-2xl"
         style={{ background: `linear-gradient(90deg, ${type.color}, ${type.color}88)` }} />
@@ -178,7 +178,7 @@ function EventCard({ event, onRegister }: { event: EventItem; onRegister: (e: Ev
         </div>
       )}
 
-      <div className="p-5 md:p-6 flex flex-col gap-4 flex-1">
+      <div className="p-6 md:p-7 flex flex-col gap-4 flex-1">
         {/* Header */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2 flex-wrap">
@@ -271,9 +271,9 @@ export default function EventsClient() {
     <div className="bg-white">
 
       {/* ── Hero ── */}
-      <div className="relative overflow-hidden pt-10 pb-16 bg-gradient-to-br from-white via-amber-50/30 to-orange-50/20">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 65%)', filter: 'blur(70px)' }} />
+      <div className="relative overflow-hidden pt-24 pb-20 bg-gradient-to-br from-white via-amber-50/40 to-orange-50/20">
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.07) 0%, transparent 65%)', filter: 'blur(80px)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 mb-5 text-[13px] text-slate-500">
@@ -298,8 +298,8 @@ export default function EventsClient() {
               { icon: MapPin,   label: '覆盖城市', value: '12' },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center">
-                  <Icon className="h-4.5 w-4.5 text-amber-600" />
+                <div className="w-10 h-10 rounded-full bg-amber-100 ring-4 ring-amber-100 flex items-center justify-center">
+                  <Icon className="h-4 w-4 text-amber-600" />
                 </div>
                 <div>
                   <div className="text-xl font-bold text-slate-900">{value}</div>
@@ -312,7 +312,7 @@ export default function EventsClient() {
       </div>
 
       {/* ── Content ── */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-32">
         {/* Filter tabs */}
         <div className="sticky top-16 z-20 py-3 mb-6 bg-white/95 backdrop-blur-sm border-b border-slate-100">
           <div className="flex gap-2 flex-wrap items-center justify-between">

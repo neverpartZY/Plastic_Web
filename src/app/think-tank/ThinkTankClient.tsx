@@ -307,13 +307,13 @@ function DashboardCard({
 }) {
   return (
     <div
-      className="relative rounded-2xl p-5 flex flex-col overflow-hidden bg-white border border-slate-200 shadow-sm"
+      className="relative rounded-3xl p-6 flex flex-col overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-100"
       style={{ minHeight: '240px' }}
     >
       {/* Header */}
       <div className="flex items-center gap-2.5 mb-4">
         <div
-          className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+          className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
           style={{ background: iconGrad, boxShadow: `0 4px 12px ${iconColor}30` }}
         >
           <Icon className="w-4 h-4 text-white" />
@@ -344,7 +344,7 @@ function ReportCard({ report }: { report: Report }) {
 
   return (
     <article
-      className="group relative rounded-2xl overflow-hidden flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1.5 bg-white border border-slate-200 shadow-sm hover:shadow-card-hover"
+      className="group relative rounded-3xl overflow-hidden flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1.5 bg-white border border-slate-100 shadow-xl shadow-slate-100 hover:shadow-2xl hover:shadow-slate-200"
       onMouseEnter={(e) => {
         const el = e.currentTarget
         el.style.borderColor = `${report.accentColor}50`
@@ -502,7 +502,7 @@ export default function ThinkTankClient() {
       {/* ══════════════════════════════════════════════════════════════════════
           SECTION 1 — HERO
           ══════════════════════════════════════════════════════════════════════ */}
-      <section className="relative pt-10 pb-20 overflow-hidden bg-white">
+      <section className="relative pt-24 pb-24 overflow-hidden bg-gradient-to-br from-white via-violet-50/30 to-indigo-50/20">
           {/* Ambient glow */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] pointer-events-none"
             style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.08) 0%, rgba(16,185,129,0.04) 50%, transparent 70%)' }} />
@@ -553,7 +553,7 @@ export default function ThinkTankClient() {
                   return (
                     <div
                       key={stat.label}
-                      className="rounded-2xl p-4 flex flex-col gap-1 bg-white border border-slate-200 shadow-sm"
+                      className="rounded-3xl p-5 flex flex-col gap-2 bg-white border border-slate-100 shadow-xl shadow-slate-100"
                     >
                       <Icon className="w-4 h-4 mb-1" style={{ color: stat.color }} />
                       <span className="text-[22px] font-black text-slate-900 leading-none">{stat.value}</span>

@@ -131,12 +131,12 @@ function PortfolioCard({ item }: { item: typeof PORTFOLIO[0] }) {
   const stageStyle = stageColors[item.stage] ?? { bg: '#f8fafc', text: '#64748b', border: '#e2e8f0' }
 
   return (
-    <div className="p-5 rounded-2xl flex flex-col gap-3 transition-all duration-200 hover:-translate-y-0.5 bg-white border border-slate-200 shadow-sm hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] hover:border-slate-300">
+    <div className="p-6 rounded-3xl flex flex-col gap-4 transition-all duration-200 hover:-translate-y-1 bg-white border border-slate-100 shadow-xl shadow-slate-100 hover:shadow-2xl hover:shadow-slate-200">
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 border"
+          <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border"
             style={{ background: ind?.bg ?? '#f8fafc', borderColor: ind?.border ?? '#e2e8f0' }}>
-            <IndIcon className="h-4 w-4" style={{ color: ind?.color ?? '#475569' }} />
+            <IndIcon className="h-4.5 w-4.5" style={{ color: ind?.color ?? '#475569' }} />
           </div>
           <div>
             <h4 className="text-[14px] font-bold text-slate-900">{item.name}</h4>
@@ -166,9 +166,9 @@ export default function FundClient() {
     <div className="bg-white">
 
       {/* ── Hero ── */}
-      <div className="relative overflow-hidden pt-10 pb-16 bg-gradient-to-br from-white via-rose-50/30 to-pink-50/20">
-        <div className="absolute top-0 left-1/3 w-[500px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(244,63,94,0.06) 0%, transparent 65%)', filter: 'blur(70px)' }} />
+      <div className="relative overflow-hidden pt-24 pb-20 bg-gradient-to-br from-white via-rose-50/40 to-pink-50/20">
+        <div className="absolute top-0 left-1/3 w-[600px] h-[600px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(244,63,94,0.07) 0%, transparent 65%)', filter: 'blur(80px)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 mb-5 text-[13px] text-slate-500">
@@ -201,8 +201,8 @@ export default function FundClient() {
               { icon: Leaf,       label: '碳减排量', value: '12万吨/年' },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center">
-                  <Icon className="h-4 w-4 text-rose-600" />
+                <div className="w-10 h-10 rounded-full bg-rose-100 ring-4 ring-rose-100 flex items-center justify-center">
+                  <Icon className="h-4 w-4 text-rose-500" />
                 </div>
                 <div>
                   <div className="text-xl font-bold text-slate-900">{value}</div>
@@ -214,16 +214,16 @@ export default function FundClient() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-24 space-y-14">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-32 space-y-20">
 
         {/* ── Investment focus ── */}
         <section>
           <h2 className="text-xl font-bold text-slate-900 mb-5">重点赛道</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {INDUSTRIES.map(({ key, label, color, bg, border, icon: Icon }) => (
-              <div key={key} className="p-5 rounded-2xl text-center transition-all duration-200 hover:-translate-y-1 border shadow-sm"
+              <div key={key} className="p-6 rounded-3xl text-center transition-all duration-200 hover:-translate-y-1 border shadow-xl shadow-slate-100"
                 style={{ background: bg, borderColor: border }}>
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-3 bg-white border"
+                <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 bg-white border"
                   style={{ borderColor: border, boxShadow: `0 4px 14px ${color}15` }}>
                   <Icon className="h-6 w-6" style={{ color }} />
                 </div>
@@ -250,9 +250,9 @@ export default function FundClient() {
           <h2 className="text-xl font-bold text-slate-900 mb-5">投资标准</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {CRITERIA.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-rose-50 border border-rose-100">
-                  <Icon className="h-4 w-4 text-rose-600" />
+              <div key={title} className="flex items-start gap-4 p-6 rounded-3xl bg-white border border-slate-100 shadow-xl shadow-slate-100">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-rose-100">
+                  <Icon className="h-4 w-4 text-rose-500" />
                 </div>
                 <div>
                   <h4 className="text-[14px] font-semibold text-slate-900 mb-1">{title}</h4>
@@ -265,7 +265,7 @@ export default function FundClient() {
 
         {/* ── CTA ── */}
         <section>
-          <div className="p-8 md:p-10 rounded-2xl relative overflow-hidden bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-100">
+          <div className="p-8 md:p-12 rounded-3xl relative overflow-hidden bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-100 shadow-xl shadow-slate-100">
             <div className="absolute top-0 right-0 w-72 h-72 rounded-full pointer-events-none"
               style={{ background: 'radial-gradient(circle, rgba(244,63,94,0.06) 0%, transparent 65%)', filter: 'blur(50px)' }} />
 

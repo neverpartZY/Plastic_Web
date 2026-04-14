@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import HeroSearch from '@/components/home/HeroSearch'
+import Features from '@/components/home/Features'
 import SixModulesGrid from '@/components/home/SixModulesGrid'
 import DataEcosystem from '@/components/home/DataEcosystem'
 import MatrixHub from '@/components/home/MatrixHub'
@@ -51,6 +52,7 @@ export default async function HomePage() {
   return (
     <>
       <HeroSearch />
+      <Features />
       <SixModulesGrid />
       <DataEcosystem />
       <MatrixHub />
