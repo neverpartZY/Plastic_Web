@@ -18,25 +18,28 @@ import {
 const MEMBER_TIERS = [
   {
     tier: '理事单位',
-    color: '#f59e0b',
-    bg: 'rgba(245,158,11,0.10)',
-    border: 'rgba(245,158,11,0.25)',
+    color: '#d97706',
+    bg: '#fffbeb',
+    border: '#fde68a',
+    textColor: '#92400e',
     perks: ['参与年度战略研讨', '优先获取研究报告', '理事会投票权', '品牌曝光位'],
     price: '¥50,000 / 年',
   },
   {
     tier: '普通会员',
-    color: '#60a5fa',
-    bg: 'rgba(59,130,246,0.10)',
-    border: 'rgba(59,130,246,0.25)',
+    color: '#2563eb',
+    bg: '#eff6ff',
+    border: '#bfdbfe',
+    textColor: '#1e40af',
     perks: ['参与会员活动', '报告折扣订阅', '会员目录展示', '行业资讯推送'],
     price: '¥8,000 / 年',
   },
   {
     tier: '观察成员',
-    color: '#34d399',
-    bg: 'rgba(16,185,129,0.10)',
-    border: 'rgba(16,185,129,0.25)',
+    color: '#059669',
+    bg: '#ecfdf5',
+    border: '#a7f3d0',
+    textColor: '#065f46',
     perks: ['参与公开论坛', '月度简报订阅', '活动优先通知'],
     price: '免费',
   },
@@ -75,20 +78,19 @@ function JoinForm({ onClose }: { onClose: () => void }) {
       <DarkField label="邮箱" name="email" type="email" required placeholder="工作邮箱" />
       <DarkField label="手机" name="phone" placeholder="联系电话" hint="选填" />
       <DarkSelect label="申请类型" name="role" required>
-        <option value="" style={{ background: '#0f172a' }}>请选择入会身份</option>
-        <option value="director" style={{ background: '#0f172a' }}>理事单位</option>
-        <option value="member" style={{ background: '#0f172a' }}>普通会员</option>
-        <option value="observer" style={{ background: '#0f172a' }}>观察成员</option>
+        <option value="">请选择入会身份</option>
+        <option value="director">理事单位</option>
+        <option value="member">普通会员</option>
+        <option value="observer">观察成员</option>
       </DarkSelect>
       <DarkTextarea label="入会说明" name="message" placeholder="简要介绍贵司业务与入会目的（选填）" />
       <FormFeedback state={state} />
       {state.status !== 'success' && (
-        <DarkSubmitButton label="提交入会申请" accentColor="#8b5cf6" />
+        <DarkSubmitButton label="提交入会申请" accentColor="#7c3aed" />
       )}
       {state.status === 'success' && (
         <button type="button" onClick={onClose}
-          className="w-full py-2.5 rounded-xl text-[13px] font-semibold text-slate-300 transition-colors hover:text-white"
-          style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}>
+          className="w-full py-2.5 rounded-xl text-[13px] font-semibold text-slate-600 hover:text-slate-900 transition-colors bg-slate-100 border border-slate-200">
           关闭
         </button>
       )}
@@ -101,9 +103,8 @@ function ReportForm({ title, onClose }: { title: string; onClose: () => void }) 
   return (
     <form action={formAction} className="space-y-4">
       <input type="hidden" name="reportTitle" value={title} />
-      <div className="px-4 py-3 rounded-xl text-[12px] text-slate-400"
-        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-        <span className="text-slate-300 font-semibold">索取报告：</span>{title}
+      <div className="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-[12px] text-slate-600">
+        <span className="text-slate-900 font-semibold">索取报告：</span>{title}
       </div>
       <div className="grid grid-cols-2 gap-3">
         <DarkField label="姓名" name="name" required placeholder="您的称呼" />
@@ -115,8 +116,7 @@ function ReportForm({ title, onClose }: { title: string; onClose: () => void }) 
       {state.status !== 'success' && <DarkSubmitButton label="提交索取申请" accentColor="#6366f1" />}
       {state.status === 'success' && (
         <button type="button" onClick={onClose}
-          className="w-full py-2.5 rounded-xl text-[13px] font-semibold text-slate-300 hover:text-white transition-colors"
-          style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}>
+          className="w-full py-2.5 rounded-xl text-[13px] font-semibold text-slate-600 hover:text-slate-900 transition-colors bg-slate-100 border border-slate-200">
           关闭
         </button>
       )}
@@ -131,42 +131,39 @@ export default function AssociationClient() {
   const [reportTarget, setReportTarget] = useState<string | null>(null)
 
   return (
-    <div style={{ background: 'linear-gradient(180deg, #020a14 0%, #07111f 55%, #f8fafc 100%)' }}>
+    <div className="bg-white">
 
       {/* ── Hero ── */}
-      <div className="relative overflow-hidden pt-10 pb-16">
+      <div className="relative overflow-hidden pt-10 pb-16 bg-gradient-to-br from-white via-violet-50/30 to-purple-50/20">
         <div className="absolute top-0 right-1/3 w-[500px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 65%)', filter: 'blur(70px)' }} />
-        <div className="absolute inset-0 opacity-[0.025] pointer-events-none"
-          style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+          style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 65%)', filter: 'blur(70px)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 mb-5 text-[13px] text-slate-500">
             <span>行业服务</span><span>/</span>
-            <span className="text-violet-400 font-medium">行业协会</span>
+            <span className="text-violet-600 font-medium">行业协会</span>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full border border-violet-500/25 bg-violet-500/8 text-violet-400 text-xs font-semibold tracking-wide">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full border border-violet-200 bg-violet-50 text-violet-700 text-xs font-semibold tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
             产业联盟 · 互信生态
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">行业协会</h1>
-          <p className="text-slate-400 text-base max-w-xl leading-relaxed mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3 tracking-tight">行业协会</h1>
+          <p className="text-slate-500 text-base max-w-xl leading-relaxed mb-8">
             汇聚塑料回收产业链上下游核心企业，通过标准制定、技术交流、政策倡导，构建产业互信生态网络
           </p>
 
           <div className="flex flex-wrap gap-4">
             <button
               onClick={() => setJoinOpen(true)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-semibold text-white transition-all duration-200 hover:scale-[1.02]"
-              style={{ background: 'linear-gradient(135deg, #7c3aed, #8b5cf6)', boxShadow: '0 4px 20px rgba(139,92,246,0.35)' }}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-semibold text-white transition-all duration-200 hover:brightness-105"
+              style={{ background: 'linear-gradient(135deg, #7c3aed, #8b5cf6)', boxShadow: '0 4px 20px rgba(139,92,246,0.25)' }}
             >
               <Handshake className="h-4 w-4" /> 申请入会
             </button>
             <a href="#reports"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-semibold text-slate-300 hover:text-white transition-colors"
-              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)' }}>
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-semibold text-slate-700 hover:text-slate-900 transition-colors bg-white border border-slate-200 hover:border-slate-300 shadow-sm">
               <BookOpen className="h-4 w-4" /> 浏览研究报告
             </a>
           </div>
@@ -175,14 +172,16 @@ export default function AssociationClient() {
           <div className="flex flex-wrap gap-8 mt-10">
             {[
               { icon: Building2, label: '成员单位', value: '200+' },
-              { icon: Globe,    label: '覆盖城市', value: '38' },
-              { icon: Star,     label: '理事单位', value: '26' },
+              { icon: Globe,     label: '覆盖城市', value: '38' },
+              { icon: Star,      label: '理事单位', value: '26' },
               { icon: Newspaper, label: '发布报告', value: '94' },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-center gap-3">
-                <Icon className="h-5 w-5 text-violet-400 opacity-70" />
+                <div className="w-9 h-9 rounded-xl bg-violet-50 border border-violet-100 flex items-center justify-center">
+                  <Icon className="h-4 w-4 text-violet-600" />
+                </div>
                 <div>
-                  <div className="text-xl font-bold text-white">{value}</div>
+                  <div className="text-xl font-bold text-slate-900">{value}</div>
                   <div className="text-[12px] text-slate-500">{label}</div>
                 </div>
               </div>
@@ -195,30 +194,30 @@ export default function AssociationClient() {
 
         {/* ── Membership tiers ── */}
         <section>
-          <h2 className="text-xl font-bold text-white mb-6">会员体系</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-6">会员体系</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {MEMBER_TIERS.map((tier) => (
               <div key={tier.tier}
-                className="rounded-2xl p-6 flex flex-col gap-5 transition-all duration-300 hover:-translate-y-1"
-                style={{ background: tier.bg, border: `1px solid ${tier.border}` }}>
+                className="rounded-2xl p-6 flex flex-col gap-5 transition-all duration-300 hover:-translate-y-1 border shadow-sm"
+                style={{ background: tier.bg, borderColor: tier.border }}>
                 <div>
-                  <span className="text-[12px] font-bold px-2.5 py-1 rounded-full"
-                    style={{ background: `${tier.color}22`, color: tier.color, border: `1px solid ${tier.color}33` }}>
+                  <span className="text-[12px] font-bold px-2.5 py-1 rounded-full border"
+                    style={{ background: 'white', color: tier.color, borderColor: tier.border }}>
                     {tier.tier}
                   </span>
                   <div className="mt-3 text-xl font-bold" style={{ color: tier.color }}>{tier.price}</div>
                 </div>
                 <ul className="space-y-2 flex-1">
                   {tier.perks.map((p) => (
-                    <li key={p} className="flex items-center gap-2 text-[13px] text-slate-300">
+                    <li key={p} className="flex items-center gap-2 text-[13px] text-slate-700">
                       <BadgeCheck className="h-3.5 w-3.5 flex-shrink-0" style={{ color: tier.color }} />
                       {p}
                     </li>
                   ))}
                 </ul>
                 <button onClick={() => setJoinOpen(true)}
-                  className="flex items-center justify-center gap-1.5 py-2 rounded-xl text-[13px] font-semibold transition-colors hover:opacity-90"
-                  style={{ background: `${tier.color}22`, color: tier.color, border: `1px solid ${tier.color}33` }}>
+                  className="flex items-center justify-center gap-1.5 py-2 rounded-xl text-[13px] font-semibold transition-all hover:brightness-95 border"
+                  style={{ background: 'white', color: tier.color, borderColor: tier.border }}>
                   立即申请 <ArrowRight className="h-3.5 w-3.5" />
                 </button>
               </div>
@@ -229,24 +228,23 @@ export default function AssociationClient() {
         {/* ── Member directory ── */}
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-white">成员目录</h2>
-            <span className="text-[12px] text-slate-500">共 {MEMBERS.length} 家展示</span>
+            <h2 className="text-xl font-bold text-slate-900">成员目录</h2>
+            <span className="text-[12px] text-slate-400">共 {MEMBERS.length} 家展示</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {MEMBERS.map((m) => {
               const tierInfo = MEMBER_TIERS.find(t => t.tier === m.tier)
               return (
                 <div key={m.name}
-                  className="p-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-white/[0.06]"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0"
-                    style={{ background: `${tierInfo?.color ?? '#fff'}22`, color: tierInfo?.color ?? '#fff' }}>
+                  className="p-4 rounded-xl flex items-center gap-3 transition-all duration-200 hover:bg-slate-50 bg-white border border-slate-200">
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0 border"
+                    style={{ background: tierInfo?.bg ?? '#f8fafc', color: tierInfo?.color ?? '#475569', borderColor: tierInfo?.border ?? '#e2e8f0' }}>
                     {m.name.charAt(0)}
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[13px] font-semibold text-white/90 truncate">{m.name}</span>
-                      {m.verified && <BadgeCheck className="h-3 w-3 text-emerald-400 flex-shrink-0" />}
+                      <span className="text-[13px] font-semibold text-slate-900 truncate">{m.name}</span>
+                      {m.verified && <BadgeCheck className="h-3 w-3 text-emerald-600 flex-shrink-0" />}
                     </div>
                     <div className="text-[11px] text-slate-500 mt-0.5">{m.city} · {m.type}</div>
                   </div>
@@ -259,35 +257,32 @@ export default function AssociationClient() {
         {/* ── Research reports ── */}
         <section id="reports">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-white">研究报告</h2>
-            <a href="/think-tank" className="flex items-center gap-1 text-[13px] text-violet-400 hover:text-violet-300 transition-colors">
+            <h2 className="text-xl font-bold text-slate-900">研究报告</h2>
+            <a href="/think-tank" className="flex items-center gap-1 text-[13px] text-violet-600 hover:text-violet-700 transition-colors">
               查看全部 <ArrowRight className="h-3.5 w-3.5" />
             </a>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {REPORTS.map((r) => (
               <div key={r.id}
-                className="group flex items-start gap-4 p-5 rounded-2xl transition-all duration-200 hover:bg-white/[0.05]"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <div className="w-10 h-14 rounded-lg flex-shrink-0 flex items-center justify-center text-lg font-bold"
-                  style={{ background: 'linear-gradient(135deg, #4c1d95, #7c3aed)', color: '#e9d5ff' }}>
-                  <BookOpen className="h-5 w-5" />
+                className="group flex items-start gap-4 p-5 rounded-2xl transition-all duration-200 hover:bg-slate-50 bg-white border border-slate-200 shadow-sm hover:shadow-[0_4px_20px_rgba(0,0,0,0.07)]">
+                <div className="w-10 h-14 rounded-lg flex-shrink-0 flex items-center justify-center"
+                  style={{ background: 'linear-gradient(135deg, #ede9fe, #ddd6fe)', border: '1px solid #c4b5fd' }}>
+                  <BookOpen className="h-5 w-5 text-violet-600" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[11px] px-2 py-0.5 rounded-md font-semibold"
-                      style={{ background: 'rgba(99,102,241,0.15)', color: '#a5b4fc' }}>{r.category}</span>
+                    <span className="text-[11px] px-2 py-0.5 rounded-md font-semibold bg-indigo-50 border border-indigo-100 text-indigo-600">{r.category}</span>
                     {r.tier === 'premium' && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded font-bold"
-                        style={{ background: 'rgba(245,158,11,0.12)', color: '#fbbf24' }}>会员专享</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded font-bold bg-amber-50 border border-amber-200 text-amber-700">会员专享</span>
                     )}
                   </div>
-                  <h3 className="text-[13px] font-semibold text-white/90 leading-snug mb-1 line-clamp-2">{r.title}</h3>
-                  <div className="text-[11px] text-slate-500">{r.date} · {r.pages}页</div>
+                  <h3 className="text-[13px] font-semibold text-slate-900 leading-snug mb-1 line-clamp-2 group-hover:text-violet-700 transition-colors">{r.title}</h3>
+                  <div className="text-[11px] text-slate-400">{r.date} · {r.pages}页</div>
                 </div>
                 <button
                   onClick={() => setReportTarget(r.title)}
-                  className="flex-shrink-0 flex items-center gap-1 text-[11px] font-semibold text-violet-400 hover:text-violet-300 transition-colors opacity-0 group-hover:opacity-100 mt-1"
+                  className="flex-shrink-0 flex items-center gap-1 text-[11px] font-semibold text-violet-600 hover:text-violet-700 transition-colors opacity-0 group-hover:opacity-100 mt-1"
                 >
                   索取 <ArrowRight className="h-3 w-3" />
                 </button>
@@ -304,8 +299,8 @@ export default function AssociationClient() {
         onClose={() => setJoinOpen(false)}
         title="申请入会"
         description="填写以下信息，协会秘书处将尽快联系您"
-        accentColor="#8b5cf6"
-        accentIcon={<Users className="h-4 w-4" style={{ color: '#a78bfa' }} />}
+        accentColor="#7c3aed"
+        accentIcon={<Users className="h-4 w-4 text-violet-600" />}
       >
         <JoinForm onClose={() => setJoinOpen(false)} />
       </DarkModal>
@@ -316,7 +311,7 @@ export default function AssociationClient() {
         title="索取完整报告"
         description="填写联系方式，我们将发送至您邮箱"
         accentColor="#6366f1"
-        accentIcon={<BookOpen className="h-4 w-4" style={{ color: '#a5b4fc' }} />}
+        accentIcon={<BookOpen className="h-4 w-4 text-indigo-600" />}
       >
         {reportTarget && <ReportForm title={reportTarget} onClose={() => setReportTarget(null)} />}
       </DarkModal>

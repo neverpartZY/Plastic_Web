@@ -1,8 +1,8 @@
 'use client'
 
 /**
- * DarkModal — a lightweight dark-themed dialog wrapper.
- * Styled to match the site's deep-dark sci-fi aesthetic.
+ * Modal — a clean light-themed dialog wrapper.
+ * Exports kept identical to previous DarkModal for drop-in compatibility.
  * Uses Radix UI Dialog primitives under the hood.
  */
 
@@ -19,7 +19,7 @@ import { useFormStatus } from 'react-dom'
 import { cn } from '@/lib/utils'
 import type { ActionState } from '@/app/services/actions'
 
-// ── Submit button (reads pending from useFormStatus) ──────────────────────────
+// ── Submit button ──────────────────────────────────────────────────────────────
 
 interface SubmitBtnProps {
   label?: string
@@ -30,17 +30,17 @@ interface SubmitBtnProps {
 export function DarkSubmitButton({
   label = '提交申请',
   pendingLabel = '提交中...',
-  accentColor = '#10b981',
+  accentColor = '#059669',
 }: SubmitBtnProps) {
   const { pending } = useFormStatus()
   return (
     <button
       type="submit"
       disabled={pending}
-      className="w-full py-2.5 rounded-xl text-[13px] font-semibold text-white transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+      className="w-full py-2.5 rounded-xl text-[13px] font-semibold text-white transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed hover:brightness-105"
       style={{
-        background: `linear-gradient(135deg, ${accentColor}, ${accentColor}cc)`,
-        boxShadow: `0 4px 16px ${accentColor}40`,
+        background: `linear-gradient(135deg, ${accentColor}, ${accentColor}dd)`,
+        boxShadow: `0 4px 14px ${accentColor}30`,
       }}
     >
       {pending ? pendingLabel : label}
@@ -48,19 +48,19 @@ export function DarkSubmitButton({
   )
 }
 
-// ── Form feedback banner ──────────────────────────────────────────────────────
+// ── Form feedback ──────────────────────────────────────────────────────────────
 
 export function FormFeedback({ state }: { state: ActionState }) {
   if (state.status === 'idle') return null
   const isOk = state.status === 'success'
   return (
     <div
-      className="flex items-start gap-2.5 px-4 py-3 rounded-xl text-[13px]"
-      style={{
-        background: isOk ? 'rgba(16,185,129,0.10)' : 'rgba(244,63,94,0.10)',
-        border: `1px solid ${isOk ? 'rgba(16,185,129,0.28)' : 'rgba(244,63,94,0.28)'}`,
-        color: isOk ? '#34d399' : '#f87171',
-      }}
+      className={cn(
+        'flex items-start gap-2.5 px-4 py-3 rounded-xl text-[13px] border',
+        isOk
+          ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+          : 'bg-rose-50 border-rose-200 text-rose-600',
+      )}
     >
       {isOk
         ? <CheckCircle2 className="h-4 w-4 flex-shrink-0 mt-0.5" />
@@ -70,7 +70,7 @@ export function FormFeedback({ state }: { state: ActionState }) {
   )
 }
 
-// ── Dark field ────────────────────────────────────────────────────────────────
+// ── Field components ──────────────────────────────────────────────────────────
 
 interface FieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string
@@ -81,25 +81,16 @@ interface FieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export function DarkField({ label, required, hint, className, ...props }: FieldProps) {
   return (
     <div>
-      <label className="block text-[12px] text-slate-400 mb-1.5 font-medium">
-        {label}{required && <span className="text-rose-400 ml-0.5">*</span>}
-        {hint && <span className="text-slate-600 font-normal ml-1">（{hint}）</span>}
+      <label className="block text-[12px] text-slate-600 mb-1.5 font-medium">
+        {label}{required && <span className="text-rose-500 ml-0.5">*</span>}
+        {hint && <span className="text-slate-400 font-normal ml-1">（{hint}）</span>}
       </label>
       <input
         {...props}
         className={cn(
-          'w-full px-3.5 py-2.5 rounded-xl text-[13px] text-white/90 placeholder-slate-600 outline-none transition-all',
+          'w-full px-3.5 py-2.5 rounded-xl text-[13px] text-slate-900 placeholder:text-slate-400 outline-none transition-all border border-slate-200 bg-white focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100',
           className,
         )}
-        style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
-        onFocus={(e) => {
-          e.currentTarget.style.border = '1px solid rgba(16,185,129,0.40)'
-          props.onFocus?.(e)
-        }}
-        onBlur={(e) => {
-          e.currentTarget.style.border = '1px solid rgba(255,255,255,0.10)'
-          props.onBlur?.(e)
-        }}
       />
     </div>
   )
@@ -114,15 +105,12 @@ interface SelectFieldProps extends React.SelectHTMLAttributes<HTMLSelectElement>
 export function DarkSelect({ label, required, children, ...props }: SelectFieldProps) {
   return (
     <div>
-      <label className="block text-[12px] text-slate-400 mb-1.5 font-medium">
-        {label}{required && <span className="text-rose-400 ml-0.5">*</span>}
+      <label className="block text-[12px] text-slate-600 mb-1.5 font-medium">
+        {label}{required && <span className="text-rose-500 ml-0.5">*</span>}
       </label>
       <select
         {...props}
-        className="w-full px-3.5 py-2.5 rounded-xl text-[13px] text-white/90 outline-none transition-all appearance-none"
-        style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.10)' }}
-        onFocus={(e) => { e.currentTarget.style.border = '1px solid rgba(16,185,129,0.40)' }}
-        onBlur={(e) => { e.currentTarget.style.border = '1px solid rgba(255,255,255,0.10)' }}
+        className="w-full px-3.5 py-2.5 rounded-xl text-[13px] text-slate-900 outline-none transition-all appearance-none border border-slate-200 bg-white focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
       >
         {children}
       </select>
@@ -138,22 +126,19 @@ interface TextareaFieldProps extends React.TextareaHTMLAttributes<HTMLTextAreaEl
 export function DarkTextarea({ label, required, ...props }: TextareaFieldProps) {
   return (
     <div>
-      <label className="block text-[12px] text-slate-400 mb-1.5 font-medium">
-        {label}{required && <span className="text-rose-400 ml-0.5">*</span>}
+      <label className="block text-[12px] text-slate-600 mb-1.5 font-medium">
+        {label}{required && <span className="text-rose-500 ml-0.5">*</span>}
       </label>
       <textarea
         {...props}
         rows={props.rows ?? 3}
-        className="w-full px-3.5 py-2.5 rounded-xl text-[13px] text-white/90 placeholder-slate-600 outline-none transition-all resize-none"
-        style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
-        onFocus={(e) => { e.currentTarget.style.border = '1px solid rgba(16,185,129,0.40)' }}
-        onBlur={(e) => { e.currentTarget.style.border = '1px solid rgba(255,255,255,0.10)' }}
+        className="w-full px-3.5 py-2.5 rounded-xl text-[13px] text-slate-900 placeholder:text-slate-400 outline-none transition-all resize-none border border-slate-200 bg-white focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
       />
     </div>
   )
 }
 
-// ── DarkModal ─────────────────────────────────────────────────────────────────
+// ── DarkModal (light-themed) ──────────────────────────────────────────────────
 
 interface DarkModalProps {
   open: boolean
@@ -170,44 +155,41 @@ export function DarkModal({
   onClose,
   title,
   description,
-  accentColor = '#10b981',
+  accentColor = '#059669',
   accentIcon,
   children,
 }: DarkModalProps) {
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) onClose() }}>
       <DialogPortal>
-        <DialogOverlay className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+        <DialogOverlay className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <DialogContent
           className="fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl p-0 border-0 shadow-none bg-transparent focus:outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
         >
-          <div
-            style={{
-              background: 'rgba(8, 14, 26, 0.97)',
-              border: '1px solid rgba(255,255,255,0.10)',
-              boxShadow: `0 0 80px rgba(0,0,0,0.80), 0 0 40px ${accentColor}20`,
-            }}
-            className="rounded-2xl overflow-hidden"
-          >
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-[0_24px_64px_-12px_rgba(0,0,0,0.18)] overflow-hidden">
+
             {/* Header */}
-            <div className="px-6 pt-6 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+            <div className="px-6 pt-6 pb-4 border-b border-slate-100">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
                   {accentIcon && (
                     <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{ background: `${accentColor}22`, boxShadow: `0 2px 10px ${accentColor}33` }}
+                      className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 border"
+                      style={{
+                        background: `${accentColor}12`,
+                        borderColor: `${accentColor}30`,
+                      }}
                     >
                       {accentIcon}
                     </div>
                   )}
                   <div>
-                    <h2 className="text-[16px] font-bold text-white">{title}</h2>
-                    {description && <p className="text-[12px] text-slate-400 mt-0.5">{description}</p>}
+                    <h2 className="text-[16px] font-bold text-slate-900">{title}</h2>
+                    {description && <p className="text-[12px] text-slate-500 mt-0.5">{description}</p>}
                   </div>
                 </div>
                 <DialogClose asChild>
-                  <button className="text-slate-500 hover:text-slate-300 transition-colors mt-0.5">
+                  <button className="text-slate-400 hover:text-slate-700 transition-colors mt-0.5 p-1 rounded-lg hover:bg-slate-100">
                     <X className="h-4 w-4" />
                   </button>
                 </DialogClose>

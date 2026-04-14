@@ -139,8 +139,8 @@ function ChartSparkline() {
         <div>
           <p className="text-[11px] text-slate-400 uppercase tracking-widest mb-1">再生塑料回收率</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-[32px] font-black text-white leading-none">32.4%</span>
-            <span className="flex items-center gap-0.5 text-[12px] font-semibold text-emerald-400">
+            <span className="text-[32px] font-black text-slate-900 leading-none">32.4%</span>
+            <span className="flex items-center gap-0.5 text-[12px] font-semibold text-emerald-600">
               <TrendingUp className="w-3 h-3" />
               +4.1%
             </span>
@@ -207,14 +207,14 @@ function ChartBars() {
         {BAR_DATA.map((item) => (
           <div key={item.label}>
             <div className="flex items-center justify-between mb-1">
-              <span className="text-[12px] text-slate-300 font-medium">{item.label}</span>
+              <span className="text-[12px] text-slate-700 font-medium">{item.label}</span>
               <span className="text-[12px] font-bold tabular-nums" style={{ color: item.color }}>
                 {item.value}%
               </span>
             </div>
             <div
-              className="h-2 rounded-full overflow-hidden"
-              style={{ background: 'rgba(255,255,255,0.06)' }}
+              className="h-2 rounded-full overflow-hidden bg-slate-100"
+              style={{}}
             >
               <div
                 className="h-full rounded-full transition-all duration-700"
@@ -243,7 +243,7 @@ function ChartRing() {
         <div className="relative flex-shrink-0 w-[88px] h-[88px]">
           <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
             {/* Track */}
-            <circle cx="50" cy="50" r="34" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="9" />
+            <circle cx="50" cy="50" r="34" fill="none" stroke="rgba(0,0,0,0.07)" strokeWidth="9" />
             {/* Progress */}
             <circle
               cx="50" cy="50" r="34"
@@ -263,25 +263,25 @@ function ChartRing() {
           </svg>
           {/* Center label */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-[22px] font-black text-white leading-none">87%</span>
+            <span className="text-[22px] font-black text-slate-900 leading-none">87%</span>
           </div>
         </div>
 
         {/* Legend */}
         <div className="flex-1 space-y-2.5">
           <div>
-            <p className="text-[13px] font-bold text-white">超行业均值</p>
-            <p className="text-[12px] text-emerald-400 font-semibold">+14 个百分点</p>
+            <p className="text-[13px] font-bold text-slate-900">超行业均值</p>
+            <p className="text-[12px] text-emerald-600 font-semibold">+14 个百分点</p>
           </div>
           <div className="space-y-1.5">
             {[
-              { label: '已合规企业', color: '#10b981', pct: '87%' },
-              { label: '整改中', color: '#f59e0b', pct: '9%' },
-              { label: '未启动', color: 'rgba(255,255,255,0.2)', pct: '4%' },
+              { label: '已合规企业', color: '#059669', pct: '87%' },
+              { label: '整改中', color: '#d97706', pct: '9%' },
+              { label: '未启动', color: '#94a3b8', pct: '4%' },
             ].map((s) => (
               <div key={s.label} className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: s.color }} />
-                <span className="text-[11px] text-slate-400">{s.label}</span>
+                <span className="text-[11px] text-slate-600">{s.label}</span>
                 <span className="text-[11px] font-semibold ml-auto" style={{ color: s.color }}>{s.pct}</span>
               </div>
             ))}
@@ -307,26 +307,20 @@ function DashboardCard({
 }) {
   return (
     <div
-      className="relative rounded-2xl p-5 flex flex-col overflow-hidden"
-      style={{
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.09)',
-        backdropFilter: 'blur(12px)',
-        boxShadow: '0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)',
-        minHeight: '240px',
-      }}
+      className="relative rounded-2xl p-5 flex flex-col overflow-hidden bg-white border border-slate-200 shadow-sm"
+      style={{ minHeight: '240px' }}
     >
       {/* Header */}
       <div className="flex items-center gap-2.5 mb-4">
         <div
           className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: iconGrad, boxShadow: `0 4px 12px ${iconColor}40` }}
+          style={{ background: iconGrad, boxShadow: `0 4px 12px ${iconColor}30` }}
         >
           <Icon className="w-4 h-4 text-white" />
         </div>
-        <span className="text-[13px] font-semibold text-white/80">{title}</span>
-        <span className="ml-auto flex items-center gap-1 text-[10px] text-emerald-400 font-medium">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="text-[13px] font-semibold text-slate-700">{title}</span>
+        <span className="ml-auto flex items-center gap-1 text-[10px] text-emerald-600 font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           实时更新
         </span>
       </div>
@@ -334,7 +328,7 @@ function DashboardCard({
       {/* Decorative corner orb */}
       <div
         className="absolute -top-10 -right-10 w-32 h-32 rounded-full pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${iconColor}18 0%, transparent 65%)` }}
+        style={{ background: `radial-gradient(circle, ${iconColor}08 0%, transparent 65%)` }}
       />
 
       <div className="flex-1">{children}</div>
@@ -350,22 +344,14 @@ function ReportCard({ report }: { report: Report }) {
 
   return (
     <article
-      className="group relative rounded-2xl overflow-hidden flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1.5"
-      style={{
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        backdropFilter: 'blur(8px)',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-      }}
+      className="group relative rounded-2xl overflow-hidden flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1.5 bg-white border border-slate-200 shadow-sm hover:shadow-card-hover"
       onMouseEnter={(e) => {
         const el = e.currentTarget
-        el.style.borderColor = `${report.accentColor}45`
-        el.style.boxShadow = `0 20px 48px rgba(0,0,0,0.5), 0 0 0 1px ${report.accentColor}25`
+        el.style.borderColor = `${report.accentColor}50`
       }}
       onMouseLeave={(e) => {
         const el = e.currentTarget
-        el.style.borderColor = 'rgba(255,255,255,0.08)'
-        el.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)'
+        el.style.borderColor = ''
       }}
     >
       {/* ── Cover area ── */}
@@ -431,14 +417,7 @@ function ReportCard({ report }: { report: Report }) {
 
         {/* ── Category badge ── */}
         <div className="absolute top-3 right-3">
-          <span
-            className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold backdrop-blur-sm"
-            style={{
-              background: 'rgba(0,0,0,0.30)',
-              color: 'rgba(255,255,255,0.75)',
-              border: '1px solid rgba(255,255,255,0.15)',
-            }}
-          >
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold bg-black/25 text-white/90 border border-white/20 backdrop-blur-sm">
             {report.category}
           </span>
         </div>
@@ -452,10 +431,10 @@ function ReportCard({ report }: { report: Report }) {
 
       {/* ── Card body ── */}
       <div className="flex flex-col flex-1 p-5">
-        <h3 className="text-[14.5px] font-bold text-white/90 leading-snug mb-2 line-clamp-2 group-hover:text-white transition-colors">
+        <h3 className="text-[14.5px] font-bold text-slate-900 leading-snug mb-2 line-clamp-2 group-hover:text-emerald-700 transition-colors">
           {report.title}
         </h3>
-        <p className="text-[12.5px] text-slate-400 leading-relaxed line-clamp-3 flex-1">
+        <p className="text-[12.5px] text-slate-500 leading-relaxed line-clamp-3 flex-1">
           {report.summary}
         </p>
 
@@ -477,8 +456,8 @@ function ReportCard({ report }: { report: Report }) {
         </div>
 
         {/* Footer */}
-        <div className="mt-4 pt-3.5 border-t border-white/[0.06] flex items-center gap-3">
-          <span className="text-[11px] text-slate-500 tabular-nums flex-shrink-0">
+        <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center gap-3">
+          <span className="text-[11px] text-slate-400 tabular-nums flex-shrink-0">
             {report.date}
           </span>
           <button
@@ -523,55 +502,40 @@ export default function ThinkTankClient() {
       {/* ══════════════════════════════════════════════════════════════════════
           SECTION 1 — HERO
           ══════════════════════════════════════════════════════════════════════ */}
-      <section
-        className="relative pt-10 pb-20 overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #020a14 0%, #061020 100%)' }}
-      >
-          {/* Ambient glow orbs */}
-          <div
-            className="absolute top-0 left-1/3 w-[600px] h-[400px] rounded-full pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse, rgba(99,102,241,0.10) 0%, transparent 65%)', filter: 'blur(60px)' }}
-          />
-          <div
-            className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.07) 0%, transparent 65%)', filter: 'blur(60px)' }}
-          />
-          {/* Dot grid */}
-          <div
-            className="absolute inset-0 opacity-[0.03] pointer-events-none"
-            style={{
-              backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)',
-              backgroundSize: '36px 36px',
-            }}
-          />
+      <section className="relative pt-10 pb-20 overflow-hidden bg-white">
+          {/* Ambient glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.08) 0%, rgba(16,185,129,0.04) 50%, transparent 70%)' }} />
+          <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
+            style={{ backgroundImage: 'radial-gradient(circle, rgba(15,23,42,0.9) 1px, transparent 1px)', backgroundSize: '36px 36px' }} />
 
           <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-[12px] text-slate-500 mb-8" aria-label="breadcrumb">
-              <Link href="/" className="hover:text-slate-300 transition-colors">首页</Link>
+            <nav className="flex items-center gap-1.5 text-[12px] text-slate-400 mb-8" aria-label="breadcrumb">
+              <Link href="/" className="hover:text-slate-600 transition-colors">首页</Link>
               <ChevronRight className="w-3 h-3" />
               <span className="text-slate-400">行业服务</span>
               <ChevronRight className="w-3 h-3" />
-              <span className="text-slate-300 font-medium">智库研究</span>
+              <span className="text-slate-700 font-medium">智库研究</span>
             </nav>
 
             <div className="max-w-3xl">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 mb-6 rounded-full border border-violet-500/25 bg-violet-500/8 text-violet-400 text-[12px] font-semibold tracking-wide backdrop-blur-sm">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 mb-6 rounded-full border border-violet-200 bg-violet-50 text-violet-700 text-[12px] font-semibold tracking-wide">
                 <BookOpen className="w-3.5 h-3.5" />
                 智库研究 · Think Tank
               </div>
 
               {/* H1 */}
-              <h1 className="text-4xl sm:text-5xl md:text-[3.25rem] font-black text-white mb-5 leading-[1.10] tracking-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-[3.25rem] font-black text-slate-900 mb-5 leading-[1.10] tracking-tight">
                 战略洞察，
                 <br />
-                <span className="bg-gradient-to-r from-violet-400 via-indigo-300 to-blue-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-violet-600 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
                   数据赋能决策
                 </span>
               </h1>
 
-              <p className="text-[16px] md:text-[17px] text-slate-400 leading-relaxed mb-10 max-w-2xl">
+              <p className="text-[16px] md:text-[17px] text-slate-500 leading-relaxed mb-10 max-w-2xl">
                 深度研究报告库 · 行业数据看板 · 专家咨询服务
                 <br />
                 为企业政策研判与商业决策提供有据可查的量化支撑
@@ -580,24 +544,19 @@ export default function ThinkTankClient() {
               {/* Stats row */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {[
-                  { value: '48+', label: '深度研报', icon: FileText, color: '#a78bfa' },
-                  { value: '12位', label: '首席分析师', icon: Users, color: '#34d399' },
-                  { value: '6大', label: '覆盖领域', icon: BarChart2, color: '#60a5fa' },
-                  { value: '200+', label: '数据模型', icon: Star, color: '#fbbf24' },
+                  { value: '48+', label: '深度研报', icon: FileText, color: '#7c3aed', bg: '#f5f3ff' },
+                  { value: '12位', label: '首席分析师', icon: Users, color: '#059669', bg: '#ecfdf5' },
+                  { value: '6大', label: '覆盖领域', icon: BarChart2, color: '#2563eb', bg: '#eff6ff' },
+                  { value: '200+', label: '数据模型', icon: Star, color: '#d97706', bg: '#fffbeb' },
                 ].map((stat) => {
                   const Icon = stat.icon
                   return (
                     <div
                       key={stat.label}
-                      className="rounded-2xl p-4 flex flex-col gap-1"
-                      style={{
-                        background: 'rgba(255,255,255,0.04)',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                        backdropFilter: 'blur(8px)',
-                      }}
+                      className="rounded-2xl p-4 flex flex-col gap-1 bg-white border border-slate-200 shadow-sm"
                     >
                       <Icon className="w-4 h-4 mb-1" style={{ color: stat.color }} />
-                      <span className="text-[22px] font-black text-white leading-none">{stat.value}</span>
+                      <span className="text-[22px] font-black text-slate-900 leading-none">{stat.value}</span>
                       <span className="text-[11px] text-slate-500">{stat.label}</span>
                     </div>
                   )
@@ -610,25 +569,22 @@ export default function ThinkTankClient() {
         {/* ══════════════════════════════════════════════════════════════════════
             SECTION 2 — DATA DASHBOARD
             ══════════════════════════════════════════════════════════════════════ */}
-        <section
-          className="relative py-16 md:py-20"
-          style={{ background: 'linear-gradient(180deg, #061020 0%, #080f1e 100%)' }}
-        >
+        <section className="relative py-16 md:py-20 bg-slate-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             {/* Section header */}
             <div className="flex items-end justify-between mb-8">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 mb-3 rounded-full border border-blue-500/25 bg-blue-500/8 text-blue-400 text-[11px] font-bold tracking-widest uppercase">
+                <div className="inline-flex items-center gap-2 px-3 py-1 mb-3 rounded-full border border-blue-200 bg-blue-50 text-blue-700 text-[11px] font-bold tracking-widest uppercase">
                   <BarChart2 className="w-3 h-3" />
                   核心数据看板
                 </div>
-                <h2 className="text-[22px] md:text-[26px] font-bold text-white leading-tight">
+                <h2 className="text-[22px] md:text-[26px] font-bold text-slate-900 leading-tight">
                   行业数据实时追踪
                 </h2>
               </div>
               <Link
                 href="/database"
-                className="hidden sm:flex items-center gap-1.5 text-[12px] font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                className="hidden sm:flex items-center gap-1.5 text-[12px] font-medium text-emerald-600 hover:text-emerald-500 transition-colors"
               >
                 进入完整数据库
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -670,31 +626,25 @@ export default function ThinkTankClient() {
         {/* ══════════════════════════════════════════════════════════════════════
             SECTION 3 — RESEARCH REPORTS LIBRARY
             ══════════════════════════════════════════════════════════════════════ */}
-        <section
-          className="relative py-16 md:py-20"
-          style={{ background: 'linear-gradient(180deg, #080f1e 0%, #0a1220 100%)' }}
-        >
+        <section className="relative py-16 md:py-20 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             {/* Section header */}
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 mb-3 rounded-full border border-emerald-500/25 bg-emerald-500/8 text-emerald-400 text-[11px] font-bold tracking-widest uppercase">
+                <div className="inline-flex items-center gap-2 px-3 py-1 mb-3 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 text-[11px] font-bold tracking-widest uppercase">
                   <FileText className="w-3 h-3" />
                   深度报告库
                 </div>
-                <h2 className="text-[22px] md:text-[26px] font-bold text-white leading-tight">
+                <h2 className="text-[22px] md:text-[26px] font-bold text-slate-900 leading-tight">
                   产业研究报告
                 </h2>
-                <p className="text-[13px] text-slate-500 mt-1">
+                <p className="text-[13px] text-slate-400 mt-1">
                   共 {MOCK_REPORTS.length} 份报告 · 持续更新中
                 </p>
               </div>
 
               {/* Category filter */}
-              <div
-                className="flex items-center gap-1 p-1 rounded-2xl flex-wrap sm:flex-nowrap"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
-              >
+              <div className="flex items-center gap-1 p-1 rounded-2xl bg-slate-100 border border-slate-200 flex-wrap sm:flex-nowrap">
                 {CATEGORIES.map((cat) => (
                   <button
                     key={cat}
@@ -703,8 +653,8 @@ export default function ThinkTankClient() {
                     className={cn(
                       'px-3.5 py-1.5 rounded-xl text-[12px] font-semibold whitespace-nowrap transition-all duration-200 focus-visible:outline-none',
                       activeCategory === cat
-                        ? 'bg-white/10 text-white shadow-sm'
-                        : 'text-slate-500 hover:text-slate-300',
+                        ? 'bg-white text-slate-900 shadow-sm'
+                        : 'text-slate-500 hover:text-slate-700',
                     )}
                   >
                     {cat}
@@ -730,12 +680,7 @@ export default function ThinkTankClient() {
             {/* Load more hint */}
             <div className="text-center mt-10">
               <button
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-200 hover:-translate-y-0.5"
-                style={{
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.10)',
-                  color: 'rgba(255,255,255,0.65)',
-                }}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-200 hover:-translate-y-0.5 bg-white border border-slate-200 text-slate-700 hover:border-emerald-300 hover:text-emerald-700 shadow-sm"
               >
                 查看更多报告
                 <ArrowRight className="w-4 h-4" />
@@ -750,29 +695,24 @@ export default function ThinkTankClient() {
         <section className="py-16 md:py-24 px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
             <div
-              className="relative rounded-3xl overflow-hidden p-8 md:p-12"
-              style={{
-                background: 'linear-gradient(145deg, #0f172a 0%, #1a1040 45%, #0c1a2e 100%)',
-                border: '1px solid rgba(255,255,255,0.10)',
-                boxShadow: '0 32px 80px -16px rgba(0,0,0,0.6)',
-              }}
+              className="relative rounded-3xl overflow-hidden p-8 md:p-12 bg-white border border-slate-200 shadow-[0_24px_64px_-12px_rgba(0,0,0,0.10)]"
             >
               {/* Background orbs */}
               <div
                 className="absolute -top-24 -right-24 w-80 h-80 rounded-full pointer-events-none"
-                style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 65%)' }}
+                style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 65%)' }}
               />
               <div
                 className="absolute -bottom-16 -left-16 w-64 h-64 rounded-full pointer-events-none"
-                style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.10) 0%, transparent 65%)' }}
+                style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 65%)' }}
               />
               {/* Grid texture */}
               <div
-                className="absolute inset-0 opacity-[0.04] pointer-events-none"
+                className="absolute inset-0 opacity-[0.03] pointer-events-none"
                 style={{
                   backgroundImage: [
-                    'repeating-linear-gradient(0deg, rgba(255,255,255,0.8) 0, rgba(255,255,255,0.8) 1px, transparent 1px, transparent 24px)',
-                    'repeating-linear-gradient(90deg, rgba(255,255,255,0.8) 0, rgba(255,255,255,0.8) 1px, transparent 1px, transparent 24px)',
+                    'repeating-linear-gradient(0deg, rgba(0,0,0,0.8) 0, rgba(0,0,0,0.8) 1px, transparent 1px, transparent 24px)',
+                    'repeating-linear-gradient(90deg, rgba(0,0,0,0.8) 0, rgba(0,0,0,0.8) 1px, transparent 1px, transparent 24px)',
                   ].join(','),
                 }}
               />
@@ -780,18 +720,18 @@ export default function ThinkTankClient() {
               <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-8">
                 {/* Left: copy */}
                 <div className="flex-1">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-400 text-[11px] font-bold tracking-wide">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 rounded-full border border-violet-200 bg-violet-50 text-violet-700 text-[11px] font-bold tracking-wide">
                     <Star className="w-3 h-3" />
                     定制研究服务
                   </div>
-                  <h2 className="text-[24px] md:text-[30px] font-black text-white mb-3 leading-tight">
+                  <h2 className="text-[24px] md:text-[30px] font-black text-slate-900 mb-3 leading-tight">
                     需要针对您企业的
                     <br />
-                    <span className="bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
                       专属产业研报？
                     </span>
                   </h2>
-                  <p className="text-[14px] text-slate-400 leading-relaxed mb-5 max-w-md">
+                  <p className="text-[14px] text-slate-500 leading-relaxed mb-5 max-w-md">
                     我们的首席分析师团队可围绕您的战略议题，定制交付专属深度报告，提供从数据采集、模型构建到战略建议的全程服务。
                   </p>
                   <ul className="space-y-2">
@@ -800,12 +740,11 @@ export default function ThinkTankClient() {
                       '自有数据库 + 一手调研，数据闭源保密',
                       '可交付 PPT / PDF / 数据看板多种格式',
                     ].map((item) => (
-                      <li key={item} className="flex items-center gap-2.5 text-[13px] text-slate-300">
+                      <li key={item} className="flex items-center gap-2.5 text-[13px] text-slate-600">
                         <span
-                          className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
-                          style={{ background: 'rgba(139,92,246,0.25)', border: '1px solid rgba(139,92,246,0.40)' }}
+                          className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 bg-violet-100 border border-violet-200"
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-violet-500" />
                         </span>
                         {item}
                       </li>
@@ -815,24 +754,20 @@ export default function ThinkTankClient() {
 
                 {/* Right: CTA panel */}
                 <div
-                  className="w-full md:w-auto flex-shrink-0 rounded-2xl p-6 flex flex-col items-center gap-4"
-                  style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.10)',
-                    minWidth: '220px',
-                  }}
+                  className="w-full md:w-auto flex-shrink-0 rounded-2xl p-6 flex flex-col items-center gap-4 bg-slate-50 border border-slate-200"
+                  style={{ minWidth: '220px' }}
                 >
                   <div
                     className="w-16 h-16 rounded-2xl flex items-center justify-center"
                     style={{
                       background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
-                      boxShadow: '0 8px 24px rgba(124,58,237,0.40)',
+                      boxShadow: '0 8px 24px rgba(124,58,237,0.25)',
                     }}
                   >
                     <MessageSquare className="w-8 h-8 text-white" />
                   </div>
                   <div className="text-center">
-                    <p className="text-[14px] font-bold text-white mb-0.5">联系首席分析师</p>
+                    <p className="text-[14px] font-bold text-slate-900 mb-0.5">联系首席分析师</p>
                     <p className="text-[11.5px] text-slate-500">平均响应时间 &lt; 4小时</p>
                   </div>
                   <button

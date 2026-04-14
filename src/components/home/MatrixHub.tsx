@@ -523,37 +523,29 @@ function SubscribeCard({ selectedEntity, selectedApp }: SubscribeCardProps) {
 
   return (
     <article
-      className="sm:col-span-2 lg:col-span-2 relative rounded-2xl overflow-hidden flex flex-col"
-      style={{
-        background: 'linear-gradient(150deg, #0b1120 0%, #0f172a 40%, #130d2a 70%, #0b1120 100%)',
-        boxShadow: '0 24px 64px -12px rgba(0,0,0,0.45), 0 4px 16px -4px rgba(0,0,0,0.22)',
-        minHeight: '280px',
-      }}
+      className="sm:col-span-2 lg:col-span-2 relative rounded-2xl overflow-hidden flex flex-col bg-white border border-slate-200 shadow-sm"
+      style={{ minHeight: '280px' }}
     >
-      {/* ── Grid texture ── */}
+      {/* ── Subtle grid texture ── */}
       <div
-        className="absolute inset-0 opacity-[0.055] pointer-events-none"
+        className="absolute inset-0 opacity-[0.025] pointer-events-none"
         style={{
           backgroundImage: [
-            'repeating-linear-gradient(0deg, rgba(255,255,255,0.8) 0, rgba(255,255,255,0.8) 1px, transparent 1px, transparent 22px)',
-            'repeating-linear-gradient(90deg, rgba(255,255,255,0.8) 0, rgba(255,255,255,0.8) 1px, transparent 1px, transparent 22px)',
+            'repeating-linear-gradient(0deg, rgba(15,23,42,0.9) 0, rgba(15,23,42,0.9) 1px, transparent 1px, transparent 22px)',
+            'repeating-linear-gradient(90deg, rgba(15,23,42,0.9) 0, rgba(15,23,42,0.9) 1px, transparent 1px, transparent 22px)',
           ].join(','),
         }}
         aria-hidden="true"
       />
 
-      {/* ── Ambient orb — dynamic color follows active channel ── */}
+      {/* ── Ambient orb — emerald, dynamic ── */}
       <div
-        className="absolute -top-24 -right-24 w-72 h-72 rounded-full pointer-events-none"
+        className="absolute -top-20 -right-20 w-64 h-64 rounded-full pointer-events-none"
         style={{
-          background: `radial-gradient(circle, ${activeCfg?.glowColor ?? 'rgba(99,102,241,0.22)'} 0%, transparent 65%)`,
+          background: `radial-gradient(circle, ${activeCfg ? activeCfg.glowColor.replace('0.35', '0.12') : 'rgba(16,185,129,0.10)'} 0%, transparent 65%)`,
           transition: 'background 0.5s ease',
+          filter: 'blur(20px)',
         }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute -bottom-20 -left-20 w-56 h-56 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 65%)' }}
         aria-hidden="true"
       />
 
@@ -564,12 +556,12 @@ function SubscribeCard({ selectedEntity, selectedApp }: SubscribeCardProps) {
           <div className="flex-1 flex flex-col items-center justify-center text-center py-4">
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4"
-              style={{ background: `${activeCfg.color}22`, border: `1px solid ${activeCfg.color}50` }}
+              style={{ background: `${activeCfg.color}18`, border: `1px solid ${activeCfg.color}40` }}
             >
               <CheckCircle2 className="w-7 h-7" style={{ color: activeCfg.color }} />
             </div>
-            <p className="text-[17px] font-bold text-white mb-1">订阅成功！</p>
-            <p className="text-[12px] text-slate-400 leading-relaxed max-w-[220px]">
+            <p className="text-[17px] font-bold text-slate-900 mb-1">订阅成功！</p>
+            <p className="text-[12px] text-slate-500 leading-relaxed max-w-[220px]">
               「{topicText}」专属情报将推送至您的 {activeCfg.label}
             </p>
           </div>
@@ -579,33 +571,33 @@ function SubscribeCard({ selectedEntity, selectedApp }: SubscribeCardProps) {
             <div className="inline-flex items-center gap-1.5 self-start mb-3">
               <span
                 className="w-1.5 h-1.5 rounded-full animate-pulse"
-                style={{ background: activeCfg?.color ?? '#818cf8' }}
+                style={{ background: activeCfg?.color ?? '#059669' }}
                 aria-hidden="true"
               />
               <span
                 className="text-[10px] font-bold tracking-widest uppercase"
-                style={{ color: activeCfg?.color ?? '#818cf8' }}
+                style={{ color: activeCfg?.color ?? '#059669' }}
               >
                 情报订阅
               </span>
-              <span className="text-[10px] text-slate-600 font-medium">· Freemium</span>
+              <span className="text-[10px] text-slate-400 font-medium">· Freemium</span>
             </div>
 
             {/* ── Dynamic headline ── */}
-            <h3 className="text-[18px] font-bold text-white leading-snug mb-1">
+            <h3 className="text-[18px] font-bold text-slate-900 leading-snug mb-1">
               订阅&nbsp;
               <span
                 className="inline-block px-2 py-0.5 rounded-lg text-[16px] transition-all duration-300"
                 style={
                   topicLabel
                     ? {
-                        background: `${activeCfg?.color ?? '#818cf8'}1a`,
-                        border: `1px solid ${activeCfg?.color ?? '#818cf8'}40`,
-                        color: activeCfg?.color ?? '#a5b4fc',
+                        background: `${activeCfg?.color ?? '#059669'}14`,
+                        border: `1px solid ${activeCfg?.color ?? '#059669'}35`,
+                        color: activeCfg?.color ?? '#059669',
                       }
                     : {
-                        background: 'rgba(255,255,255,0.06)',
-                        border: '1px solid rgba(255,255,255,0.12)',
+                        background: 'rgba(0,0,0,0.04)',
+                        border: '1px solid rgba(0,0,0,0.08)',
                         color: '#94a3b8',
                       }
                 }
@@ -614,7 +606,7 @@ function SubscribeCard({ selectedEntity, selectedApp }: SubscribeCardProps) {
               </span>
               &nbsp;专属情报
             </h3>
-            <p className="text-[12px] text-slate-500 mb-5">每日精准推送 · 多渠道覆盖 · 随时退订</p>
+            <p className="text-[12px] text-slate-400 mb-5">每日精准推送 · 多渠道覆盖 · 随时退订</p>
 
             {/* ══ CHANNEL ICON ROW ══ */}
             <div className="grid grid-cols-4 gap-2.5 mb-4">
@@ -637,8 +629,8 @@ function SubscribeCard({ selectedEntity, selectedApp }: SubscribeCardProps) {
                               transform: 'translateY(-2px)',
                             }
                           : {
-                              background: 'rgba(255,255,255,0.035)',
-                              borderColor: 'rgba(255,255,255,0.08)',
+                              background: 'rgba(0,0,0,0.025)',
+                              borderColor: 'rgba(0,0,0,0.08)',
                             }
                       }
                     >
@@ -652,15 +644,15 @@ function SubscribeCard({ selectedEntity, selectedApp }: SubscribeCardProps) {
                                 boxShadow: `0 4px 14px ${cfg.glowColor}, 0 1px 4px rgba(0,0,0,0.25)`,
                               }
                             : {
-                                background: 'rgba(255,255,255,0.07)',
-                                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
+                                background: 'rgba(0,0,0,0.04)',
+                                boxShadow: 'none',
                               }
                         }
                       >
                         <cfg.Icon
                           className="w-5 h-5 transition-all duration-200"
                           style={{
-                            color: isActive ? '#fff' : 'rgba(148,163,184,0.65)',
+                            color: isActive ? '#fff' : 'rgba(100,116,139,0.6)',
                             filter: isActive ? `drop-shadow(0 0 4px ${cfg.color}80)` : 'none',
                           }}
                         />
@@ -670,13 +662,13 @@ function SubscribeCard({ selectedEntity, selectedApp }: SubscribeCardProps) {
                       <div className="text-center">
                         <p
                           className="text-[10.5px] font-semibold leading-tight transition-colors duration-200"
-                          style={{ color: isActive ? '#f1f5f9' : 'rgba(100,116,139,0.75)' }}
+                          style={{ color: isActive ? cfg.color : '#475569' }}
                         >
                           {cfg.label}
                         </p>
                         <p
                           className="text-[9px] leading-tight mt-0.5 transition-colors duration-200"
-                          style={{ color: isActive ? cfg.color : 'rgba(71,85,105,0.6)' }}
+                          style={{ color: isActive ? cfg.color : 'rgba(100,116,139,0.55)' }}
                         >
                           {cfg.sublabel}
                         </p>
@@ -718,19 +710,7 @@ function SubscribeCard({ selectedEntity, selectedApp }: SubscribeCardProps) {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="输入工作邮箱地址"
                         required
-                        className="flex-1 min-w-0 px-3.5 py-2 rounded-lg text-[13px] text-white placeholder-slate-600 border focus:outline-none transition-all"
-                        style={{
-                          background: 'rgba(255,255,255,0.07)',
-                          borderColor: 'rgba(255,255,255,0.10)',
-                        }}
-                        onFocus={(e) => {
-                          e.currentTarget.style.borderColor = `${activeCfg.color}70`
-                          e.currentTarget.style.background   = 'rgba(255,255,255,0.10)'
-                        }}
-                        onBlur={(e) => {
-                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.10)'
-                          e.currentTarget.style.background   = 'rgba(255,255,255,0.07)'
-                        }}
+                        className="flex-1 min-w-0 px-3.5 py-2 rounded-lg text-[13px] text-slate-900 placeholder:text-slate-400 border border-slate-200 bg-white focus:outline-none focus:border-emerald-400 transition-all"
                       />
                       <button
                         type="submit"
@@ -748,8 +728,8 @@ function SubscribeCard({ selectedEntity, selectedApp }: SubscribeCardProps) {
                     /* Non-email: waitlist prompt */
                     <div className="flex items-start gap-2.5">
                       <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                        style={{ background: `${activeCfg.color}22` }}
+                        className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 border"
+                        style={{ background: `${activeCfg.color}12`, borderColor: `${activeCfg.color}30` }}
                       >
                         <activeCfg.Icon
                           className="w-4 h-4"
@@ -757,7 +737,7 @@ function SubscribeCard({ selectedEntity, selectedApp }: SubscribeCardProps) {
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[11.5px] text-slate-300 leading-relaxed mb-1.5">
+                        <p className="text-[11.5px] text-slate-600 leading-relaxed mb-1.5">
                           {activeCfg.label} 渠道灰度开放中，加入等待列表即可第一时间配置。
                         </p>
                         <button
@@ -778,7 +758,7 @@ function SubscribeCard({ selectedEntity, selectedApp }: SubscribeCardProps) {
 
             {/* ── Hint when no channel selected ── */}
             {!activeChannel && (
-              <p className="text-[11px] text-slate-600 text-center mt-auto pt-2">
+              <p className="text-[11px] text-slate-400 text-center mt-auto pt-2">
                 选择分发渠道，开启订阅
               </p>
             )}

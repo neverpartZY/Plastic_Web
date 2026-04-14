@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useFormState } from 'react-dom'
 import {
   Calendar, MapPin, Users, Clock, CheckCircle2,
-  Ticket, ChevronRight, Sparkles,
+  Ticket, Sparkles,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { registerEvent, type ActionState } from '@/app/services/actions'
@@ -14,11 +14,11 @@ import {
 
 // ── Mock events ───────────────────────────────────────────────────────────────
 
-const EVENT_TYPES: Record<string, { label: string; color: string; bg: string }> = {
-  conference:  { label: '行业峰会', color: '#60a5fa', bg: 'rgba(59,130,246,0.12)'  },
-  exhibition:  { label: '专业展览', color: '#34d399', bg: 'rgba(16,185,129,0.12)'  },
-  seminar:     { label: '专题研讨', color: '#a78bfa', bg: 'rgba(139,92,246,0.12)'  },
-  workshop:    { label: '技术工坊', color: '#fbbf24', bg: 'rgba(245,158,11,0.12)'  },
+const EVENT_TYPES: Record<string, { label: string; color: string; bg: string; border: string }> = {
+  conference:  { label: '行业峰会', color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' },
+  exhibition:  { label: '专业展览', color: '#059669', bg: '#ecfdf5', border: '#a7f3d0' },
+  seminar:     { label: '专题研讨', color: '#7c3aed', bg: '#f5f3ff', border: '#ddd6fe' },
+  workshop:    { label: '技术工坊', color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
 }
 
 interface EventItem {
@@ -103,10 +103,9 @@ function RegisterForm({ event, onClose }: { event: EventItem; onClose: () => voi
       <input type="hidden" name="eventTitle" value={event.title} />
 
       {/* Event summary */}
-      <div className="px-4 py-3 rounded-xl space-y-1.5"
-        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-        <p className="text-[13px] font-semibold text-white/90 leading-snug">{event.title}</p>
-        <div className="flex items-center gap-3 text-[11px] text-slate-400">
+      <div className="px-4 py-3 rounded-xl space-y-1.5 bg-slate-50 border border-slate-200">
+        <p className="text-[13px] font-semibold text-slate-900 leading-snug">{event.title}</p>
+        <div className="flex items-center gap-3 text-[11px] text-slate-500">
           <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{event.startDate}</span>
           <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{event.city}</span>
         </div>
@@ -119,16 +118,13 @@ function RegisterForm({ event, onClose }: { event: EventItem; onClose: () => voi
       <DarkField label="邮箱" name="email" type="email" required placeholder="确认函发送邮箱" />
       <DarkField label="手机" name="phone" placeholder="联系电话" hint="选填" />
       <div>
-        <label className="block text-[12px] text-slate-400 mb-1.5 font-medium">
-          参会人数<span className="text-rose-400 ml-0.5">*</span>
+        <label className="block text-[12px] text-slate-600 mb-1.5 font-medium">
+          参会人数<span className="text-rose-500 ml-0.5">*</span>
         </label>
         <select name="attendees" required
-          className="w-full px-3.5 py-2.5 rounded-xl text-[13px] text-white/90 outline-none appearance-none"
-          style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.10)' }}
-          onFocus={(e) => { e.currentTarget.style.border = '1px solid rgba(16,185,129,0.40)' }}
-          onBlur={(e) => { e.currentTarget.style.border = '1px solid rgba(255,255,255,0.10)' }}>
+          className="w-full px-3.5 py-2.5 rounded-xl text-[13px] text-slate-900 outline-none appearance-none border border-slate-200 bg-white focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100">
           {[1,2,3,4,5].map(n => (
-            <option key={n} value={n} style={{ background: '#0f172a' }}>{n} 人</option>
+            <option key={n} value={n}>{n} 人</option>
           ))}
         </select>
       </div>
@@ -137,8 +133,7 @@ function RegisterForm({ event, onClose }: { event: EventItem; onClose: () => voi
       {state.status !== 'success' && <DarkSubmitButton label="确认报名" accentColor="#f59e0b" />}
       {state.status === 'success' && (
         <button type="button" onClick={onClose}
-          className="w-full py-2.5 rounded-xl text-[13px] font-semibold text-slate-300 hover:text-white transition-colors"
-          style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}>
+          className="w-full py-2.5 rounded-xl text-[13px] font-semibold text-slate-600 hover:text-slate-900 transition-colors bg-slate-100 border border-slate-200 hover:bg-slate-50">
           关闭
         </button>
       )}
@@ -150,14 +145,13 @@ function RegisterForm({ event, onClose }: { event: EventItem; onClose: () => voi
 
 function StatusBadge({ status }: { status: EventItem['status'] }) {
   const cfg = {
-    open:   { label: '报名中',   color: '#34d399', bg: 'rgba(16,185,129,0.12)',   border: 'rgba(16,185,129,0.25)'  },
-    full:   { label: '已满员',   color: '#f87171', bg: 'rgba(244,63,94,0.12)',    border: 'rgba(244,63,94,0.25)'   },
-    closed: { label: '已截止',   color: '#64748b', bg: 'rgba(100,116,139,0.12)', border: 'rgba(100,116,139,0.25)' },
-    soon:   { label: '即将开放', color: '#fbbf24', bg: 'rgba(245,158,11,0.12)',  border: 'rgba(245,158,11,0.25)'  },
+    open:   { label: '报名中',   className: 'bg-emerald-50 border-emerald-200 text-emerald-700' },
+    full:   { label: '已满员',   className: 'bg-rose-50 border-rose-200 text-rose-600' },
+    closed: { label: '已截止',   className: 'bg-slate-100 border-slate-200 text-slate-500' },
+    soon:   { label: '即将开放', className: 'bg-amber-50 border-amber-200 text-amber-700' },
   }[status]
   return (
-    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-      style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` }}>
+    <span className={cn('text-[10px] font-bold px-2 py-0.5 rounded-full border', cfg.className)}>
       {cfg.label}
     </span>
   )
@@ -171,76 +165,59 @@ function EventCard({ event, onRegister }: { event: EventItem; onRegister: (e: Ev
   const canRegister = event.status === 'open'
 
   return (
-    <div
-      className="group relative overflow-hidden rounded-2xl flex flex-col transition-all duration-300 hover:-translate-y-1"
-      style={{
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        backdropFilter: 'blur(12px)',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.30)',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.border = `1px solid ${type.color}40`
-        e.currentTarget.style.boxShadow = `0 0 32px ${type.color}12, 0 16px 40px rgba(0,0,0,0.45)`
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)'
-        e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.30)'
-      }}
-    >
-      {/* Glow */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
-        style={{ background: `radial-gradient(ellipse at 50% 0%, ${type.bg} 0%, transparent 60%)` }} />
+    <div className="group relative overflow-hidden rounded-2xl flex flex-col transition-all duration-300 hover:-translate-y-1 bg-white border border-slate-200 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.10)] hover:border-slate-300">
+      {/* Top accent */}
+      <div className="h-0.5 w-0 group-hover:w-full transition-all duration-500 rounded-t-2xl"
+        style={{ background: `linear-gradient(90deg, ${type.color}, ${type.color}88)` }} />
 
       {/* Highlight ribbon */}
       {event.highlight && (
         <div className="flex items-center gap-1.5 px-4 py-2 text-[11px] font-semibold"
-          style={{ background: `${type.color}15`, borderBottom: `1px solid ${type.color}25`, color: type.color }}>
+          style={{ background: type.bg, borderBottom: `1px solid ${type.border}`, color: type.color }}>
           <Sparkles className="h-3 w-3" /> {event.highlight}
         </div>
       )}
 
-      <div className="relative z-10 p-5 md:p-6 flex flex-col gap-4 flex-1">
+      <div className="p-5 md:p-6 flex flex-col gap-4 flex-1">
         {/* Header */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md"
-              style={{ background: type.bg, color: type.color }}>{type.label}</span>
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md border"
+              style={{ background: type.bg, color: type.color, borderColor: type.border }}>{type.label}</span>
             <StatusBadge status={event.status} />
             {event.isPremium && (
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded"
-                style={{ background: 'rgba(245,158,11,0.12)', color: '#fbbf24' }}>会员专属</span>
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-700">会员专属</span>
             )}
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="text-[15px] font-bold text-white/90 leading-snug group-hover:text-white transition-colors">
+        <h3 className="text-[15px] font-bold text-slate-900 leading-snug group-hover:text-emerald-700 transition-colors">
           {event.title}
         </h3>
 
         {/* Description */}
-        <p className="text-[13px] text-slate-400 leading-relaxed line-clamp-3 flex-1">
+        <p className="text-[13px] text-slate-500 leading-relaxed line-clamp-3 flex-1">
           {event.description}
         </p>
 
         {/* Meta */}
         <div className="grid grid-cols-2 gap-y-2 text-[12px]">
-          <div className="flex items-center gap-1.5 text-slate-400">
-            <Calendar className="h-3.5 w-3.5 text-slate-500" />
+          <div className="flex items-center gap-1.5 text-slate-500">
+            <Calendar className="h-3.5 w-3.5 text-slate-400" />
             <span>{event.startDate}{event.endDate !== event.startDate && ` — ${event.endDate}`}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-slate-400">
-            <MapPin className="h-3.5 w-3.5 text-slate-500" />
+          <div className="flex items-center gap-1.5 text-slate-500">
+            <MapPin className="h-3.5 w-3.5 text-slate-400" />
             <span className="truncate">{event.city} · {event.location.slice(0, 8)}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-slate-400">
-            <Users className="h-3.5 w-3.5 text-slate-500" />
+          <div className="flex items-center gap-1.5 text-slate-500">
+            <Users className="h-3.5 w-3.5 text-slate-400" />
             <span>容量 {event.capacity.toLocaleString()} 人</span>
           </div>
           {event.registered > 0 && (
-            <div className="flex items-center gap-1.5 text-slate-400">
-              <Clock className="h-3.5 w-3.5 text-slate-500" />
+            <div className="flex items-center gap-1.5 text-slate-500">
+              <Clock className="h-3.5 w-3.5 text-slate-400" />
               <span>已报名 {event.registered}</span>
             </div>
           )}
@@ -249,13 +226,13 @@ function EventCard({ event, onRegister }: { event: EventItem; onRegister: (e: Ev
         {/* Capacity bar */}
         {event.registered > 0 && (
           <div>
-            <div className="flex justify-between text-[11px] text-slate-500 mb-1">
+            <div className="flex justify-between text-[11px] text-slate-400 mb-1">
               <span>报名进度</span>
-              <span style={{ color: pct >= 90 ? '#f87171' : type.color }}>{pct}%</span>
+              <span style={{ color: pct >= 90 ? '#e11d48' : type.color }}>{pct}%</span>
             </div>
-            <div className="h-1.5 rounded-full bg-white/8 overflow-hidden">
+            <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
               <div className="h-full rounded-full transition-all duration-700"
-                style={{ width: `${pct}%`, background: pct >= 90 ? '#f87171' : type.color }} />
+                style={{ width: `${pct}%`, background: pct >= 90 ? '#e11d48' : type.color }} />
             </div>
           </div>
         )}
@@ -266,11 +243,11 @@ function EventCard({ event, onRegister }: { event: EventItem; onRegister: (e: Ev
           disabled={!canRegister}
           className={cn(
             'flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-200',
-            canRegister ? 'hover:opacity-90' : 'opacity-40 cursor-not-allowed',
+            canRegister ? 'text-white hover:brightness-105' : 'opacity-40 cursor-not-allowed bg-slate-100 text-slate-400',
           )}
           style={canRegister
-            ? { background: `linear-gradient(135deg, ${type.color}cc, ${type.color})`, color: '#0f172a', boxShadow: `0 4px 14px ${type.color}40` }
-            : { background: 'rgba(255,255,255,0.06)', color: '#475569' }}
+            ? { background: type.color, boxShadow: `0 4px 14px ${type.color}30` }
+            : undefined}
         >
           {event.status === 'full'   ? <><CheckCircle2 className="h-4 w-4" /> 名额已满</> :
            event.status === 'closed' ? '报名已截止' :
@@ -291,28 +268,26 @@ export default function EventsClient() {
   const filtered = filter === '全部' ? MOCK_EVENTS : MOCK_EVENTS.filter(e => e.eventType === filter)
 
   return (
-    <div style={{ background: 'linear-gradient(180deg, #020a14 0%, #07111f 55%, #f8fafc 100%)' }}>
+    <div className="bg-white">
 
       {/* ── Hero ── */}
-      <div className="relative overflow-hidden pt-10 pb-16">
+      <div className="relative overflow-hidden pt-10 pb-16 bg-gradient-to-br from-white via-amber-50/30 to-orange-50/20">
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 65%)', filter: 'blur(70px)' }} />
-        <div className="absolute inset-0 opacity-[0.025] pointer-events-none"
-          style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+          style={{ background: 'radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 65%)', filter: 'blur(70px)' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 mb-5 text-[13px] text-slate-500">
             <span>行业服务</span><span>/</span>
-            <span className="text-amber-400 font-medium">会展活动</span>
+            <span className="text-amber-600 font-medium">会展活动</span>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full border border-amber-500/25 bg-amber-500/8 text-amber-400 text-xs font-semibold tracking-wide">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full border border-amber-200 bg-amber-50 text-amber-700 text-xs font-semibold tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
             峰会 · 展览 · 工坊
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">会展活动</h1>
-          <p className="text-slate-400 text-base max-w-xl leading-relaxed">
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3 tracking-tight">会展活动</h1>
+          <p className="text-slate-500 text-base max-w-xl leading-relaxed">
             汇聚行业峰会、专业展览与技术工坊，链接供需两端，促进产业资源高效流动
           </p>
 
@@ -323,9 +298,11 @@ export default function EventsClient() {
               { icon: MapPin,   label: '覆盖城市', value: '12' },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-center gap-3">
-                <Icon className="h-5 w-5 text-amber-400 opacity-70" />
+                <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center">
+                  <Icon className="h-4.5 w-4.5 text-amber-600" />
+                </div>
                 <div>
-                  <div className="text-xl font-bold text-white">{value}</div>
+                  <div className="text-xl font-bold text-slate-900">{value}</div>
                   <div className="text-[12px] text-slate-500">{label}</div>
                 </div>
               </div>
@@ -337,25 +314,28 @@ export default function EventsClient() {
       {/* ── Content ── */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-24">
         {/* Filter tabs */}
-        <div className="sticky top-16 z-20 py-3 mb-6"
-          style={{ background: 'rgba(7,17,31,0.92)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="sticky top-16 z-20 py-3 mb-6 bg-white/95 backdrop-blur-sm border-b border-slate-100">
           <div className="flex gap-2 flex-wrap items-center justify-between">
             <div className="flex gap-1.5 flex-wrap">
               {['全部', ...Object.keys(EVENT_TYPES)].map((key) => {
                 const t = EVENT_TYPES[key]
+                const isActive = filter === key
                 return (
                   <button key={key} onClick={() => setFilter(key)}
-                    className={cn('text-[12px] px-3 py-1.5 rounded-lg font-semibold transition-all',
-                      filter === key ? 'text-white' : 'text-slate-500 hover:text-slate-300')}
-                    style={filter === key
-                      ? { background: t ? t.bg : 'rgba(255,255,255,0.12)', color: t?.color ?? '#fff', border: `1px solid ${t?.color ?? '#fff'}30` }
-                      : { background: 'transparent', border: '1px solid transparent' }}>
+                    className={cn('text-[12px] px-3 py-1.5 rounded-lg font-semibold transition-all border',
+                      isActive
+                        ? 'border-transparent'
+                        : 'text-slate-500 hover:text-slate-700 bg-transparent border-transparent hover:border-slate-200 hover:bg-slate-50'
+                    )}
+                    style={isActive
+                      ? { background: t ? t.bg : '#f1f5f9', color: t?.color ?? '#0f172a', borderColor: t?.border ?? '#e2e8f0' }
+                      : undefined}>
                     {key === '全部' ? `全部 (${MOCK_EVENTS.length})` : t.label}
                   </button>
                 )
               })}
             </div>
-            <span className="text-[12px] text-slate-500">{filtered.length} 场活动</span>
+            <span className="text-[12px] text-slate-400">{filtered.length} 场活动</span>
           </div>
         </div>
 
@@ -373,7 +353,7 @@ export default function EventsClient() {
         title="活动报名"
         description="报名成功后确认函将发送至您的邮箱"
         accentColor="#f59e0b"
-        accentIcon={<Ticket className="h-4 w-4" style={{ color: '#fbbf24' }} />}
+        accentIcon={<Ticket className="h-4 w-4" style={{ color: '#d97706' }} />}
       >
         {target && <RegisterForm event={target} onClose={() => setTarget(null)} />}
       </DarkModal>
