@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { useState, useEffect, useRef } from 'react'
 import {
-  Search, Menu, X, ChevronDown, Bell,
+  Search, Menu, X, ChevronDown, Bell, Languages, Check,
   LayoutDashboard, User, LogOut, Settings,
   Newspaper, LayoutGrid, Zap, BookOpen, Users, Calendar, Cpu, TrendingUp, Database,
 } from 'lucide-react'
@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import type { NavDictionary } from '@/i18n/types'
 
 // ── Default Chinese strings (used when no dict prop provided) ─────────────────
@@ -135,6 +135,111 @@ function NavDropdown({
         }}
       >
         {children}
+      </div>
+    </div>
+  )
+}
+
+// ── Language Switcher ─────────────────────────────────────────────────────────
+
+const LANG_OPTIONS = [
+  { value: 'zh', label: '中文', short: '中' },
+  { value: 'en', label: 'English', short: 'EN' },
+] as const
+
+function LangSwitcher({ lng }: { lng?: string }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const router = useRouter()
+  const pathname = usePathname()
+  const current = lng ?? 'zh'
+
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return
+    function onDown(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [open])
+
+  function switchTo(target: string) {
+    setOpen(false)
+    // Persist preference in a long-lived cookie (read by middleware)
+    document.cookie = `NEXT_LOCALE=${target}; path=/; max-age=31536000; SameSite=Lax`
+
+    // Navigate to equivalent path in the new locale
+    const segs = pathname.split('/')
+    const firstSeg = segs[1]
+    if (firstSeg === 'zh' || firstSeg === 'en') {
+      segs[1] = target
+      router.push(segs.join('/') || `/${target}`)
+    } else {
+      // Non-lng path (e.g. /news) — jump to lng homepage
+      router.push(`/${target}`)
+    }
+  }
+
+  const currentOpt = LANG_OPTIONS.find((o) => o.value === current) ?? LANG_OPTIONS[0]
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-label="Switch language"
+        className={cn(
+          'flex items-center gap-1.5 h-8 px-2.5 rounded-xl',
+          'text-[12.5px] font-semibold select-none',
+          'border border-emerald-200 text-emerald-700 bg-white',
+          'hover:border-emerald-300 hover:bg-emerald-50',
+          'transition-all duration-200',
+          open && 'border-emerald-300 bg-emerald-50',
+        )}
+      >
+        <Languages className="h-3.5 w-3.5 flex-shrink-0" />
+        <span>{currentOpt.short}</span>
+        <ChevronDown
+          className={cn(
+            'h-3 w-3 opacity-50 transition-transform duration-200',
+            open && 'rotate-180 opacity-80',
+          )}
+        />
+      </button>
+
+      {/* Dropdown panel */}
+      <div
+        className={cn(
+          'absolute right-0 top-full mt-2 w-[130px] z-50',
+          'rounded-2xl bg-white border border-slate-200/80 p-1.5',
+          'transition-all duration-[160ms] origin-top-right',
+          open
+            ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 scale-[0.96] -translate-y-1 pointer-events-none',
+        )}
+        style={{
+          boxShadow: '0 12px 40px -6px rgba(16,185,129,0.12), 0 2px 10px -2px rgba(0,0,0,0.06)',
+        }}
+      >
+        {LANG_OPTIONS.map(({ value, label }) => (
+          <button
+            key={value}
+            onClick={() => switchTo(value)}
+            className={cn(
+              'w-full flex items-center justify-between px-3 py-2 rounded-xl text-left',
+              'transition-colors duration-150',
+              current === value
+                ? 'bg-emerald-50 text-emerald-700'
+                : 'text-slate-700 hover:bg-slate-50',
+            )}
+          >
+            <span className="text-[13px] font-medium">{label}</span>
+            {current === value && (
+              <Check className="h-3.5 w-3.5 text-emerald-600 flex-shrink-0" />
+            )}
+          </button>
+        ))}
       </div>
     </div>
   )
@@ -313,6 +418,9 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             </button>
           )}
 
+          {/* Language switcher — desktop */}
+          <LangSwitcher lng={lng} />
+
           <SubscribeCTA scrolled={scrolled} label={t.subscribe} className="hidden sm:flex" />
 
           {session ? (
@@ -394,6 +502,8 @@ export default function Navbar({ dict, lng }: NavbarProps) {
                   </div>
                   <span className="text-[13px] font-bold text-slate-900">{t.logo}</span>
                 </div>
+                {/* Language switcher — mobile sheet header */}
+                <LangSwitcher lng={lng} />
               </div>
 
               <div className="px-4 pt-4 pb-1 flex-shrink-0">

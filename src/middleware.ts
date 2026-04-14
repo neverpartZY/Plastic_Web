@@ -17,8 +17,13 @@ function isInternalPath(pathname: string): boolean {
   )
 }
 
-/** Detect preferred locale from Accept-Language header */
+/** Detect preferred locale — cookie wins, then Accept-Language, then default */
 function detectLocale(req: NextRequest): string {
+  // 1. User-set preference cookie (written by LangSwitcher)
+  const cookieLng = req.cookies.get('NEXT_LOCALE')?.value
+  if (cookieLng && isValidLocale(cookieLng)) return cookieLng
+
+  // 2. Browser Accept-Language header
   const acceptLang = req.headers.get('accept-language') ?? ''
   for (const part of acceptLang.split(',')) {
     const lang = part.split(';')[0].trim().toLowerCase()
