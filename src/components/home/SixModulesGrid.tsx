@@ -4,92 +4,43 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { BookOpen, Newspaper, Users, Calendar, Cpu, TrendingUp, ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import type { SixModulesDictionary } from '@/i18n/types'
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Module definitions — icon gradients stay vibrant on white backgrounds
+   Visual config — locale-independent
    ───────────────────────────────────────────────────────────────────────────── */
-const MODULES = [
-  {
-    href: '/think-tank',
-    label: '智库',
-    tag: '运营服务',
-    icon: BookOpen,
-    desc: '行业研究与战略洞察，为政策研判与商业决策提供量化依据',
-    iconGrad: 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)',
-    accentColor: '#4f46e5',
-    accentBg: '#eef2ff',
-    tagColor: '#4f46e5',
-    tagBg: '#eef2ff',
-    borderHover: '#6366f1',
-  },
-  {
-    href: '/news',
-    label: '行业媒体',
-    tag: '运营服务',
-    icon: Newspaper,
-    desc: '资讯聚合与传播，覆盖价格行情、政策法规、企业动态全维度',
-    iconGrad: 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)',
-    accentColor: '#059669',
-    accentBg: '#ecfdf5',
-    tagColor: '#059669',
-    tagBg: '#ecfdf5',
-    borderHover: '#10b981',
-  },
-  {
-    href: '/association',
-    label: '行业协会',
-    tag: '运营服务',
-    icon: Users,
-    desc: '组织连接与协作，构建产业上下游企业互信生态网络',
-    iconGrad: 'linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%)',
-    accentColor: '#7c3aed',
-    accentBg: '#f5f3ff',
-    tagColor: '#7c3aed',
-    tagBg: '#f5f3ff',
-    borderHover: '#8b5cf6',
-  },
-  {
-    href: '/events',
-    label: '会展平台',
-    tag: '运营服务',
-    icon: Calendar,
-    desc: '展会与活动中心，链接供需两端，促进产业资源高效流动',
-    iconGrad: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)',
-    accentColor: '#d97706',
-    accentBg: '#fffbeb',
-    tagColor: '#d97706',
-    tagBg: '#fffbeb',
-    borderHover: '#f59e0b',
-  },
-  {
-    href: '/technology',
-    label: '技术开发',
-    tag: '攻坚支撑',
-    icon: Cpu,
-    desc: '关键空白技术突破，推动机械、化学、酶解回收等前沿研究落地',
-    iconGrad: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
-    accentColor: '#0891b2',
-    accentBg: '#ecfeff',
-    tagColor: '#0891b2',
-    tagBg: '#ecfeff',
-    borderHover: '#06b6d4',
-  },
-  {
-    href: '/fund',
-    label: '投资基金',
-    tag: '攻坚支撑',
-    icon: TrendingUp,
-    desc: '产业投资与赋能，加速优质项目从技术验证到市场规模跨越',
-    iconGrad: 'linear-gradient(135deg, #f43f5e 0%, #fb923c 100%)',
-    accentColor: '#e11d48',
-    accentBg: '#fff1f2',
-    tagColor: '#e11d48',
-    tagBg: '#fff1f2',
-    borderHover: '#f43f5e',
-  },
-] as const
+const MODULE_STYLE = [
+  { key: 'thinkTank' as const,  href: '/think-tank',  icon: BookOpen,   tagKey: 'tagOperations' as const, iconGrad: 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)', accentColor: '#4f46e5', accentBg: '#eef2ff', tagColor: '#4f46e5', tagBg: '#eef2ff', borderHover: '#6366f1' },
+  { key: 'news' as const,       href: '/news',        icon: Newspaper,  tagKey: 'tagOperations' as const, iconGrad: 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)', accentColor: '#059669', accentBg: '#ecfdf5', tagColor: '#059669', tagBg: '#ecfdf5', borderHover: '#10b981' },
+  { key: 'association' as const,href: '/association', icon: Users,      tagKey: 'tagOperations' as const, iconGrad: 'linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%)', accentColor: '#7c3aed', accentBg: '#f5f3ff', tagColor: '#7c3aed', tagBg: '#f5f3ff', borderHover: '#8b5cf6' },
+  { key: 'events' as const,     href: '/events',      icon: Calendar,   tagKey: 'tagOperations' as const, iconGrad: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)', accentColor: '#d97706', accentBg: '#fffbeb', tagColor: '#d97706', tagBg: '#fffbeb', borderHover: '#f59e0b' },
+  { key: 'technology' as const, href: '/technology',  icon: Cpu,        tagKey: 'tagSupport' as const,    iconGrad: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)', accentColor: '#0891b2', accentBg: '#ecfeff', tagColor: '#0891b2', tagBg: '#ecfeff', borderHover: '#06b6d4' },
+  { key: 'fund' as const,       href: '/fund',        icon: TrendingUp, tagKey: 'tagSupport' as const,    iconGrad: 'linear-gradient(135deg, #f43f5e 0%, #fb923c 100%)', accentColor: '#e11d48', accentBg: '#fff1f2', tagColor: '#e11d48', tagBg: '#fff1f2', borderHover: '#f43f5e' },
+]
 
-export default function SixModulesGrid() {
+const ZH: SixModulesDictionary = {
+  badge: '六大模块 · 数据闭环',
+  title: '每个模块，都在向数据库输送养分',
+  subtitle: '六大业务持续汇聚行业数据，底层数据库沉淀后反向赋能，',
+  subtitleEnd: '形成自我强化的数字生态',
+  tagOperations: '运营服务',
+  tagSupport: '攻坚支撑',
+  connected: '数据已接入底层数据库',
+  bottomHint1: '六个模块的数据汇聚至',
+  bottomDatabase: '底层数据库',
+  bottomHint2: '，形成行业级知识图谱',
+  modules: {
+    thinkTank:   { label: '智库',     desc: '行业研究与战略洞察，为政策研判与商业决策提供量化依据' },
+    news:        { label: '行业媒体', desc: '资讯聚合与传播，覆盖价格行情、政策法规、企业动态全维度' },
+    association: { label: '行业协会', desc: '组织连接与协作，构建产业上下游企业互信生态网络' },
+    events:      { label: '会展平台', desc: '展会与活动中心，链接供需两端，促进产业资源高效流动' },
+    technology:  { label: '技术开发', desc: '关键空白技术突破，推动机械、化学、酶解回收等前沿研究落地' },
+    fund:        { label: '投资基金', desc: '产业投资与赋能，加速优质项目从技术验证到市场规模跨越' },
+  },
+}
+
+export default function SixModulesGrid({ dict }: { dict?: SixModulesDictionary }) {
+  const t = dict ?? ZH
   const sectionRef = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
   const router = useRouter()
@@ -140,22 +91,24 @@ export default function SixModulesGrid() {
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-5 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 text-xs font-semibold tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-            六大模块 · 数据闭环
+            {t.badge}
           </div>
           <h2 className="text-2xl md:text-3xl lg:text-[2.25rem] font-bold text-slate-900 mb-4 tracking-tight leading-tight">
-            每个模块，都在向数据库输送养分
+            {t.title}
           </h2>
           <p className="text-slate-500 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-            六大业务持续汇聚行业数据，底层数据库沉淀后反向赋能，
+            {t.subtitle}
             <br className="hidden sm:block" />
-            形成自我强化的数字生态
+            {t.subtitleEnd}
           </p>
         </div>
 
         {/* ── Bento card grid ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-          {MODULES.map((mod, i) => {
+          {MODULE_STYLE.map((mod, i) => {
             const Icon = mod.icon
+            const content = t.modules[mod.key]
+            const tag = t[mod.tagKey]
             return (
               <div
                 key={mod.href}
@@ -209,18 +162,18 @@ export default function SixModulesGrid() {
                         className="text-[11px] font-semibold px-2.5 py-1 rounded-full mt-0.5"
                         style={{ background: mod.tagBg, color: mod.tagColor }}
                       >
-                        {mod.tag}
+                        {tag}
                       </span>
                     </div>
 
                     {/* ── Title ── */}
                     <h3 className="text-[17px] font-bold text-slate-900 mb-2.5 leading-snug group-hover:text-emerald-700 transition-colors duration-200">
-                      {mod.label}
+                      {content.label}
                     </h3>
 
                     {/* ── Description ── */}
                     <p className="text-[13.5px] text-slate-500 leading-relaxed mb-5">
-                      {mod.desc}
+                      {content.desc}
                     </p>
 
                     {/* ── Hover reveal ── */}
@@ -231,7 +184,7 @@ export default function SixModulesGrid() {
                         aria-hidden="true"
                       />
                       <span className="text-[11.5px] font-semibold" style={{ color: mod.accentColor }}>
-                        数据已接入底层数据库
+                        {t.connected}
                       </span>
                     </div>
                   </div>
@@ -249,14 +202,14 @@ export default function SixModulesGrid() {
           )}
         >
           <p className="text-xs text-slate-400">
-            六个模块的数据汇聚至{' '}
+            {t.bottomHint1}{' '}
             <button
               onClick={() => router.push('/database')}
               className="text-emerald-600 hover:text-emerald-500 font-semibold underline underline-offset-2 transition-colors"
             >
-              底层数据库
+              {t.bottomDatabase}
             </button>
-            ，形成行业级知识图谱
+            {t.bottomHint2}
           </p>
         </div>
       </div>

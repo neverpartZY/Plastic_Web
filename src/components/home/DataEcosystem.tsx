@@ -4,23 +4,49 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { BookOpen, Newspaper, Users, Calendar, Cpu, TrendingUp, Database } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import type { DataEcosystemDictionary } from '@/i18n/types'
 
-// ── Node definitions ──────────────────────────────────────────────────────────
+// ── Node visual config (locale-independent) ───────────────────────────────────
 
-const TOP_NODES = [
-  { id: 'think-tank',  label: '智库',    icon: BookOpen,  color: '#3b82f6', iconBg: 'bg-blue-50',    iconText: 'text-blue-600',    border: 'border-blue-200',    href: '/think-tank',  tag: '运营服务' },
-  { id: 'media',       label: '行业媒体', icon: Newspaper, color: '#10b981', iconBg: 'bg-emerald-50', iconText: 'text-emerald-600', border: 'border-emerald-200', href: '/news',        tag: '运营服务' },
+const TOP_NODE_STYLE = [
+  { id: 'think-tank',  nodeKey: 'thinkTank' as const, tagType: 'top' as const, icon: BookOpen,  color: '#3b82f6', iconBg: 'bg-blue-50',    iconText: 'text-blue-600',    border: 'border-blue-200',    href: '/think-tank' },
+  { id: 'media',       nodeKey: 'news' as const,      tagType: 'top' as const, icon: Newspaper, color: '#10b981', iconBg: 'bg-emerald-50', iconText: 'text-emerald-600', border: 'border-emerald-200', href: '/news' },
 ] as const
 
-const MID_NODES = [
-  { id: 'events',      label: '会展平台', icon: Calendar,   color: '#f59e0b', iconBg: 'bg-amber-50',   iconText: 'text-amber-600',  border: 'border-amber-200',  href: '/events',      tag: '运营服务' },
-  { id: 'association', label: '行业协会', icon: Users,      color: '#8b5cf6', iconBg: 'bg-violet-50',  iconText: 'text-violet-600', border: 'border-violet-200', href: '/association', tag: '运营服务' },
-  { id: 'technology',  label: '技术开发', icon: Cpu,        color: '#06b6d4', iconBg: 'bg-cyan-50',    iconText: 'text-cyan-600',   border: 'border-cyan-200',   href: '/technology',  tag: '攻坚支撑' },
-  { id: 'fund',        label: '投资基金', icon: TrendingUp, color: '#f43f5e', iconBg: 'bg-rose-50',    iconText: 'text-rose-600',   border: 'border-rose-200',   href: '/fund',        tag: '攻坚支撑' },
+const MID_NODE_STYLE = [
+  { id: 'events',      nodeKey: 'events' as const,      tagType: 'mid' as const, icon: Calendar,   color: '#f59e0b', iconBg: 'bg-amber-50',   iconText: 'text-amber-600',  border: 'border-amber-200',  href: '/events' },
+  { id: 'association', nodeKey: 'association' as const, tagType: 'mid' as const, icon: Users,      color: '#8b5cf6', iconBg: 'bg-violet-50',  iconText: 'text-violet-600', border: 'border-violet-200', href: '/association' },
+  { id: 'technology',  nodeKey: 'technology' as const,  tagType: 'mid' as const, icon: Cpu,        color: '#06b6d4', iconBg: 'bg-cyan-50',    iconText: 'text-cyan-600',   border: 'border-cyan-200',   href: '/technology' },
+  { id: 'fund',        nodeKey: 'fund' as const,        tagType: 'mid' as const, icon: TrendingUp, color: '#f43f5e', iconBg: 'bg-rose-50',    iconText: 'text-rose-600',   border: 'border-rose-200',   href: '/fund' },
 ] as const
 
-type AnyNode = (typeof TOP_NODES)[number] | (typeof MID_NODES)[number]
-const ALL_NODES: AnyNode[] = [...TOP_NODES, ...MID_NODES]
+const ZH: DataEcosystemDictionary = {
+  badge: '数据引擎 · 实时运行中',
+  title: '产业服务体系 · 数据闭环引擎',
+  subtitle: '六大模块持续向底层数据库汇入数据流 · ',
+  subtitleHighlight: '数据库实时赋能各模块运作',
+  layerTop: '顶层 · 战略与传播',
+  layerMid: '中层 · 连接与赋能',
+  layerBase: '基石层 · 数据沉淀与反哺',
+  dbTitle: '底层数据库',
+  dbBadge: '数据基石层',
+  dbDesc: '中国塑料循环利用行业底层知识图谱 · 汇聚六大模块实时数据流 · 反向赋能产业运作与决策',
+  dbStatus: '运行中',
+  dbStreams: '6 路数据流 · 持续沉淀',
+  mobileAccumulating: '数据持续沉淀',
+  mobileDbDesc: '行业底层知识图谱 · 数据基石层',
+  nodes: {
+    thinkTank:   { label: '智库',     tag: '运营服务' },
+    news:        { label: '行业媒体', tag: '运营服务' },
+    events:      { label: '会展平台', tag: '运营服务' },
+    association: { label: '行业协会', tag: '运营服务' },
+    technology:  { label: '技术开发', tag: '攻坚支撑' },
+    fund:        { label: '投资基金', tag: '攻坚支撑' },
+  },
+}
+
+type AnyNodeStyle = (typeof TOP_NODE_STYLE)[number] | (typeof MID_NODE_STYLE)[number]
+const ALL_NODE_STYLE: AnyNodeStyle[] = [...TOP_NODE_STYLE, ...MID_NODE_STYLE]
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -153,9 +179,9 @@ function Connection({
 // ── Node card (light theme) ────────────────────────────────────────────────────
 
 function NodeCard({
-  node, dataId, compact = false,
+  node, dataId, label, tag, compact = false,
 }: {
-  node: AnyNode; dataId: string; compact?: boolean
+  node: AnyNodeStyle; dataId: string; label: string; tag: string; compact?: boolean
 }) {
   const router = useRouter()
   const Icon   = node.icon
@@ -179,8 +205,8 @@ function NodeCard({
       <div className={cn('flex items-center justify-center rounded-lg', node.iconBg, compact ? 'h-8 w-8' : 'h-10 w-10')}>
         <Icon className={cn(node.iconText, compact ? 'h-4 w-4' : 'h-5 w-5')} />
       </div>
-      <span className={cn('font-semibold text-slate-800', compact ? 'text-xs' : 'text-sm')}>{node.label}</span>
-      <span className="text-[10px] text-slate-400">{node.tag}</span>
+      <span className={cn('font-semibold text-slate-800', compact ? 'text-xs' : 'text-sm')}>{label}</span>
+      <span className="text-[10px] text-slate-400">{tag}</span>
     </div>
   )
 }
@@ -199,7 +225,8 @@ function LayerLabel({ label }: { label: string }) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export default function DataEcosystem() {
+export default function DataEcosystem({ dict }: { dict?: DataEcosystemDictionary }) {
+  const t = dict ?? ZH
   const containerRef = useRef<HTMLDivElement>(null)
   const sectionRef   = useRef<HTMLDivElement>(null)
   const [positions, setPositions] = useState<Record<string, Pos>>({})
@@ -262,14 +289,14 @@ export default function DataEcosystem() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
-            数据引擎 · 实时运行中
+            {t.badge}
           </div>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 mb-4 tracking-tight">
-            产业服务体系 · 数据闭环引擎
+            {t.title}
           </h2>
           <p className="text-slate-500 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-            六大模块持续向底层数据库汇入数据流 ·{' '}
-            <span className="text-emerald-600 font-medium">数据库实时赋能各模块运作</span>
+            {t.subtitle}
+            <span className="text-emerald-600 font-medium">{t.subtitleHighlight}</span>
           </p>
         </div>
 
@@ -288,7 +315,7 @@ export default function DataEcosystem() {
                 height={svgSize.h}
                 style={{ overflow: 'visible' }}
               >
-                {ALL_NODES.map((node, i) => {
+                {ALL_NODE_STYLE.map((node, i) => {
                   const from = positions[node.id]
                   if (!from || !dbPos) return null
                   return (
@@ -306,23 +333,23 @@ export default function DataEcosystem() {
             )}
 
             {/* ── Top layer ── */}
-            <LayerLabel label="顶层 · 战略与传播" />
+            <LayerLabel label={t.layerTop} />
             <div className="grid grid-cols-2 gap-6 max-w-sm mx-auto mb-16">
-              {TOP_NODES.map(n => (
-                <NodeCard key={n.id} node={n} dataId={n.id} />
+              {TOP_NODE_STYLE.map(n => (
+                <NodeCard key={n.id} node={n} dataId={n.id} label={t.nodes[n.nodeKey].label} tag={t.nodes[n.nodeKey].tag} />
               ))}
             </div>
 
             {/* ── Middle layer ── */}
-            <LayerLabel label="中层 · 连接与赋能" />
+            <LayerLabel label={t.layerMid} />
             <div className="grid grid-cols-4 gap-4 mb-16">
-              {MID_NODES.map(n => (
-                <NodeCard key={n.id} node={n} dataId={n.id} compact />
+              {MID_NODE_STYLE.map(n => (
+                <NodeCard key={n.id} node={n} dataId={n.id} label={t.nodes[n.nodeKey].label} tag={t.nodes[n.nodeKey].tag} compact />
               ))}
             </div>
 
             {/* ── Database ── */}
-            <LayerLabel label="基石层 · 数据沉淀与反哺" />
+            <LayerLabel label={t.layerBase} />
             <div
               data-node-id="database"
               className="relative overflow-hidden rounded-2xl border border-emerald-200 bg-emerald-50"
@@ -351,13 +378,13 @@ export default function DataEcosystem() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1.5">
-                    <span className="text-lg font-bold text-slate-900">底层数据库</span>
+                    <span className="text-lg font-bold text-slate-900">{t.dbTitle}</span>
                     <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold tracking-wide">
-                      数据基石层
+                      {t.dbBadge}
                     </span>
                   </div>
                   <p className="text-sm text-slate-600 leading-relaxed">
-                    中国塑料循环利用行业底层知识图谱 · 汇聚六大模块实时数据流 · 反向赋能产业运作与决策
+                    {t.dbDesc}
                   </p>
                 </div>
                 {/* Live indicator */}
@@ -367,9 +394,9 @@ export default function DataEcosystem() {
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                       <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                     </span>
-                    <span className="text-xs text-emerald-700 font-semibold">运行中</span>
+                    <span className="text-xs text-emerald-700 font-semibold">{t.dbStatus}</span>
                   </div>
-                  <span className="text-[10px] text-slate-400 whitespace-nowrap">6 路数据流 · 持续沉淀</span>
+                  <span className="text-[10px] text-slate-400 whitespace-nowrap">{t.dbStreams}</span>
                 </div>
               </div>
             </div>
@@ -382,8 +409,9 @@ export default function DataEcosystem() {
           visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
         )}>
           <div className="grid grid-cols-2 gap-3 mb-6">
-            {ALL_NODES.map(node => {
+            {ALL_NODE_STYLE.map(node => {
               const Icon = node.icon
+              const content = t.nodes[node.nodeKey]
               return (
                 <div
                   key={node.id}
@@ -397,8 +425,8 @@ export default function DataEcosystem() {
                     <Icon className={cn('h-4 w-4', node.iconText)} />
                   </div>
                   <div>
-                    <p className={cn('text-xs font-semibold text-slate-800')}>{node.label}</p>
-                    <p className="text-[10px] text-slate-400">{node.tag}</p>
+                    <p className={cn('text-xs font-semibold text-slate-800')}>{content.label}</p>
+                    <p className="text-[10px] text-slate-400">{content.tag}</p>
                   </div>
                 </div>
               )
@@ -406,7 +434,7 @@ export default function DataEcosystem() {
           </div>
 
           <div className="flex justify-center gap-4 mb-4">
-            {ALL_NODES.map((node, i) => (
+            {ALL_NODE_STYLE.map((node, i) => (
               <div
                 key={node.id}
                 className="flex flex-col items-center gap-0.5"
@@ -423,7 +451,7 @@ export default function DataEcosystem() {
               </div>
             ))}
           </div>
-          <p className="text-center text-[11px] text-slate-400 mb-5 tracking-wider">数据持续沉淀</p>
+          <p className="text-center text-[11px] text-slate-400 mb-5 tracking-wider">{t.mobileAccumulating}</p>
 
           <div className="relative overflow-hidden rounded-2xl p-4 flex items-center gap-3 bg-emerald-50 border border-emerald-200">
             <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-white border border-emerald-200 flex-shrink-0">
@@ -431,13 +459,13 @@ export default function DataEcosystem() {
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
-                <span className="text-sm font-bold text-slate-900">底层数据库</span>
+                <span className="text-sm font-bold text-slate-900">{t.dbTitle}</span>
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 </span>
               </div>
-              <p className="text-xs text-slate-500">行业底层知识图谱 · 数据基石层</p>
+              <p className="text-xs text-slate-500">{t.mobileDbDesc}</p>
             </div>
           </div>
         </div>

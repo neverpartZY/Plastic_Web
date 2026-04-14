@@ -32,6 +32,7 @@
     "adminPanel": "后台管理",
     "signOut": "退出登录"
   },
+
   "hero": {
     "badge": "6位1体产业服务体系",
     "headline1": "构建中国塑料循环利用",
@@ -51,5 +52,420 @@
     "stat2Label": "重点跟踪企业",
     "stat3Num": "日更新",
     "stat3Label": "产业情报推送"
+  },
+
+  "features": {
+    "badge": "6位1体产业服务体系",
+    "title": "一站覆盖，全链赋能",
+    "subtitle": "从资讯获取到技术攻关，从产业融合到资本加速，",
+    "subtitleBold": "6 个核心模块",
+    "subtitleEnd": "形成闭环，驱动中国塑料循环产业数字化升级",
+    "learnMore": "了解更多",
+    "ctaQuestion": "还不确定哪个模块最适合您？欢迎与我们直接沟通需求",
+    "ctaSubscribe": "订阅每日情报",
+    "ctaDatabase": "探索数据基石",
+    "cards": {
+      "news": {
+        "label": "行业媒体",
+        "tagline": "实时资讯 · 多维检索",
+        "desc": "汇聚国内外主流塑料回收媒体资讯，多维标签体系精准过滤，让您每天 5 分钟掌握全行业动态。",
+        "bullet1": "实时抓取，日均更新 200+ 条",
+        "bullet2": "覆盖机械/化学回收、ESG、法规等赛道",
+        "bullet3": "智能标签 + 全文搜索"
+      },
+      "thinkTank": {
+        "label": "智库研究",
+        "tagline": "战略洞察 · 深度报告",
+        "desc": "联合高校院所与行业专家，定期输出覆盖技术路线、市场格局与政策解析的深度研究报告。",
+        "bullet1": "月均发布 4+ 份行业报告",
+        "bullet2": "覆盖白皮书、技术指南、合规手册",
+        "bullet3": "会员专享优先下载权"
+      },
+      "association": {
+        "label": "行业协会",
+        "tagline": "产业联盟 · 互信生态",
+        "desc": "汇聚塑料回收产业链 200+ 核心企业，通过标准制定、技术交流、政策倡导，构建产业互信网络。",
+        "bullet1": "理事/普通/观察三级会员体系",
+        "bullet2": "参与年度峰会与标准制定",
+        "bullet3": "独家资源对接与品牌曝光"
+      },
+      "events": {
+        "label": "会展活动",
+        "tagline": "峰会 · 展览 · 工坊",
+        "desc": "覆盖行业峰会、专业展览与实操工坊，链接供需两端，一站式完成商务拓展与知识获取。",
+        "bullet1": "年均 12+ 场大型活动",
+        "bullet2": "覆盖北京、上海、广州等 12 座城市",
+        "bullet3": "线上直播同步，会后资料共享"
+      },
+      "technology": {
+        "label": "技术攻关",
+        "tagline": "关键突破 · 产业转化",
+        "desc": "聚焦机械回收、化学回收、酶解技术、智能分选四大领域，加速前沿成果从实验室走向产业线。",
+        "bullet1": "联合 12 所高校与研究院",
+        "bullet2": "在研项目全程进度可视化",
+        "bullet3": "招募攻关伙伴，联合申报支持"
+      },
+      "fund": {
+        "label": "产业基金",
+        "tagline": "投资赋能 · 产业加速",
+        "desc": "聚焦塑料循环产业链关键节点，为具备技术壁垒与规模化潜力的优质项目提供全周期投资赋能。",
+        "bullet1": "管理规模 5 亿+，平均 IRR 31%",
+        "bullet2": "覆盖天使到 B 轮全阶段",
+        "bullet3": "7 个工作日内完成初步评估"
+      }
+    }
+  },
+
+  "sixModules": {
+    "badge": "六大模块 · 数据闭环",
+    "title": "每个模块，都在向数据库输送养分",
+    "subtitle": "六大业务持续汇聚行业数据，底层数据库沉淀后反向赋能，",
+    "subtitleEnd": "形成自我强化的数字生态",
+    "tagOperations": "运营服务",
+    "tagSupport": "攻坚支撑",
+    "connected": "数据已接入底层数据库",
+    "bottomHint1": "六个模块的数据汇聚至",
+    "bottomDatabase": "底层数据库",
+    "bottomHint2": "，形成行业级知识图谱",
+    "modules": {
+      "thinkTank": {
+        "label": "智库",
+        "desc": "行业研究与战略洞察，为政策研判与商业决策提供量化依据"
+      },
+      "news": {
+        "label": "行业媒体",
+        "desc": "资讯聚合与传播，覆盖价格行情、政策法规、企业动态全维度"
+      },
+      "association": {
+        "label": "行业协会",
+        "desc": "组织连接与协作，构建产业上下游企业互信生态网络"
+      },
+      "events": {
+        "label": "会展平台",
+        "desc": "展会与活动中心，链接供需两端，促进产业资源高效流动"
+      },
+      "technology": {
+        "label": "技术开发",
+        "desc": "关键空白技术突破，推动机械、化学、酶解回收等前沿研究落地"
+      },
+      "fund": {
+        "label": "投资基金",
+        "desc": "产业投资与赋能，加速优质项目从技术验证到市场规模跨越"
+      }
+    }
+  },
+
+  "dataEcosystem": {
+    "badge": "数据引擎 · 实时运行中",
+    "title": "产业服务体系 · 数据闭环引擎",
+    "subtitle": "六大模块持续向底层数据库汇入数据流 · ",
+    "subtitleHighlight": "数据库实时赋能各模块运作",
+    "layerTop": "顶层 · 战略与传播",
+    "layerMid": "中层 · 连接与赋能",
+    "layerBase": "基石层 · 数据沉淀与反哺",
+    "dbTitle": "底层数据库",
+    "dbBadge": "数据基石层",
+    "dbDesc": "中国塑料循环利用行业底层知识图谱 · 汇聚六大模块实时数据流 · 反向赋能产业运作与决策",
+    "dbStatus": "运行中",
+    "dbStreams": "6 路数据流 · 持续沉淀",
+    "mobileAccumulating": "数据持续沉淀",
+    "mobileDbDesc": "行业底层知识图谱 · 数据基石层",
+    "nodes": {
+      "thinkTank": { "label": "智库", "tag": "运营服务" },
+      "news": { "label": "行业媒体", "tag": "运营服务" },
+      "events": { "label": "会展平台", "tag": "运营服务" },
+      "association": { "label": "行业协会", "tag": "运营服务" },
+      "technology": { "label": "技术开发", "tag": "攻坚支撑" },
+      "fund": { "label": "投资基金", "tag": "攻坚支撑" }
+    }
+  },
+
+  "footer": {
+    "brand": "循环塑料产业平台",
+    "brandDesc": "专注塑料循环利用行业多维度信息服务，覆盖装备、助剂、模具、成型工艺、材料等实体维度，以及汽车塑料、消费电子、包装材料等应用领域。",
+    "mission": "致力于推动中国塑料循环经济发展",
+    "quickNav": "快速导航",
+    "hotTags": "热门标签",
+    "links": {
+      "price": "价格行情",
+      "policy": "政策法规",
+      "recycling": "回收技术",
+      "corporate": "企业动态",
+      "circular": "循环经济"
+    },
+    "copyright": "© 2025 中国塑料循环利用产业服务平台. All rights reserved.",
+    "tagline": "绿色循环 · 可持续未来"
+  },
+
+  "common": {
+    "learnMore": "了解更多",
+    "viewAll": "查看全部",
+    "applyNow": "立即申请",
+    "registerNow": "立即报名",
+    "submitNow": "提交申请",
+    "contactUs": "联系我们",
+    "close": "关闭",
+    "cancel": "取消",
+    "confirm": "确认",
+    "loading": "加载中...",
+    "noData": "暂无数据",
+    "premium": "会员专享",
+    "free": "免费",
+    "verified": "已认证",
+    "new": "新",
+    "hot": "热",
+    "comingSoon": "即将开放",
+    "pages": "页",
+    "city": "城市",
+    "date": "日期"
+  },
+
+  "pages": {
+    "thinkTank": {
+      "hero": {
+        "badge": "深度研究 · 战略洞察",
+        "title": "智库研究",
+        "subtitle": "联合顶级高校、机构与行业专家，输出具有前瞻性与可操作性的深度研究成果",
+        "stat1Num": "4+",
+        "stat1Label": "月均发布报告",
+        "stat2Num": "20+",
+        "stat2Label": "合作高校院所",
+        "stat3Num": "3",
+        "stat3Label": "研究方向"
+      },
+      "reportCategories": {
+        "whitePaper": "行业白皮书",
+        "techGuide": "技术指南",
+        "compliance": "合规手册",
+        "market": "市场报告"
+      },
+      "actions": {
+        "download": "下载报告",
+        "requestReport": "申请索取",
+        "expertConsult": "专家咨询"
+      },
+      "sections": {
+        "reports": "最新报告",
+        "experts": "特约专家",
+        "research": "研究方向"
+      },
+      "tiers": {
+        "premium": "会员专享",
+        "free": "免费获取"
+      }
+    },
+
+    "association": {
+      "hero": {
+        "badge": "产业联盟 · 互信生态",
+        "title": "行业协会",
+        "subtitle": "汇聚塑料回收产业链核心企业，通过标准制定、技术交流、政策倡导，构建产业互信网络",
+        "stat1Num": "200+",
+        "stat1Label": "核心成员单位",
+        "stat2Num": "3",
+        "stat2Label": "会员等级",
+        "stat3Num": "50+",
+        "stat3Label": "年度活动场次"
+      },
+      "tiers": {
+        "director": "理事单位",
+        "member": "普通会员",
+        "observer": "观察成员"
+      },
+      "perks": {
+        "director": {
+          "p1": "参与年度战略研讨",
+          "p2": "优先获取研究报告",
+          "p3": "理事会投票权",
+          "p4": "品牌曝光位"
+        },
+        "member": {
+          "p1": "参与会员活动",
+          "p2": "报告折扣订阅",
+          "p3": "会员目录展示",
+          "p4": "行业资讯推送"
+        },
+        "observer": {
+          "p1": "参与公开论坛",
+          "p2": "月度简报订阅",
+          "p3": "活动优先通知"
+        }
+      },
+      "actions": {
+        "join": "申请入会",
+        "requestReport": "索取报告",
+        "viewMembers": "查看成员"
+      },
+      "sections": {
+        "memberTiers": "会员体系",
+        "memberDirectory": "成员单位",
+        "reports": "研究报告"
+      },
+      "form": {
+        "name": "姓名",
+        "company": "公司",
+        "email": "邮箱",
+        "phone": "手机",
+        "applyType": "申请类型",
+        "message": "留言",
+        "submit": "提交申请",
+        "namePlaceholder": "您的称呼",
+        "companyPlaceholder": "所在单位",
+        "emailPlaceholder": "工作邮箱",
+        "phonePlaceholder": "联系电话",
+        "messagePlaceholder": "请说明您的申请原因或期望..."
+      }
+    },
+
+    "events": {
+      "hero": {
+        "badge": "峰会 · 展览 · 工坊",
+        "title": "会展活动",
+        "subtitle": "覆盖行业峰会、专业展览与实操工坊，链接供需两端，一站式完成商务拓展与知识获取",
+        "stat1Num": "12+",
+        "stat1Label": "年均大型活动",
+        "stat2Num": "12",
+        "stat2Label": "覆盖城市",
+        "stat3Num": "在线直播",
+        "stat3Label": "同步覆盖"
+      },
+      "eventTypes": {
+        "conference": "行业峰会",
+        "exhibition": "专业展览",
+        "seminar": "专题研讨",
+        "workshop": "技术工坊"
+      },
+      "status": {
+        "open": "报名开放",
+        "full": "名额已满",
+        "closed": "已结束",
+        "soon": "即将开放"
+      },
+      "actions": {
+        "register": "立即报名",
+        "viewDetails": "查看详情",
+        "addCalendar": "加入日历"
+      },
+      "sections": {
+        "upcoming": "近期活动",
+        "filters": "筛选活动"
+      },
+      "labels": {
+        "capacity": "总容量",
+        "registered": "已报名",
+        "remaining": "剩余名额",
+        "premium": "会员专属",
+        "highlight": "亮点"
+      }
+    },
+
+    "technology": {
+      "hero": {
+        "badge": "关键突破 · 产业转化",
+        "title": "技术攻关",
+        "subtitle": "聚焦四大核心技术方向，联合高校院所加速前沿成果从实验室走向产业线",
+        "stat1Num": "12",
+        "stat1Label": "合作高校院所",
+        "stat2Num": "4",
+        "stat2Label": "技术攻关方向",
+        "stat3Num": "全程",
+        "stat3Label": "进度可视化"
+      },
+      "directions": {
+        "mechanical": "机械回收",
+        "chemical": "化学回收",
+        "enzymatic": "酶解技术",
+        "sorting": "智能分选"
+      },
+      "stages": {
+        "lab": "实验室阶段",
+        "pilot": "中试阶段",
+        "scale": "规模化阶段",
+        "commercial": "商业化阶段"
+      },
+      "actions": {
+        "joinResearch": "加入攻关",
+        "viewProgress": "查看进度",
+        "applyFunding": "申请支持"
+      },
+      "sections": {
+        "directions": "攻关方向",
+        "projects": "在研项目",
+        "partners": "合作机构"
+      }
+    },
+
+    "fund": {
+      "hero": {
+        "badge": "投资赋能 · 产业加速",
+        "title": "产业基金",
+        "subtitle": "聚焦塑料循环产业链关键节点，为具备技术壁垒与规模化潜力的优质项目提供全周期投资赋能",
+        "stat1Num": "5 亿+",
+        "stat1Label": "管理规模",
+        "stat2Num": "31%",
+        "stat2Label": "平均 IRR",
+        "stat3Num": "7 日",
+        "stat3Label": "初步评估周期"
+      },
+      "stages": {
+        "angel": "天使轮",
+        "preA": "Pre-A 轮",
+        "seriesA": "A 轮",
+        "seriesB": "B 轮"
+      },
+      "focusAreas": {
+        "mechanical": "机械回收",
+        "chemical": "化学回收",
+        "sorting": "智能分选",
+        "materials": "再生材料"
+      },
+      "actions": {
+        "applyFunding": "申请融资",
+        "viewPortfolio": "查看投资组合",
+        "contactFund": "联系基金团队"
+      },
+      "sections": {
+        "overview": "基金概览",
+        "portfolio": "已投项目",
+        "criteria": "投资标准",
+        "process": "投资流程"
+      },
+      "labels": {
+        "aum": "管理规模",
+        "irr": "平均 IRR",
+        "stage": "投资阶段",
+        "focus": "重点方向"
+      }
+    },
+
+    "subscribe": {
+      "hero": {
+        "badge": "精选推送 · 每日必读",
+        "title": "每日情报",
+        "subtitle": "精选全球塑料回收产业最重要动态，每日直达您的邮件或企业微信"
+      },
+      "channels": {
+        "email": "邮件订阅",
+        "wechat": "企业微信",
+        "feishu": "飞书",
+        "whatsapp": "WhatsApp"
+      },
+      "form": {
+        "name": "姓名",
+        "email": "邮箱",
+        "company": "公司",
+        "channel": "推送渠道",
+        "submit": "立即订阅",
+        "namePlaceholder": "您的称呼",
+        "emailPlaceholder": "工作邮箱",
+        "companyPlaceholder": "所在单位（选填）"
+      },
+      "labels": {
+        "hot": "热门",
+        "verified": "精选",
+        "latest": "最新",
+        "freeTrial": "免费试阅"
+      }
+    }
   }
 }

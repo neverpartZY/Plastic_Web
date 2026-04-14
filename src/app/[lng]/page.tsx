@@ -39,9 +39,9 @@ export default async function LngHomePage({ params }: Props) {
   return (
     <>
       <HeroSearch dict={dict.hero} />
-      <Features />
-      <SixModulesGrid />
-      <DataEcosystem />
+      <Features dict={dict.features} />
+      <SixModulesGrid dict={dict.sixModules} />
+      <DataEcosystem dict={dict.dataEcosystem} />
       <MatrixHub />
     </>
   )

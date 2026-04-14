@@ -15,15 +15,15 @@
     "daily": "Daily Intel",
     "dailyDesc": "Curated dispatches via email and enterprise WeChat",
     "dailyBadge": "Hot",
-    "thinkTank": "Think Tank",
+    "thinkTank": "Think Tank & Research",
     "thinkTankDesc": "Strategic insights and in-depth research reports",
     "association": "Association",
     "associationDesc": "Industry network connections and resource matching",
-    "events": "Events",
+    "events": "Events & Exhibitions",
     "eventsDesc": "Industry summits, exhibitions and conferences",
-    "technology": "R&D Ventures",
+    "technology": "Tech R&D & Innovation",
     "technologyDesc": "Key technology development and industrialization",
-    "fund": "Industry Fund",
+    "fund": "Industrial Capital & Funds",
     "fundDesc": "Investment enablement and industry acceleration",
     "operations": "Operations",
     "support": "Support",
@@ -32,6 +32,7 @@
     "adminPanel": "Admin Panel",
     "signOut": "Sign Out"
   },
+
   "hero": {
     "badge": "6-in-1 Industry Service Ecosystem",
     "headline1": "Building China's Plastic Recycling",
@@ -51,5 +52,420 @@
     "stat2Label": "Tracked Companies",
     "stat3Num": "Daily",
     "stat3Label": "Industry Intelligence"
+  },
+
+  "features": {
+    "badge": "6-in-1 Industry Service Ecosystem",
+    "title": "Full Coverage. End-to-End Enablement.",
+    "subtitle": "From real-time intelligence to tech breakthroughs, from industry synergy to capital acceleration — ",
+    "subtitleBold": "6 core modules",
+    "subtitleEnd": "form a closed loop driving China's plastics recycling industry into the digital era",
+    "learnMore": "Learn More",
+    "ctaQuestion": "Not sure which module fits best? Let's talk about your needs directly.",
+    "ctaSubscribe": "Subscribe to Daily Intel",
+    "ctaDatabase": "Explore the Database",
+    "cards": {
+      "news": {
+        "label": "Industry Media",
+        "tagline": "Real-Time News · Multi-Dimensional Search",
+        "desc": "Aggregates leading domestic and global plastics recycling media. Multi-dimensional tag filters let you stay on top of the entire industry in just 5 minutes a day.",
+        "bullet1": "Live feed — 200+ updates daily",
+        "bullet2": "Covers mechanical/chemical recycling, ESG, regulations & more",
+        "bullet3": "Smart tags + full-text search"
+      },
+      "thinkTank": {
+        "label": "Think Tank & Research",
+        "tagline": "Strategic Insights · In-Depth Reports",
+        "desc": "Co-authored with leading universities and industry experts, delivering forward-looking research on technology roadmaps, market dynamics, and policy analysis.",
+        "bullet1": "4+ industry reports published monthly",
+        "bullet2": "White papers, technical guides, compliance handbooks",
+        "bullet3": "Priority download access for members"
+      },
+      "association": {
+        "label": "Association",
+        "tagline": "Industry Alliance · Trust Ecosystem",
+        "desc": "Unites 200+ core enterprises across the plastics recycling value chain. Standard-setting, knowledge exchange, and policy advocacy build a trusted industry network.",
+        "bullet1": "Director / Member / Observer tier system",
+        "bullet2": "Annual summit participation & standard-setting",
+        "bullet3": "Exclusive matchmaking & brand exposure"
+      },
+      "events": {
+        "label": "Events & Exhibitions",
+        "tagline": "Summits · Exhibitions · Workshops",
+        "desc": "Spanning industry summits, professional exhibitions, and hands-on workshops — bridging supply and demand for one-stop business development and knowledge acquisition.",
+        "bullet1": "12+ Major Annual Events",
+        "bullet2": "Across 12 cities including Beijing, Shanghai, Guangzhou",
+        "bullet3": "Live streaming + post-event resource sharing"
+      },
+      "technology": {
+        "label": "Tech R&D & Innovation",
+        "tagline": "Key Breakthroughs · Industrial Transfer",
+        "desc": "Focused on mechanical recycling, chemical recycling, enzymatic degradation, and intelligent sorting — accelerating frontier R&D from lab to production line.",
+        "bullet1": "Partnered with 12 universities & research institutes",
+        "bullet2": "Full progress visualization for active projects",
+        "bullet3": "Open calls for R&D partners & joint grant applications"
+      },
+      "fund": {
+        "label": "Industrial Capital & Funds",
+        "tagline": "Investment Enablement · Industry Acceleration",
+        "desc": "Targeting key nodes in the plastics circular economy value chain, providing full-cycle investment support for high-potential projects with defensible technology moats.",
+        "bullet1": "AUM 500M+ · Average IRR 31%",
+        "bullet2": "Coverage from Angel to Series B",
+        "bullet3": "Preliminary assessment completed within 7 business days"
+      }
+    }
+  },
+
+  "sixModules": {
+    "badge": "Six Modules · Data Closed Loop",
+    "title": "Every Module Feeds the Database.",
+    "subtitle": "Six business pillars continuously channel industry data into the core database, which in turn powers each module — ",
+    "subtitleEnd": "a self-reinforcing digital ecosystem",
+    "tagOperations": "Operations",
+    "tagSupport": "Support",
+    "connected": "Data connected to core database",
+    "bottomHint1": "Data from all six modules flows into the",
+    "bottomDatabase": "Core Database",
+    "bottomHint2": ", forming an industry-wide knowledge graph",
+    "modules": {
+      "thinkTank": {
+        "label": "Think Tank",
+        "desc": "Industry research and strategic insights providing quantitative evidence for policy analysis and business decision-making"
+      },
+      "news": {
+        "label": "Industry Media",
+        "desc": "News aggregation and dissemination covering price trends, regulations, and corporate developments across all dimensions"
+      },
+      "association": {
+        "label": "Association",
+        "desc": "Organizational connectivity and collaboration, building a trust-based ecosystem across the industry value chain"
+      },
+      "events": {
+        "label": "Events & Expos",
+        "desc": "Exhibition and event hub bridging supply and demand to facilitate efficient flow of industry resources"
+      },
+      "technology": {
+        "label": "Tech Development",
+        "desc": "Breaking critical technology gaps, advancing frontier R&D in mechanical, chemical, and enzymatic recycling"
+      },
+      "fund": {
+        "label": "Investment Fund",
+        "desc": "Industry investment and enablement, accelerating high-quality projects from technology validation to market scale"
+      }
+    }
+  },
+
+  "dataEcosystem": {
+    "badge": "Data Engine · Running in Real Time",
+    "title": "Industry Service Ecosystem · Data Closed Loop Engine",
+    "subtitle": "Six modules continuously channel data into the core database · ",
+    "subtitleHighlight": "Database empowers every module in real time",
+    "layerTop": "Top Layer · Strategy & Communication",
+    "layerMid": "Middle Layer · Connection & Enablement",
+    "layerBase": "Foundation Layer · Data Accumulation & Feedback",
+    "dbTitle": "Core Database",
+    "dbBadge": "Data Foundation Layer",
+    "dbDesc": "China's plastics recycling industry knowledge graph · Aggregating real-time data from six modules · Empowering industry operations and decision-making",
+    "dbStatus": "Live",
+    "dbStreams": "6 data streams · Continuously accumulating",
+    "mobileAccumulating": "Data accumulating",
+    "mobileDbDesc": "Industry knowledge graph · Data foundation layer",
+    "nodes": {
+      "thinkTank": { "label": "Think Tank", "tag": "Operations" },
+      "news": { "label": "Industry Media", "tag": "Operations" },
+      "events": { "label": "Events & Expos", "tag": "Operations" },
+      "association": { "label": "Association", "tag": "Operations" },
+      "technology": { "label": "Tech Development", "tag": "Support" },
+      "fund": { "label": "Investment Fund", "tag": "Support" }
+    }
+  },
+
+  "footer": {
+    "brand": "Circular Plastics Hub",
+    "brandDesc": "Dedicated multi-dimensional information services for the plastics recycling industry, covering equipment, additives, molds, processing technologies, and materials — as well as application sectors including automotive plastics, consumer electronics, and packaging.",
+    "mission": "Committed to advancing China's circular plastics economy",
+    "quickNav": "Quick Navigation",
+    "hotTags": "Hot Topics",
+    "links": {
+      "price": "Price Trends",
+      "policy": "Regulations",
+      "recycling": "Recycling Tech",
+      "corporate": "Corporate News",
+      "circular": "Circular Economy"
+    },
+    "copyright": "© 2025 China Plastics Recycling Industry Service Platform. All rights reserved.",
+    "tagline": "Green Circular Economy · Sustainable Future"
+  },
+
+  "common": {
+    "learnMore": "Learn More",
+    "viewAll": "View All",
+    "applyNow": "Apply Now",
+    "registerNow": "Register Now",
+    "submitNow": "Submit",
+    "contactUs": "Contact Us",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "premium": "Members Only",
+    "free": "Free",
+    "verified": "Verified",
+    "new": "New",
+    "hot": "Hot",
+    "comingSoon": "Coming Soon",
+    "pages": "pages",
+    "city": "City",
+    "date": "Date"
+  },
+
+  "pages": {
+    "thinkTank": {
+      "hero": {
+        "badge": "In-Depth Research · Strategic Insights",
+        "title": "Think Tank & Research",
+        "subtitle": "Co-developed with top universities, institutions, and industry experts — delivering forward-looking and actionable research",
+        "stat1Num": "4+",
+        "stat1Label": "Reports Monthly",
+        "stat2Num": "20+",
+        "stat2Label": "Partner Institutions",
+        "stat3Num": "3",
+        "stat3Label": "Research Tracks"
+      },
+      "reportCategories": {
+        "whitePaper": "White Papers",
+        "techGuide": "Technical Guides",
+        "compliance": "Compliance Handbooks",
+        "market": "Market Reports"
+      },
+      "actions": {
+        "download": "Download Report",
+        "requestReport": "Request a Copy",
+        "expertConsult": "Expert Consultation"
+      },
+      "sections": {
+        "reports": "Latest Reports",
+        "experts": "Featured Experts",
+        "research": "Research Tracks"
+      },
+      "tiers": {
+        "premium": "Members Only",
+        "free": "Free Access"
+      }
+    },
+
+    "association": {
+      "hero": {
+        "badge": "Industry Alliance · Trust Ecosystem",
+        "title": "Association",
+        "subtitle": "Uniting core enterprises across the plastics recycling value chain through standard-setting, knowledge exchange, and policy advocacy",
+        "stat1Num": "200+",
+        "stat1Label": "Member Organizations",
+        "stat2Num": "3",
+        "stat2Label": "Membership Tiers",
+        "stat3Num": "50+",
+        "stat3Label": "Annual Events"
+      },
+      "tiers": {
+        "director": "Director Member",
+        "member": "General Member",
+        "observer": "Observer"
+      },
+      "perks": {
+        "director": {
+          "p1": "Annual strategy roundtable participation",
+          "p2": "Priority access to research reports",
+          "p3": "Board voting rights",
+          "p4": "Premium brand exposure"
+        },
+        "member": {
+          "p1": "Member event participation",
+          "p2": "Discounted report subscriptions",
+          "p3": "Member directory listing",
+          "p4": "Industry intelligence updates"
+        },
+        "observer": {
+          "p1": "Open forum access",
+          "p2": "Monthly newsletter subscription",
+          "p3": "Priority event notifications"
+        }
+      },
+      "actions": {
+        "join": "Apply for Membership",
+        "requestReport": "Request Report",
+        "viewMembers": "View Members"
+      },
+      "sections": {
+        "memberTiers": "Membership Tiers",
+        "memberDirectory": "Member Directory",
+        "reports": "Research Reports"
+      },
+      "form": {
+        "name": "Name",
+        "company": "Company",
+        "email": "Email",
+        "phone": "Phone",
+        "applyType": "Application Type",
+        "message": "Message",
+        "submit": "Submit Application",
+        "namePlaceholder": "Your name",
+        "companyPlaceholder": "Your organization",
+        "emailPlaceholder": "Work email",
+        "phonePlaceholder": "Contact number",
+        "messagePlaceholder": "Tell us about your application or expectations..."
+      }
+    },
+
+    "events": {
+      "hero": {
+        "badge": "Summits · Exhibitions · Workshops",
+        "title": "Events & Exhibitions",
+        "subtitle": "Spanning industry summits, professional exhibitions, and hands-on workshops — bridging supply and demand for one-stop business development",
+        "stat1Num": "12+",
+        "stat1Label": "Major Annual Events",
+        "stat2Num": "12",
+        "stat2Label": "Cities Covered",
+        "stat3Num": "Live",
+        "stat3Label": "Streaming Available"
+      },
+      "eventTypes": {
+        "conference": "Industry Summit",
+        "exhibition": "Professional Exhibition",
+        "seminar": "Themed Seminar",
+        "workshop": "Tech Workshop"
+      },
+      "status": {
+        "open": "Registration Open",
+        "full": "Fully Booked",
+        "closed": "Ended",
+        "soon": "Opening Soon"
+      },
+      "actions": {
+        "register": "Register Now",
+        "viewDetails": "View Details",
+        "addCalendar": "Add to Calendar"
+      },
+      "sections": {
+        "upcoming": "Upcoming Events",
+        "filters": "Filter Events"
+      },
+      "labels": {
+        "capacity": "Capacity",
+        "registered": "Registered",
+        "remaining": "Spots Left",
+        "premium": "Members Only",
+        "highlight": "Highlights"
+      }
+    },
+
+    "technology": {
+      "hero": {
+        "badge": "Key Breakthroughs · Industrial Transfer",
+        "title": "Tech R&D & Innovation",
+        "subtitle": "Focused on four core technology tracks, partnering with universities and institutes to accelerate frontier R&D from lab to production line",
+        "stat1Num": "12",
+        "stat1Label": "Partner Institutions",
+        "stat2Num": "4",
+        "stat2Label": "R&D Tracks",
+        "stat3Num": "Full",
+        "stat3Label": "Progress Visibility"
+      },
+      "directions": {
+        "mechanical": "Mechanical Recycling",
+        "chemical": "Chemical Recycling",
+        "enzymatic": "Enzymatic Degradation",
+        "sorting": "Intelligent Sorting"
+      },
+      "stages": {
+        "lab": "Laboratory",
+        "pilot": "Pilot Scale",
+        "scale": "Scale-Up",
+        "commercial": "Commercialization"
+      },
+      "actions": {
+        "joinResearch": "Join R&D Program",
+        "viewProgress": "View Progress",
+        "applyFunding": "Apply for Support"
+      },
+      "sections": {
+        "directions": "R&D Tracks",
+        "projects": "Active Projects",
+        "partners": "Partner Institutions"
+      }
+    },
+
+    "fund": {
+      "hero": {
+        "badge": "Investment Enablement · Industry Acceleration",
+        "title": "Industrial Capital & Funds",
+        "subtitle": "Targeting key nodes in the plastics circular economy, providing full-cycle investment support for high-potential projects with defensible technology moats",
+        "stat1Num": "AUM 500M+",
+        "stat1Label": "Assets Under Management",
+        "stat2Num": "31%",
+        "stat2Label": "Average IRR",
+        "stat3Num": "7 Days",
+        "stat3Label": "Preliminary Assessment"
+      },
+      "stages": {
+        "angel": "Angel",
+        "preA": "Pre-A",
+        "seriesA": "Series A",
+        "seriesB": "Series B"
+      },
+      "focusAreas": {
+        "mechanical": "Mechanical Recycling",
+        "chemical": "Chemical Recycling",
+        "sorting": "Intelligent Sorting",
+        "materials": "Recycled Materials"
+      },
+      "actions": {
+        "applyFunding": "Apply for Funding",
+        "viewPortfolio": "View Portfolio",
+        "contactFund": "Contact Fund Team"
+      },
+      "sections": {
+        "overview": "Fund Overview",
+        "portfolio": "Portfolio",
+        "criteria": "Investment Criteria",
+        "process": "Investment Process"
+      },
+      "labels": {
+        "aum": "AUM",
+        "irr": "Avg. IRR",
+        "stage": "Investment Stage",
+        "focus": "Focus Areas"
+      }
+    },
+
+    "subscribe": {
+      "hero": {
+        "badge": "Curated · Daily Essential",
+        "title": "Daily Intel",
+        "subtitle": "The most important updates in global plastics recycling, delivered to your inbox or enterprise messenger every day"
+      },
+      "channels": {
+        "email": "Email",
+        "wechat": "Enterprise WeChat",
+        "feishu": "Feishu / Lark",
+        "whatsapp": "WhatsApp"
+      },
+      "form": {
+        "name": "Name",
+        "email": "Email",
+        "company": "Company",
+        "channel": "Delivery Channel",
+        "submit": "Subscribe Now",
+        "namePlaceholder": "Your name",
+        "emailPlaceholder": "Work email",
+        "companyPlaceholder": "Your organization (optional)"
+      },
+      "labels": {
+        "hot": "Hot",
+        "verified": "Curated",
+        "latest": "Latest",
+        "freeTrial": "Free Trial"
+      }
+    }
   }
 }
