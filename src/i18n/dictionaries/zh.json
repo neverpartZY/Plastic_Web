@@ -1,20 +1,33 @@
 {
   "nav": {
-    "logo": "循环塑料产业平台",
-    "discover": "发现资源",
-    "services": "行业服务",
-    "database": "数据基石",
+    "logo": "可持续塑料产业链平台",
+    "intelligence": "情报中心",
+    "pillars": "六大支柱",
+    "services": "服务平台",
+    "database": "数据中台",
     "subscribe": "订阅情报",
     "login": "登录",
     "register": "注册",
-    "searchPlaceholder": "搜索资讯、标签...",
-    "news": "行业媒体",
-    "newsDesc": "实时资讯聚合，多维标签检索",
+    "searchPlaceholder": "搜索支柱、资讯、企业...",
+    "news": "产业资讯",
+    "newsDesc": "六大支柱实时情报，多维地区筛选",
     "explore": "产业地图",
-    "exploreDesc": "X-Y轴标签体系，精准浏览行业坐标",
+    "exploreDesc": "企业坐标系，精准定位产业链节点",
     "daily": "每日情报",
     "dailyDesc": "精选推送，直达邮件与企业微信",
     "dailyBadge": "热门",
+    "machinery": "绿色机械",
+    "machineryDesc": "注塑、挤出、造粒等绿色装备动态",
+    "materials": "可持续材料",
+    "materialsDesc": "生物基、PCR、可降解材料研究前沿",
+    "additives": "环保助剂",
+    "additivesDesc": "抗氧化剂、稳定剂、生物基助剂体系",
+    "auxiliaries": "绿色辅料",
+    "auxiliariesDesc": "模具、薄膜、包装辅助材料与工艺",
+    "recycling": "循环再生",
+    "recyclingDesc": "机械/化学/酶解回收技术与产业化",
+    "carbonPolicy": "碳中和/政策",
+    "carbonPolicyDesc": "ESG、碳关税、欧盟法规、碳中和路线",
     "thinkTank": "智库研究",
     "thinkTankDesc": "战略洞察与深度研究报告",
     "association": "行业协会",
@@ -25,8 +38,6 @@
     "technologyDesc": "关键技术研发与产业化落地",
     "fund": "产业基金",
     "fundDesc": "投融资赋能与产业加速",
-    "operations": "运营服务",
-    "support": "攻坚支撑",
     "dashboard": "我的看板",
     "profile": "个人中心",
     "adminPanel": "后台管理",
@@ -34,167 +45,167 @@
   },
 
   "hero": {
-    "badge": "6位1体产业服务体系",
-    "headline1": "构建中国塑料循环利用",
-    "headline2": "行业数字基石",
-    "subtitle": "6位1体服务闭环，引领行业从",
-    "subtitleBold1": "经验决策",
-    "subtitleBold2": "数据决策",
-    "subtitleConnector": "向",
-    "subtitleEnd": "跨越",
-    "searchPlaceholder": "搜索资讯、企业、技术动态...",
+    "badge": "六大支柱 · 全链可持续智库",
+    "headline1": "驱动塑料产业链",
+    "headline2": "可持续发展新范式",
+    "subtitle": "从绿色机械到碳中和政策，覆盖",
+    "subtitleBold1": "六大核心支柱",
+    "subtitleBold2": "全球视野",
+    "subtitleConnector": "，以",
+    "subtitleEnd": "重塑行业情报格局",
+    "searchPlaceholder": "搜索支柱动态、企业、技术趋势...",
     "searchBtn": "搜索",
-    "ctaPrimary": "探索平台",
-    "ctaSecondary": "了解体系",
-    "stat1Num": "6+",
-    "stat1Label": "核心服务模块",
-    "stat2Num": "2,400+",
-    "stat2Label": "重点跟踪企业",
-    "stat3Num": "日更新",
-    "stat3Label": "产业情报推送"
+    "ctaPrimary": "探索情报中心",
+    "ctaSecondary": "了解六大支柱",
+    "stat1Num": "6",
+    "stat1Label": "大产业支柱",
+    "stat2Num": "15,000+",
+    "stat2Label": "覆盖企业",
+    "stat3Num": "全球",
+    "stat3Label": "多地区情报视野"
   },
 
   "features": {
-    "badge": "6位1体产业服务体系",
-    "title": "一站覆盖，全链赋能",
-    "subtitle": "从资讯获取到技术攻关，从产业融合到资本加速，",
-    "subtitleBold": "6 个核心模块",
-    "subtitleEnd": "形成闭环，驱动中国塑料循环产业数字化升级",
+    "badge": "六大产业支柱 · 全链覆盖",
+    "title": "全链布局，可持续驱动",
+    "subtitle": "从绿色装备制造到碳中和政策，",
+    "subtitleBold": "六大核心支柱",
+    "subtitleEnd": "全面覆盖塑料产业链可持续发展关键节点",
     "learnMore": "了解更多",
-    "ctaQuestion": "还不确定哪个模块最适合您？欢迎与我们直接沟通需求",
+    "ctaQuestion": "想深入了解某个支柱的情报服务？欢迎与我们直接沟通",
     "ctaSubscribe": "订阅每日情报",
-    "ctaDatabase": "探索数据基石",
+    "ctaDatabase": "探索数据中台",
     "cards": {
-      "news": {
-        "label": "行业媒体",
-        "tagline": "实时资讯 · 多维检索",
-        "desc": "汇聚国内外主流塑料回收媒体资讯，多维标签体系精准过滤，让您每天 5 分钟掌握全行业动态。",
-        "bullet1": "实时抓取，日均更新 200+ 条",
-        "bullet2": "覆盖机械/化学回收、ESG、法规等赛道",
-        "bullet3": "智能标签 + 全文搜索"
+      "machinery": {
+        "label": "绿色机械",
+        "tagline": "装备升级 · 绿色制造",
+        "desc": "覆盖注塑、挤出、吹膜、造粒等全系列绿色塑料加工装备，追踪能效升级与智能制造前沿动态。",
+        "bullet1": "注塑/挤出/吹膜设备能效新标准",
+        "bullet2": "智能化改造与工业互联网融合",
+        "bullet3": "国内外主流装备厂商动态"
       },
-      "thinkTank": {
-        "label": "智库研究",
-        "tagline": "战略洞察 · 深度报告",
-        "desc": "联合高校院所与行业专家，定期输出覆盖技术路线、市场格局与政策解析的深度研究报告。",
-        "bullet1": "月均发布 4+ 份行业报告",
-        "bullet2": "覆盖白皮书、技术指南、合规手册",
-        "bullet3": "会员专享优先下载权"
+      "materials": {
+        "label": "可持续材料",
+        "tagline": "绿色原料 · 材料创新",
+        "desc": "聚焦生物基塑料、PCR再生料、可降解材料及高性能可持续聚合物，追踪材料科学最新突破。",
+        "bullet1": "生物基 PLA/PHA/PBS 研发进展",
+        "bullet2": "PCR 再生料品质标准与认证体系",
+        "bullet3": "可降解材料法规与市场化进程"
       },
-      "association": {
-        "label": "行业协会",
-        "tagline": "产业联盟 · 互信生态",
-        "desc": "汇聚塑料回收产业链 200+ 核心企业，通过标准制定、技术交流、政策倡导，构建产业互信网络。",
-        "bullet1": "理事/普通/观察三级会员体系",
-        "bullet2": "参与年度峰会与标准制定",
-        "bullet3": "独家资源对接与品牌曝光"
+      "additives": {
+        "label": "环保助剂",
+        "tagline": "配方创新 · 绿色化学",
+        "desc": "深度覆盖抗氧化剂、热稳定剂、生物基增塑剂等环保助剂体系，助力配方绿色化转型。",
+        "bullet1": "无重金属稳定剂替代方案",
+        "bullet2": "生物基增塑剂与无卤阻燃技术",
+        "bullet3": "REACH/RoHS 合规助剂趋势"
       },
-      "events": {
-        "label": "会展活动",
-        "tagline": "峰会 · 展览 · 工坊",
-        "desc": "覆盖行业峰会、专业展览与实操工坊，链接供需两端，一站式完成商务拓展与知识获取。",
-        "bullet1": "年均 12+ 场大型活动",
-        "bullet2": "覆盖北京、上海、广州等 12 座城市",
-        "bullet3": "线上直播同步，会后资料共享"
+      "auxiliaries": {
+        "label": "绿色辅料",
+        "tagline": "辅助升级 · 工艺优化",
+        "desc": "关注模具工艺、功能薄膜、绿色包装辅料及精密成型辅助材料，赋能生产全流程降碳减排。",
+        "bullet1": "高效冷却与热流道模具技术",
+        "bullet2": "可回收功能薄膜与绿色包装",
+        "bullet3": "模具钢材与表面处理新工艺"
       },
-      "technology": {
-        "label": "技术攻关",
-        "tagline": "关键突破 · 产业转化",
-        "desc": "聚焦机械回收、化学回收、酶解技术、智能分选四大领域，加速前沿成果从实验室走向产业线。",
-        "bullet1": "联合 12 所高校与研究院",
-        "bullet2": "在研项目全程进度可视化",
-        "bullet3": "招募攻关伙伴，联合申报支持"
+      "recycling": {
+        "label": "循环再生",
+        "tagline": "闭环经济 · 技术突破",
+        "desc": "系统追踪机械回收、化学回收、酶解技术、智能分选四大路径，推动再生产业链规模化与高值化。",
+        "bullet1": "化学回收（解聚/热裂解）最新产能",
+        "bullet2": "AI 智能分选技术与设备进展",
+        "bullet3": "再生料价格行情与供需动态"
       },
-      "fund": {
-        "label": "产业基金",
-        "tagline": "投资赋能 · 产业加速",
-        "desc": "聚焦塑料循环产业链关键节点，为具备技术壁垒与规模化潜力的优质项目提供全周期投资赋能。",
-        "bullet1": "管理规模 5 亿+，平均 IRR 31%",
-        "bullet2": "覆盖天使到 B 轮全阶段",
-        "bullet3": "7 个工作日内完成初步评估"
+      "carbonPolicy": {
+        "label": "碳中和/政策",
+        "tagline": "政策引导 · ESG 合规",
+        "desc": "深度解读欧盟 CBAM、EPR 法规、中国双碳目标及全球塑料公约，为企业 ESG 合规提供情报支撑。",
+        "bullet1": "欧盟 CBAM 碳边境税落地进程",
+        "bullet2": "中国双碳目标与塑料产业路线图",
+        "bullet3": "全球塑料公约谈判与企业应对策略"
       }
     }
   },
 
   "sixModules": {
-    "badge": "六大模块 · 数据闭环",
-    "title": "每个模块，都在向数据库输送养分",
-    "subtitle": "六大业务持续汇聚行业数据，底层数据库沉淀后反向赋能，",
-    "subtitleEnd": "形成自我强化的数字生态",
-    "tagOperations": "运营服务",
-    "tagSupport": "攻坚支撑",
-    "connected": "数据已接入底层数据库",
-    "bottomHint1": "六个模块的数据汇聚至",
-    "bottomDatabase": "底层数据库",
-    "bottomHint2": "，形成行业级知识图谱",
+    "badge": "六大支柱 · 数据闭环",
+    "title": "每个支柱，都在向知识中枢汇流",
+    "subtitle": "六大产业支柱持续汇聚行业数据，知识中枢沉淀后反向赋能，",
+    "subtitleEnd": "形成自我强化的产业数字生态",
+    "tagPrimary": "核心支柱",
+    "tagSecondary": "政策支柱",
+    "connected": "数据已接入产业知识中枢",
+    "bottomHint1": "六大支柱的情报数据汇聚至",
+    "bottomDatabase": "产业知识中枢",
+    "bottomHint2": "，形成可持续塑料产业知识图谱",
     "modules": {
-      "thinkTank": {
-        "label": "智库",
-        "desc": "行业研究与战略洞察，为政策研判与商业决策提供量化依据"
+      "machinery": {
+        "label": "绿色机械",
+        "desc": "注塑、挤出、造粒等装备能效升级与智能化改造，追踪绿色制造最新标准"
       },
-      "news": {
-        "label": "行业媒体",
-        "desc": "资讯聚合与传播，覆盖价格行情、政策法规、企业动态全维度"
+      "materials": {
+        "label": "可持续材料",
+        "desc": "生物基、PCR 再生料、可降解聚合物研究前沿，覆盖材料认证与标准动态"
       },
-      "association": {
-        "label": "行业协会",
-        "desc": "组织连接与协作，构建产业上下游企业互信生态网络"
+      "additives": {
+        "label": "环保助剂",
+        "desc": "无重金属稳定剂、生物基增塑剂、无卤阻燃剂等绿色化学助剂体系"
       },
-      "events": {
-        "label": "会展平台",
-        "desc": "展会与活动中心，链接供需两端，促进产业资源高效流动"
+      "auxiliaries": {
+        "label": "绿色辅料",
+        "desc": "模具工艺、功能薄膜与绿色包装辅料，赋能生产全流程降碳减排"
       },
-      "technology": {
-        "label": "技术开发",
-        "desc": "关键空白技术突破，推动机械、化学、酶解回收等前沿研究落地"
+      "recycling": {
+        "label": "循环再生",
+        "desc": "机械/化学/酶解回收四大路径，推动再生产业链规模化与高值化"
       },
-      "fund": {
-        "label": "投资基金",
-        "desc": "产业投资与赋能，加速优质项目从技术验证到市场规模跨越"
+      "carbonPolicy": {
+        "label": "碳中和/政策",
+        "desc": "欧盟 CBAM、EPR 法规、中国双碳目标及全球塑料公约深度解读"
       }
     }
   },
 
   "dataEcosystem": {
-    "badge": "数据引擎 · 实时运行中",
-    "title": "产业服务体系 · 数据闭环引擎",
-    "subtitle": "六大模块持续向底层数据库汇入数据流 · ",
-    "subtitleHighlight": "数据库实时赋能各模块运作",
-    "layerTop": "顶层 · 战略与传播",
-    "layerMid": "中层 · 连接与赋能",
-    "layerBase": "基石层 · 数据沉淀与反哺",
-    "dbTitle": "底层数据库",
+    "badge": "知识引擎 · 实时运行中",
+    "title": "六大支柱 · 产业知识闭环引擎",
+    "subtitle": "六大支柱持续向产业知识中枢汇入数据流 · ",
+    "subtitleHighlight": "知识中枢实时赋能产业决策与情报分析",
+    "layerTop": "产业两翼 · 装备与治理",
+    "layerMid": "核心产业链 · 四大支柱",
+    "layerBase": "知识中枢 · 数据沉淀与反哺",
+    "dbTitle": "产业知识中枢",
     "dbBadge": "数据基石层",
-    "dbDesc": "中国塑料循环利用行业底层知识图谱 · 汇聚六大模块实时数据流 · 反向赋能产业运作与决策",
+    "dbDesc": "可持续塑料产业链底层知识图谱 · 汇聚六大支柱实时情报数据 · 反向赋能产业运作与可持续决策",
     "dbStatus": "运行中",
     "dbStreams": "6 路数据流 · 持续沉淀",
-    "mobileAccumulating": "数据持续沉淀",
-    "mobileDbDesc": "行业底层知识图谱 · 数据基石层",
+    "mobileAccumulating": "情报持续沉淀",
+    "mobileDbDesc": "产业知识图谱 · 可持续塑料链",
     "nodes": {
-      "thinkTank": { "label": "智库", "tag": "运营服务" },
-      "news": { "label": "行业媒体", "tag": "运营服务" },
-      "events": { "label": "会展平台", "tag": "运营服务" },
-      "association": { "label": "行业协会", "tag": "运营服务" },
-      "technology": { "label": "技术开发", "tag": "攻坚支撑" },
-      "fund": { "label": "投资基金", "tag": "攻坚支撑" }
+      "machinery":    { "label": "绿色机械",   "tag": "核心支柱" },
+      "materials":    { "label": "可持续材料", "tag": "核心支柱" },
+      "additives":    { "label": "环保助剂",   "tag": "核心支柱" },
+      "auxiliaries":  { "label": "绿色辅料",   "tag": "核心支柱" },
+      "recycling":    { "label": "循环再生",   "tag": "核心支柱" },
+      "carbonPolicy": { "label": "碳中和/政策","tag": "政策支柱" }
     }
   },
 
   "footer": {
-    "brand": "循环塑料产业平台",
-    "brandDesc": "专注塑料循环利用行业多维度信息服务，覆盖装备、助剂、模具、成型工艺、材料等实体维度，以及汽车塑料、消费电子、包装材料等应用领域。",
-    "mission": "致力于推动中国塑料循环经济发展",
+    "brand": "可持续塑料产业链平台",
+    "brandDesc": "专注塑料产业链可持续发展情报服务，覆盖绿色机械、可持续材料、环保助剂、绿色辅料、循环再生与碳中和政策六大核心支柱，服务全球塑料产业链参与者。",
+    "mission": "驱动塑料产业链可持续发展新范式",
     "quickNav": "快速导航",
-    "hotTags": "热门标签",
+    "hotTags": "热门话题",
     "links": {
-      "price": "价格行情",
-      "policy": "政策法规",
-      "recycling": "回收技术",
-      "corporate": "企业动态",
-      "circular": "循环经济"
+      "machinery": "绿色机械动态",
+      "materials": "可持续材料",
+      "recycling": "循环再生技术",
+      "carbonPolicy": "碳中和/政策",
+      "additives": "环保助剂"
     },
-    "copyright": "© 2025 中国塑料循环利用产业服务平台. All rights reserved.",
-    "tagline": "绿色循环 · 可持续未来"
+    "copyright": "© 2025 可持续塑料产业链平台. All rights reserved.",
+    "tagline": "绿色产业链 · 可持续未来"
   },
 
   "common": {
@@ -259,7 +270,7 @@
       "hero": {
         "badge": "产业联盟 · 互信生态",
         "title": "行业协会",
-        "subtitle": "汇聚塑料回收产业链核心企业，通过标准制定、技术交流、政策倡导，构建产业互信网络",
+        "subtitle": "汇聚可持续塑料产业链核心企业，通过标准制定、技术交流、政策倡导，构建产业互信网络",
         "stat1Num": "200+",
         "stat1Label": "核心成员单位",
         "stat2Num": "3",
@@ -399,7 +410,7 @@
       "hero": {
         "badge": "投资赋能 · 产业加速",
         "title": "产业基金",
-        "subtitle": "聚焦塑料循环产业链关键节点，为具备技术壁垒与规模化潜力的优质项目提供全周期投资赋能",
+        "subtitle": "聚焦可持续塑料产业链关键节点，为具备技术壁垒与规模化潜力的优质项目提供全周期投资赋能",
         "stat1Num": "5 亿+",
         "stat1Label": "管理规模",
         "stat2Num": "31%",
@@ -417,7 +428,7 @@
         "mechanical": "机械回收",
         "chemical": "化学回收",
         "sorting": "智能分选",
-        "materials": "再生材料"
+        "materials": "可持续材料"
       },
       "actions": {
         "applyFunding": "申请融资",
@@ -442,7 +453,7 @@
       "hero": {
         "badge": "精选推送 · 每日必读",
         "title": "每日情报",
-        "subtitle": "精选全球塑料回收产业最重要动态，每日直达您的邮件或企业微信"
+        "subtitle": "精选全球可持续塑料产业最重要动态，按支柱分类，每日直达您的邮件或企业微信"
       },
       "channels": {
         "email": "邮件订阅",

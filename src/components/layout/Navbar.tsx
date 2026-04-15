@@ -7,6 +7,7 @@ import {
   Search, Menu, X, ChevronDown, Bell, Languages, Check,
   LayoutDashboard, User, LogOut, Settings,
   Newspaper, LayoutGrid, Zap, BookOpen, Users, Calendar, Cpu, TrendingUp, Database,
+  Settings2, Layers, FlaskConical, Box, RefreshCw, BarChart3,
 } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -18,24 +19,37 @@ import { cn } from '@/lib/utils'
 import { useRouter, usePathname } from 'next/navigation'
 import type { NavDictionary } from '@/i18n/types'
 
-// ── Default Chinese strings (used when no dict prop provided) ─────────────────
+// ── Default Chinese strings ───────────────────────────────────────────────────
 
 const ZH: NavDictionary = {
-  logo: '循环塑料产业平台',
-  discover: '发现资源',
-  services: '行业服务',
-  database: '数据基石',
+  logo: '可持续塑料产业链平台',
+  intelligence: '情报中心',
+  pillars: '六大支柱',
+  services: '服务平台',
+  database: '数据中台',
   subscribe: '订阅情报',
   login: '登录',
   register: '注册',
-  searchPlaceholder: '搜索资讯、标签...',
-  news: '行业媒体',
-  newsDesc: '实时资讯聚合，多维标签检索',
+  searchPlaceholder: '搜索支柱、资讯、企业...',
+  news: '产业资讯',
+  newsDesc: '六大支柱实时情报，多维地区筛选',
   explore: '产业地图',
-  exploreDesc: 'X-Y轴标签体系，精准浏览行业坐标',
+  exploreDesc: '企业坐标系，精准定位产业链节点',
   daily: '每日情报',
   dailyDesc: '精选推送，直达邮件与企业微信',
   dailyBadge: '热门',
+  machinery: '绿色机械',
+  machineryDesc: '注塑、挤出、造粒等绿色装备动态',
+  materials: '可持续材料',
+  materialsDesc: '生物基、PCR、可降解材料研究前沿',
+  additives: '环保助剂',
+  additivesDesc: '抗氧化剂、稳定剂、生物基助剂体系',
+  auxiliaries: '绿色辅料',
+  auxiliariesDesc: '模具、薄膜、包装辅助材料与工艺',
+  recycling: '循环再生',
+  recyclingDesc: '机械/化学/酶解回收技术与产业化',
+  carbonPolicy: '碳中和/政策',
+  carbonPolicyDesc: 'ESG、碳关税、欧盟法规、碳中和路线',
   thinkTank: '智库研究',
   thinkTankDesc: '战略洞察与深度研究报告',
   association: '行业协会',
@@ -46,8 +60,6 @@ const ZH: NavDictionary = {
   technologyDesc: '关键技术研发与产业化落地',
   fund: '产业基金',
   fundDesc: '投融资赋能与产业加速',
-  operations: '运营服务',
-  support: '攻坚支撑',
   dashboard: '我的看板',
   profile: '个人中心',
   adminPanel: '后台管理',
@@ -94,10 +106,11 @@ function DropdownRow({ item }: { item: NavItem }) {
 }
 
 function NavDropdown({
-  label, children,
+  label, children, wide = false,
 }: {
   label: string
   children: React.ReactNode
+  wide?: boolean
 }) {
   const [open, setOpen] = useState(false)
   const closeTimer = useRef<ReturnType<typeof setTimeout>>()
@@ -123,9 +136,10 @@ function NavDropdown({
 
       <div
         className={cn(
-          'absolute top-full left-0 mt-2.5 w-[280px] z-50 rounded-3xl p-2',
+          'absolute top-full left-0 mt-2.5 z-50 rounded-3xl p-2',
           'bg-white border border-slate-200/80',
           'transition-all duration-[180ms] origin-top-left',
+          wide ? 'w-[420px]' : 'w-[280px]',
           open
             ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 scale-[0.97] -translate-y-1.5 pointer-events-none',
@@ -137,6 +151,37 @@ function NavDropdown({
         {children}
       </div>
     </div>
+  )
+}
+
+// ── Pillar dropdown row (2-col grid) ──────────────────────────────────────────
+
+interface PillarItem {
+  href: string
+  label: string
+  desc: string
+  icon: React.ElementType
+  iconBg: string
+  iconColor: string
+}
+
+function PillarRow({ item }: { item: PillarItem }) {
+  const Icon = item.icon
+  return (
+    <Link
+      href={item.href}
+      className="group flex items-start gap-2.5 px-2.5 py-2 rounded-2xl hover:bg-slate-50 active:bg-slate-100 transition-colors duration-150"
+    >
+      <div className={cn('mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 group-hover:scale-105', item.iconBg)}>
+        <Icon className={cn('h-3.5 w-3.5', item.iconColor)} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <span className="block text-[12.5px] font-semibold text-slate-800 group-hover:text-emerald-700 transition-colors duration-150 leading-none mb-0.5">
+          {item.label}
+        </span>
+        <p className="text-[11px] text-slate-400 leading-snug">{item.desc}</p>
+      </div>
+    </Link>
   )
 }
 
@@ -154,7 +199,6 @@ function LangSwitcher({ lng }: { lng?: string }) {
   const pathname = usePathname()
   const current = lng ?? 'zh'
 
-  // Close on outside click
   useEffect(() => {
     if (!open) return
     function onDown(e: MouseEvent) {
@@ -166,17 +210,13 @@ function LangSwitcher({ lng }: { lng?: string }) {
 
   function switchTo(target: string) {
     setOpen(false)
-    // Persist preference in a long-lived cookie (read by middleware)
     document.cookie = `NEXT_LOCALE=${target}; path=/; max-age=31536000; SameSite=Lax`
-
-    // Navigate to equivalent path in the new locale
     const segs = pathname.split('/')
     const firstSeg = segs[1]
     if (firstSeg === 'zh' || firstSeg === 'en') {
       segs[1] = target
       router.push(segs.join('/') || `/${target}`)
     } else {
-      // Non-lng path (e.g. /news) — jump to lng homepage
       router.push(`/${target}`)
     }
   }
@@ -208,7 +248,6 @@ function LangSwitcher({ lng }: { lng?: string }) {
         />
       </button>
 
-      {/* Dropdown panel */}
       <div
         className={cn(
           'absolute right-0 top-full mt-2 w-[130px] z-50',
@@ -290,7 +329,6 @@ export default function Navbar({ dict, lng }: NavbarProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  // Resolve hrefs — prefix with /[lng]/ only when lng is explicitly provided
   const href = (path: string) => (lng ? `/${lng}${path}` : path)
 
   useEffect(() => {
@@ -309,23 +347,30 @@ export default function Navbar({ dict, lng }: NavbarProps) {
     setSearchQuery('')
   }
 
-  // ── Nav link data (built from dict) ────────────────────────────────────────
-
-  const discoverLinks: NavItem[] = [
-    { href: href('/news'),      label: t.news,      icon: Newspaper,  desc: t.newsDesc,    iconBg: 'bg-emerald-100', iconColor: 'text-emerald-600' },
-    { href: href('/explore'),   label: t.explore,   icon: LayoutGrid, desc: t.exploreDesc, iconBg: 'bg-cyan-100',    iconColor: 'text-cyan-700' },
-    { href: href('/subscribe'), label: t.daily,     icon: Zap,        desc: t.dailyDesc,   iconBg: 'bg-amber-100',   iconColor: 'text-amber-600', badge: t.dailyBadge },
+  // ── Intelligence links ──────────────────────────────────────────────────────
+  const intelligenceLinks: NavItem[] = [
+    { href: href('/news'),      label: t.news,    icon: Newspaper,  desc: t.newsDesc,    iconBg: 'bg-emerald-100', iconColor: 'text-emerald-600' },
+    { href: href('/explore'),   label: t.explore, icon: LayoutGrid, desc: t.exploreDesc, iconBg: 'bg-cyan-100',    iconColor: 'text-cyan-700' },
+    { href: href('/subscribe'), label: t.daily,   icon: Zap,        desc: t.dailyDesc,   iconBg: 'bg-amber-100',   iconColor: 'text-amber-600', badge: t.dailyBadge },
   ]
 
-  const serviceOperationLinks: NavItem[] = [
-    { href: href('/think-tank'),  label: t.thinkTank,   icon: BookOpen, desc: t.thinkTankDesc,   iconBg: 'bg-cyan-100',  iconColor: 'text-cyan-700' },
-    { href: href('/association'), label: t.association, icon: Users,    desc: t.associationDesc, iconBg: 'bg-teal-100',  iconColor: 'text-teal-600' },
-    { href: href('/events'),      label: t.events,      icon: Calendar, desc: t.eventsDesc,      iconBg: 'bg-amber-100', iconColor: 'text-amber-600' },
+  // ── Six Pillars ─────────────────────────────────────────────────────────────
+  const pillarItems: PillarItem[] = [
+    { href: href('/news?pillar=machinery'),    label: t.machinery,    desc: t.machineryDesc,    icon: Settings2,   iconBg: 'bg-blue-100',    iconColor: 'text-blue-700' },
+    { href: href('/news?pillar=materials'),    label: t.materials,    desc: t.materialsDesc,    icon: Layers,      iconBg: 'bg-teal-100',    iconColor: 'text-teal-600' },
+    { href: href('/news?pillar=additives'),    label: t.additives,    desc: t.additivesDesc,    icon: FlaskConical,iconBg: 'bg-violet-100',  iconColor: 'text-violet-600' },
+    { href: href('/news?pillar=auxiliaries'),  label: t.auxiliaries,  desc: t.auxiliariesDesc,  icon: Box,         iconBg: 'bg-amber-100',   iconColor: 'text-amber-600' },
+    { href: href('/news?pillar=recycling'),    label: t.recycling,    desc: t.recyclingDesc,    icon: RefreshCw,   iconBg: 'bg-emerald-100', iconColor: 'text-emerald-600' },
+    { href: href('/news?pillar=carbonPolicy'), label: t.carbonPolicy, desc: t.carbonPolicyDesc, icon: BarChart3,   iconBg: 'bg-indigo-100',  iconColor: 'text-indigo-600' },
   ]
 
-  const serviceSupportLinks: NavItem[] = [
-    { href: href('/technology'), label: t.technology, icon: Cpu,        desc: t.technologyDesc, iconBg: 'bg-emerald-100', iconColor: 'text-emerald-600' },
-    { href: href('/fund'),       label: t.fund,       icon: TrendingUp, desc: t.fundDesc,       iconBg: 'bg-rose-100',    iconColor: 'text-rose-500' },
+  // ── Service links ───────────────────────────────────────────────────────────
+  const serviceLinks: NavItem[] = [
+    { href: href('/think-tank'),  label: t.thinkTank,   icon: BookOpen,    desc: t.thinkTankDesc,   iconBg: 'bg-cyan-100',  iconColor: 'text-cyan-700' },
+    { href: href('/association'), label: t.association, icon: Users,       desc: t.associationDesc, iconBg: 'bg-teal-100',  iconColor: 'text-teal-600' },
+    { href: href('/events'),      label: t.events,      icon: Calendar,    desc: t.eventsDesc,      iconBg: 'bg-amber-100', iconColor: 'text-amber-600' },
+    { href: href('/technology'),  label: t.technology,  icon: Cpu,         desc: t.technologyDesc,  iconBg: 'bg-emerald-100', iconColor: 'text-emerald-600' },
+    { href: href('/fund'),        label: t.fund,        icon: TrendingUp,  desc: t.fundDesc,        iconBg: 'bg-rose-100',  iconColor: 'text-rose-500' },
   ]
 
   return (
@@ -341,10 +386,10 @@ export default function Navbar({ dict, lng }: NavbarProps) {
 
         {/* ── Logo ── */}
         <Link href={href('/')} className="group flex items-center gap-2.5 flex-shrink-0">
-          <div className="h-8 w-8 rounded-2xl bg-cyan-700 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105 group-hover:rotate-[-3deg]">
-            <span className="text-white font-black text-[12px] leading-none select-none">循</span>
+          <div className="h-8 w-8 rounded-2xl bg-gradient-to-br from-emerald-600 to-cyan-700 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105 group-hover:rotate-[-3deg]">
+            <span className="text-white font-black text-[11px] leading-none select-none">绿</span>
           </div>
-          <span className="hidden sm:inline text-[14.5px] font-bold tracking-[-0.3px] text-slate-900">
+          <span className="hidden sm:inline text-[14px] font-bold tracking-[-0.3px] text-slate-900">
             {t.logo}
           </span>
         </Link>
@@ -352,32 +397,35 @@ export default function Navbar({ dict, lng }: NavbarProps) {
         {/* ── Desktop navigation ── */}
         <nav className="hidden md:flex items-center gap-0.5 flex-1 justify-center" aria-label="主导航">
 
-          <NavDropdown label={t.discover}>
-            {discoverLinks.map(item => (
+          {/* Intelligence Hub */}
+          <NavDropdown label={t.intelligence}>
+            {intelligenceLinks.map(item => (
               <DropdownRow key={item.href} item={item} />
             ))}
           </NavDropdown>
 
+          {/* Six Pillars — wide 2-col mega menu */}
+          <NavDropdown label={t.pillars} wide>
+            <div className="px-2 pt-1.5 pb-2">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.08em] px-1 mb-2">
+                {t.pillars}
+              </p>
+              <div className="grid grid-cols-2 gap-0.5">
+                {pillarItems.map(item => (
+                  <PillarRow key={item.href} item={item} />
+                ))}
+              </div>
+            </div>
+          </NavDropdown>
+
+          {/* Services */}
           <NavDropdown label={t.services}>
-            <div className="px-3 pt-1.5 pb-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.08em]">
-                {t.operations}
-              </span>
-            </div>
-            {serviceOperationLinks.map(item => (
-              <DropdownRow key={item.href} item={item} />
-            ))}
-            <div className="mx-2 my-1 border-t border-slate-100" />
-            <div className="px-3 pb-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.08em]">
-                {t.support}
-              </span>
-            </div>
-            {serviceSupportLinks.map(item => (
+            {serviceLinks.map(item => (
               <DropdownRow key={item.href} item={item} />
             ))}
           </NavDropdown>
 
+          {/* Database */}
           <Link
             href={href('/database')}
             className="flex items-center gap-1.5 px-3 py-2 text-[13.5px] font-medium rounded-xl transition-all duration-200 text-slate-600 hover:text-cyan-700 hover:bg-cyan-50"
@@ -418,7 +466,6 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             </button>
           )}
 
-          {/* Language switcher — desktop */}
           <LangSwitcher lng={lng} />
 
           <SubscribeCTA scrolled={scrolled} label={t.subscribe} className="hidden sm:flex" />
@@ -497,12 +544,11 @@ export default function Navbar({ dict, lng }: NavbarProps) {
 
               <div className="flex items-center justify-between px-5 h-16 border-b border-slate-100 flex-shrink-0">
                 <div className="flex items-center gap-2">
-                  <div className="h-7 w-7 rounded-2xl bg-cyan-700 flex items-center justify-center">
-                    <span className="text-white font-black text-[10px] select-none">循</span>
+                  <div className="h-7 w-7 rounded-2xl bg-gradient-to-br from-emerald-600 to-cyan-700 flex items-center justify-center">
+                    <span className="text-white font-black text-[10px] select-none">绿</span>
                   </div>
                   <span className="text-[13px] font-bold text-slate-900">{t.logo}</span>
                 </div>
-                {/* Language switcher — mobile sheet header */}
                 <LangSwitcher lng={lng} />
               </div>
 
@@ -521,13 +567,24 @@ export default function Navbar({ dict, lng }: NavbarProps) {
               <nav className="flex-1 overflow-y-auto px-2 py-2 space-y-0.5">
 
                 <p className="px-3 pt-3 pb-1.5 text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.1em]">
-                  {t.discover}
+                  {t.intelligence}
                 </p>
-                {discoverLinks.map(({ href: h, label, icon: Icon, iconBg, iconColor }) => (
-                  <Link
-                    key={h}
-                    href={h}
-                    onClick={() => setMobileOpen(false)}
+                {intelligenceLinks.map(({ href: h, label, icon: Icon, iconBg, iconColor }) => (
+                  <Link key={h} href={h} onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-2xl hover:bg-cyan-50 active:bg-cyan-100 transition-colors"
+                  >
+                    <div className={cn('h-7 w-7 rounded-xl flex items-center justify-center flex-shrink-0', iconBg)}>
+                      <Icon className={cn('h-3.5 w-3.5', iconColor)} />
+                    </div>
+                    <span className="text-[13px] font-medium text-slate-700">{label}</span>
+                  </Link>
+                ))}
+
+                <p className="px-3 pt-4 pb-1.5 text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.1em]">
+                  {t.pillars}
+                </p>
+                {pillarItems.map(({ href: h, label, icon: Icon, iconBg, iconColor }) => (
+                  <Link key={h} href={h} onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-3 px-3 py-2.5 rounded-2xl hover:bg-cyan-50 active:bg-cyan-100 transition-colors"
                   >
                     <div className={cn('h-7 w-7 rounded-xl flex items-center justify-center flex-shrink-0', iconBg)}>
@@ -540,11 +597,8 @@ export default function Navbar({ dict, lng }: NavbarProps) {
                 <p className="px-3 pt-4 pb-1.5 text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.1em]">
                   {t.services}
                 </p>
-                {[...serviceOperationLinks, ...serviceSupportLinks].map(({ href: h, label, icon: Icon, iconBg, iconColor }) => (
-                  <Link
-                    key={h}
-                    href={h}
-                    onClick={() => setMobileOpen(false)}
+                {serviceLinks.map(({ href: h, label, icon: Icon, iconBg, iconColor }) => (
+                  <Link key={h} href={h} onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-3 px-3 py-2.5 rounded-2xl hover:bg-cyan-50 active:bg-cyan-100 transition-colors"
                   >
                     <div className={cn('h-7 w-7 rounded-xl flex items-center justify-center flex-shrink-0', iconBg)}>

@@ -1,13 +1,14 @@
 export interface NavDictionary {
   logo: string
-  discover: string
-  services: string
+  intelligence: string    // "情报中心" — first nav group
+  pillars: string         // "六大支柱" — second nav group
+  services: string        // "服务平台" — third nav group
   database: string
   subscribe: string
   login: string
   register: string
   searchPlaceholder: string
-  // Discover sub-links
+  // Intelligence sub-links
   news: string
   newsDesc: string
   explore: string
@@ -15,21 +16,30 @@ export interface NavDictionary {
   daily: string
   dailyDesc: string
   dailyBadge: string
-  // Service operation sub-links
+  // Six Pillar sub-links
+  machinery: string
+  machineryDesc: string
+  materials: string
+  materialsDesc: string
+  additives: string
+  additivesDesc: string
+  auxiliaries: string
+  auxiliariesDesc: string
+  recycling: string
+  recyclingDesc: string
+  carbonPolicy: string
+  carbonPolicyDesc: string
+  // Service sub-links
   thinkTank: string
   thinkTankDesc: string
   association: string
   associationDesc: string
   events: string
   eventsDesc: string
-  // Service support sub-links
   technology: string
   technologyDesc: string
   fund: string
   fundDesc: string
-  // Section labels
-  operations: string
-  support: string
   // User menu
   dashboard: string
   profile: string
@@ -78,12 +88,12 @@ export interface FeaturesDictionary {
   ctaSubscribe: string
   ctaDatabase: string
   cards: {
-    news: FeatureCard
-    thinkTank: FeatureCard
-    association: FeatureCard
-    events: FeatureCard
-    technology: FeatureCard
-    fund: FeatureCard
+    machinery: FeatureCard
+    materials: FeatureCard
+    additives: FeatureCard
+    auxiliaries: FeatureCard
+    recycling: FeatureCard
+    carbonPolicy: FeatureCard
   }
 }
 
@@ -97,19 +107,19 @@ export interface SixModulesDictionary {
   title: string
   subtitle: string
   subtitleEnd: string
-  tagOperations: string
-  tagSupport: string
+  tagPrimary: string
+  tagSecondary: string
   connected: string
   bottomHint1: string
   bottomDatabase: string
   bottomHint2: string
   modules: {
-    thinkTank: ModuleEntry
-    news: ModuleEntry
-    association: ModuleEntry
-    events: ModuleEntry
-    technology: ModuleEntry
-    fund: ModuleEntry
+    machinery: ModuleEntry
+    materials: ModuleEntry
+    additives: ModuleEntry
+    auxiliaries: ModuleEntry
+    recycling: ModuleEntry
+    carbonPolicy: ModuleEntry
   }
 }
 
@@ -134,12 +144,12 @@ export interface DataEcosystemDictionary {
   mobileAccumulating: string
   mobileDbDesc: string
   nodes: {
-    thinkTank: DataNodeEntry
-    news: DataNodeEntry
-    events: DataNodeEntry
-    association: DataNodeEntry
-    technology: DataNodeEntry
-    fund: DataNodeEntry
+    machinery: DataNodeEntry
+    materials: DataNodeEntry
+    additives: DataNodeEntry
+    auxiliaries: DataNodeEntry
+    recycling: DataNodeEntry
+    carbonPolicy: DataNodeEntry
   }
 }
 
@@ -150,11 +160,11 @@ export interface FooterDictionary {
   quickNav: string
   hotTags: string
   links: {
-    price: string
-    policy: string
+    machinery: string
+    materials: string
     recycling: string
-    corporate: string
-    circular: string
+    carbonPolicy: string
+    additives: string
   }
   copyright: string
   tagline: string

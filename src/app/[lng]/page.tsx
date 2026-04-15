@@ -17,15 +17,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lng } = params
   if (lng === 'en') {
     return {
-      title: 'China Circular Plastics Industry Platform',
+      title: 'SustainPlastics Hub — Six Pillar Industry Intelligence',
       description:
-        'One-stop digital services for the plastic recycling industry — covering industry media, research, association, events, technology and fund.',
+        'Intelligence platform for the sustainable plastics industry chain — covering Green Machinery, Sustainable Materials, Eco Additives, Green Auxiliaries, Circular Recycling, and Carbon & Policy.',
     }
   }
   return {
-    title: '中国塑料循环利用产业服务平台',
+    title: '可持续塑料产业链平台 — 六大支柱情报智库',
     description:
-      '专注塑料循环利用行业多维度信息服务，覆盖装备、助剂、模具、成型工艺、材料等实体维度。',
+      '专注塑料产业链可持续发展情报服务，覆盖绿色机械、可持续材料、环保助剂、绿色辅料、循环再生与碳中和政策六大核心支柱。',
   }
 }
 

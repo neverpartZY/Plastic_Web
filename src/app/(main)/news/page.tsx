@@ -7,8 +7,8 @@ import { mapPrismaTag, groupTagsByCategory } from '@/lib/utils'
 import type { Prisma } from '@prisma/client'
 
 export const metadata: Metadata = {
-  title: '新闻列表',
-  description: '浏览塑料回收产业最新资讯，支持按物料、地区、主题多维筛选。',
+  title: '产业资讯 — 六大支柱情报中心',
+  description: '按绿色机械、可持续材料、环保助剂、绿色辅料、循环再生、碳中和/政策六大支柱筛选，覆盖全球各地区产业情报。',
 }
 
 interface SearchParams {
@@ -16,6 +16,8 @@ interface SearchParams {
   sort?: string
   page?: string
   q?: string
+  pillar?: string
+  region?: string
 }
 
 async function getNewsPageData(searchParams: SearchParams) {
@@ -23,6 +25,8 @@ async function getNewsPageData(searchParams: SearchParams) {
   const sort = searchParams.sort ?? 'latest'
   const page = Math.max(1, parseInt(searchParams.page ?? '1'))
   const q = searchParams.q ?? ''
+  const pillar = searchParams.pillar ?? ''
+  const region = searchParams.region ?? ''
 
   const where: Prisma.NewsWhereInput = {
     isPublished: true,
@@ -85,6 +89,8 @@ async function getNewsPageData(searchParams: SearchParams) {
     initialTags: tagSlugs,
     initialSort: sort,
     initialQ: q,
+    initialPillar: pillar,
+    initialRegion: region,
   }
 }
 
@@ -93,7 +99,7 @@ export default async function NewsPage({
 }: {
   searchParams: SearchParams
 }) {
-  const { initialData, tagsByCategory, initialTags, initialSort, initialQ } =
+  const { initialData, tagsByCategory, initialTags, initialSort, initialQ, initialPillar, initialRegion } =
     await getNewsPageData(searchParams)
 
   return (
@@ -110,21 +116,21 @@ export default async function NewsPage({
         <div className="relative z-10 container max-w-5xl">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 mb-5 text-[13px] text-slate-500">
-            <span>发现资源</span>
+            <span>情报中心</span>
             <span>/</span>
-            <span className="text-emerald-600 font-medium">行业媒体</span>
+            <span className="text-emerald-600 font-medium">产业资讯</span>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1 mb-5 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 text-xs font-semibold tracking-wide">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            实时聚合 · 多维检索
+          <div className="inline-flex items-center gap-2 px-3 py-1 mb-5 rounded-full border border-cyan-200 bg-cyan-50 text-cyan-700 text-xs font-semibold tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+            六大支柱 · 全球地区 · 实时聚合
           </div>
 
           <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight">
-            行业媒体资讯
+            产业情报中心
           </h1>
           <p className="text-slate-500 text-base max-w-xl leading-relaxed">
-            聚合全球塑料回收产业动态，覆盖价格行情、政策法规、企业动态与技术突破
+            按绿色机械、可持续材料、环保助剂等六大支柱分类，多地区视野覆盖全球可持续塑料产业动态
           </p>
 
           {/* Stats row */}
@@ -153,6 +159,8 @@ export default async function NewsPage({
           initialTags={initialTags}
           initialSort={initialSort}
           initialQ={initialQ}
+          initialPillar={initialPillar}
+          initialRegion={initialRegion}
         />
       </Suspense>
     </div>

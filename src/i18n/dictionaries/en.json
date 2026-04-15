@@ -1,20 +1,33 @@
 {
   "nav": {
-    "logo": "Circular Plastics Hub",
-    "discover": "Discover",
+    "logo": "SustainPlastics Hub",
+    "intelligence": "Intelligence",
+    "pillars": "Six Pillars",
     "services": "Services",
-    "database": "Database",
+    "database": "Data Hub",
     "subscribe": "Subscribe",
     "login": "Sign In",
     "register": "Sign Up",
-    "searchPlaceholder": "Search news, tags...",
-    "news": "Industry Media",
-    "newsDesc": "Real-time news aggregation with multi-dimensional tag filtering",
+    "searchPlaceholder": "Search pillars, news, companies...",
+    "news": "Industry Intel",
+    "newsDesc": "Real-time intelligence across six pillars with region filters",
     "explore": "Industry Map",
-    "exploreDesc": "X-Y axis taxonomy for precise company discovery",
+    "exploreDesc": "Company taxonomy for precise value-chain discovery",
     "daily": "Daily Intel",
-    "dailyDesc": "Curated dispatches via email and enterprise WeChat",
+    "dailyDesc": "Curated dispatches via email and enterprise messenger",
     "dailyBadge": "Hot",
+    "machinery": "Green Machinery",
+    "machineryDesc": "Injection, extrusion, granulation equipment upgrades",
+    "materials": "Sustainable Materials",
+    "materialsDesc": "Bio-based, PCR, and biodegradable polymer frontiers",
+    "additives": "Eco Additives",
+    "additivesDesc": "Bio-based plasticizers, stabilizers, halogen-free flame retardants",
+    "auxiliaries": "Green Auxiliaries",
+    "auxiliariesDesc": "Molds, functional films, green packaging auxiliaries",
+    "recycling": "Circular Recycling",
+    "recyclingDesc": "Mechanical, chemical, enzymatic recycling technologies",
+    "carbonPolicy": "Carbon & Policy",
+    "carbonPolicyDesc": "CBAM, EPR, dual-carbon targets, global plastics treaty",
     "thinkTank": "Think Tank & Research",
     "thinkTankDesc": "Strategic insights and in-depth research reports",
     "association": "Association",
@@ -25,8 +38,6 @@
     "technologyDesc": "Key technology development and industrialization",
     "fund": "Industrial Capital & Funds",
     "fundDesc": "Investment enablement and industry acceleration",
-    "operations": "Operations",
-    "support": "Support",
     "dashboard": "My Dashboard",
     "profile": "My Profile",
     "adminPanel": "Admin Panel",
@@ -34,167 +45,167 @@
   },
 
   "hero": {
-    "badge": "6-in-1 Industry Service Ecosystem",
-    "headline1": "Building China's Plastic Recycling",
-    "headline2": "Digital Infrastructure",
-    "subtitle": "Closed-loop services steering the industry from",
-    "subtitleBold1": "experience-driven",
-    "subtitleBold2": "data-driven",
-    "subtitleConnector": "to",
-    "subtitleEnd": "decision-making",
-    "searchPlaceholder": "Search news, companies, technology trends...",
+    "badge": "Six Industry Pillars · Sustainable Chain Intelligence",
+    "headline1": "Redefining the Plastics Industry",
+    "headline2": "Sustainable Future Paradigm",
+    "subtitle": "From green machinery to carbon policy, across",
+    "subtitleBold1": "six core pillars",
+    "subtitleBold2": "global perspective",
+    "subtitleConnector": "with a",
+    "subtitleEnd": "reshaping industry intelligence",
+    "searchPlaceholder": "Search pillar trends, companies, technology...",
     "searchBtn": "Search",
-    "ctaPrimary": "Explore Platform",
-    "ctaSecondary": "Learn More",
-    "stat1Num": "6+",
-    "stat1Label": "Core Service Modules",
-    "stat2Num": "2,400+",
-    "stat2Label": "Tracked Companies",
-    "stat3Num": "Daily",
-    "stat3Label": "Industry Intelligence"
+    "ctaPrimary": "Explore Intelligence Hub",
+    "ctaSecondary": "Discover Six Pillars",
+    "stat1Num": "6",
+    "stat1Label": "Industry Pillars",
+    "stat2Num": "15,000+",
+    "stat2Label": "Companies Tracked",
+    "stat3Num": "Global",
+    "stat3Label": "Multi-Region Coverage"
   },
 
   "features": {
-    "badge": "6-in-1 Industry Service Ecosystem",
-    "title": "Full Coverage. End-to-End Enablement.",
-    "subtitle": "From real-time intelligence to tech breakthroughs, from industry synergy to capital acceleration — ",
-    "subtitleBold": "6 core modules",
-    "subtitleEnd": "form a closed loop driving China's plastics recycling industry into the digital era",
+    "badge": "Six Industry Pillars · Full-Chain Coverage",
+    "title": "Full-Chain Layout. Sustainability-Driven.",
+    "subtitle": "From green manufacturing equipment to carbon neutrality policy — ",
+    "subtitleBold": "six core pillars",
+    "subtitleEnd": "comprehensively cover the key nodes of sustainable plastics industry development",
     "learnMore": "Learn More",
-    "ctaQuestion": "Not sure which module fits best? Let's talk about your needs directly.",
+    "ctaQuestion": "Want deeper intelligence on a specific pillar? Let's connect directly.",
     "ctaSubscribe": "Subscribe to Daily Intel",
-    "ctaDatabase": "Explore the Database",
+    "ctaDatabase": "Explore Data Hub",
     "cards": {
-      "news": {
-        "label": "Industry Media",
-        "tagline": "Real-Time News · Multi-Dimensional Search",
-        "desc": "Aggregates leading domestic and global plastics recycling media. Multi-dimensional tag filters let you stay on top of the entire industry in just 5 minutes a day.",
-        "bullet1": "Live feed — 200+ updates daily",
-        "bullet2": "Covers mechanical/chemical recycling, ESG, regulations & more",
-        "bullet3": "Smart tags + full-text search"
+      "machinery": {
+        "label": "Green Machinery",
+        "tagline": "Equipment Upgrade · Green Manufacturing",
+        "desc": "Covers the full range of green plastics processing equipment including injection molding, extrusion, film blowing, and granulation — tracking energy efficiency upgrades and smart manufacturing trends.",
+        "bullet1": "New energy efficiency standards for injection/extrusion/film equipment",
+        "bullet2": "Smart transformation and Industrial IoT integration",
+        "bullet3": "Global leading equipment manufacturer dynamics"
       },
-      "thinkTank": {
-        "label": "Think Tank & Research",
-        "tagline": "Strategic Insights · In-Depth Reports",
-        "desc": "Co-authored with leading universities and industry experts, delivering forward-looking research on technology roadmaps, market dynamics, and policy analysis.",
-        "bullet1": "4+ industry reports published monthly",
-        "bullet2": "White papers, technical guides, compliance handbooks",
-        "bullet3": "Priority download access for members"
+      "materials": {
+        "label": "Sustainable Materials",
+        "tagline": "Green Feedstock · Material Innovation",
+        "desc": "Focused on bio-based plastics, PCR recycled materials, biodegradable polymers, and high-performance sustainable resins — tracking the latest breakthroughs in materials science.",
+        "bullet1": "Bio-based PLA/PHA/PBS R&D advances",
+        "bullet2": "PCR recycled material quality standards and certification",
+        "bullet3": "Biodegradable material regulations and market progress"
       },
-      "association": {
-        "label": "Association",
-        "tagline": "Industry Alliance · Trust Ecosystem",
-        "desc": "Unites 200+ core enterprises across the plastics recycling value chain. Standard-setting, knowledge exchange, and policy advocacy build a trusted industry network.",
-        "bullet1": "Director / Member / Observer tier system",
-        "bullet2": "Annual summit participation & standard-setting",
-        "bullet3": "Exclusive matchmaking & brand exposure"
+      "additives": {
+        "label": "Eco Additives",
+        "tagline": "Formula Innovation · Green Chemistry",
+        "desc": "Deep coverage of eco-friendly additive systems including antioxidants, thermal stabilizers, and bio-based plasticizers — supporting green formulation transformation.",
+        "bullet1": "Heavy-metal-free stabilizer alternatives",
+        "bullet2": "Bio-based plasticizers and halogen-free flame retardants",
+        "bullet3": "REACH/RoHS compliant additive trends"
       },
-      "events": {
-        "label": "Events & Exhibitions",
-        "tagline": "Summits · Exhibitions · Workshops",
-        "desc": "Spanning industry summits, professional exhibitions, and hands-on workshops — bridging supply and demand for one-stop business development and knowledge acquisition.",
-        "bullet1": "12+ Major Annual Events",
-        "bullet2": "Across 12 cities including Beijing, Shanghai, Guangzhou",
-        "bullet3": "Live streaming + post-event resource sharing"
+      "auxiliaries": {
+        "label": "Green Auxiliaries",
+        "tagline": "Auxiliary Upgrade · Process Optimization",
+        "desc": "Focused on mold technology, functional films, green packaging auxiliaries, and precision molding materials — enabling full-process carbon reduction across production.",
+        "bullet1": "High-efficiency cooling and hot-runner mold technology",
+        "bullet2": "Recyclable functional films and green packaging",
+        "bullet3": "Mold steel and surface treatment innovations"
       },
-      "technology": {
-        "label": "Tech R&D & Innovation",
-        "tagline": "Key Breakthroughs · Industrial Transfer",
-        "desc": "Focused on mechanical recycling, chemical recycling, enzymatic degradation, and intelligent sorting — accelerating frontier R&D from lab to production line.",
-        "bullet1": "Partnered with 12 universities & research institutes",
-        "bullet2": "Full progress visualization for active projects",
-        "bullet3": "Open calls for R&D partners & joint grant applications"
+      "recycling": {
+        "label": "Circular Recycling",
+        "tagline": "Closed-Loop Economy · Technology Breakthroughs",
+        "desc": "Systematically tracks mechanical, chemical, enzymatic, and intelligent sorting pathways — driving scale-up and value upgrading of the recycled materials industry chain.",
+        "bullet1": "Chemical recycling (depolymerization/pyrolysis) latest capacity",
+        "bullet2": "AI-powered intelligent sorting equipment advances",
+        "bullet3": "Recycled material pricing and supply-demand dynamics"
       },
-      "fund": {
-        "label": "Industrial Capital & Funds",
-        "tagline": "Investment Enablement · Industry Acceleration",
-        "desc": "Targeting key nodes in the plastics circular economy value chain, providing full-cycle investment support for high-potential projects with defensible technology moats.",
-        "bullet1": "AUM 500M+ · Average IRR 31%",
-        "bullet2": "Coverage from Angel to Series B",
-        "bullet3": "Preliminary assessment completed within 7 business days"
+      "carbonPolicy": {
+        "label": "Carbon & Policy",
+        "tagline": "Policy-Driven · ESG Compliance",
+        "desc": "In-depth analysis of EU CBAM, EPR regulations, China's dual-carbon targets, and the Global Plastics Treaty — providing intelligence support for corporate ESG compliance.",
+        "bullet1": "EU CBAM carbon border adjustment mechanism rollout",
+        "bullet2": "China's dual-carbon targets and plastics industry roadmap",
+        "bullet3": "Global Plastics Treaty negotiations and corporate response strategies"
       }
     }
   },
 
   "sixModules": {
-    "badge": "Six Modules · Data Closed Loop",
-    "title": "Every Module Feeds the Database.",
-    "subtitle": "Six business pillars continuously channel industry data into the core database, which in turn powers each module — ",
-    "subtitleEnd": "a self-reinforcing digital ecosystem",
-    "tagOperations": "Operations",
-    "tagSupport": "Support",
-    "connected": "Data connected to core database",
-    "bottomHint1": "Data from all six modules flows into the",
-    "bottomDatabase": "Core Database",
-    "bottomHint2": ", forming an industry-wide knowledge graph",
+    "badge": "Six Pillars · Data Closed Loop",
+    "title": "Every Pillar Feeds the Knowledge Hub.",
+    "subtitle": "Six industry pillars continuously channel intelligence into the knowledge hub, which in turn powers each pillar — ",
+    "subtitleEnd": "a self-reinforcing sustainable industry digital ecosystem",
+    "tagPrimary": "Core Pillar",
+    "tagSecondary": "Policy Pillar",
+    "connected": "Data connected to industry knowledge hub",
+    "bottomHint1": "Intelligence from all six pillars flows into the",
+    "bottomDatabase": "Industry Knowledge Hub",
+    "bottomHint2": ", forming a sustainable plastics industry knowledge graph",
     "modules": {
-      "thinkTank": {
-        "label": "Think Tank",
-        "desc": "Industry research and strategic insights providing quantitative evidence for policy analysis and business decision-making"
+      "machinery": {
+        "label": "Green Machinery",
+        "desc": "Equipment energy efficiency upgrades and smart manufacturing transformation — tracking the latest green manufacturing standards"
       },
-      "news": {
-        "label": "Industry Media",
-        "desc": "News aggregation and dissemination covering price trends, regulations, and corporate developments across all dimensions"
+      "materials": {
+        "label": "Sustainable Materials",
+        "desc": "Bio-based, PCR recycled materials, and biodegradable polymer frontiers — covering material certification and standards"
       },
-      "association": {
-        "label": "Association",
-        "desc": "Organizational connectivity and collaboration, building a trust-based ecosystem across the industry value chain"
+      "additives": {
+        "label": "Eco Additives",
+        "desc": "Heavy-metal-free stabilizers, bio-based plasticizers, halogen-free flame retardants — the green chemistry additive ecosystem"
       },
-      "events": {
-        "label": "Events & Expos",
-        "desc": "Exhibition and event hub bridging supply and demand to facilitate efficient flow of industry resources"
+      "auxiliaries": {
+        "label": "Green Auxiliaries",
+        "desc": "Mold technology, functional films, and green packaging auxiliaries — enabling full-process carbon reduction"
       },
-      "technology": {
-        "label": "Tech Development",
-        "desc": "Breaking critical technology gaps, advancing frontier R&D in mechanical, chemical, and enzymatic recycling"
+      "recycling": {
+        "label": "Circular Recycling",
+        "desc": "Mechanical, chemical, enzymatic, and AI sorting pathways — driving scale-up and value upgrading of the recycling industry chain"
       },
-      "fund": {
-        "label": "Investment Fund",
-        "desc": "Industry investment and enablement, accelerating high-quality projects from technology validation to market scale"
+      "carbonPolicy": {
+        "label": "Carbon & Policy",
+        "desc": "EU CBAM, EPR regulations, China's dual-carbon targets, and the Global Plastics Treaty — in-depth policy intelligence"
       }
     }
   },
 
   "dataEcosystem": {
-    "badge": "Data Engine · Running in Real Time",
-    "title": "Industry Service Ecosystem · Data Closed Loop Engine",
-    "subtitle": "Six modules continuously channel data into the core database · ",
-    "subtitleHighlight": "Database empowers every module in real time",
-    "layerTop": "Top Layer · Strategy & Communication",
-    "layerMid": "Middle Layer · Connection & Enablement",
-    "layerBase": "Foundation Layer · Data Accumulation & Feedback",
-    "dbTitle": "Core Database",
+    "badge": "Knowledge Engine · Running in Real Time",
+    "title": "Six Pillars · Industry Knowledge Closed-Loop Engine",
+    "subtitle": "Six pillars continuously channel data into the industry knowledge hub · ",
+    "subtitleHighlight": "Knowledge hub empowers industry decisions in real time",
+    "layerTop": "Industry Wings · Equipment & Governance",
+    "layerMid": "Core Value Chain · Four Pillars",
+    "layerBase": "Knowledge Hub · Data Accumulation & Feedback",
+    "dbTitle": "Industry Knowledge Hub",
     "dbBadge": "Data Foundation Layer",
-    "dbDesc": "China's plastics recycling industry knowledge graph · Aggregating real-time data from six modules · Empowering industry operations and decision-making",
+    "dbDesc": "Sustainable plastics industry chain knowledge graph · Aggregating real-time intelligence from six pillars · Empowering industry operations and sustainable decision-making",
     "dbStatus": "Live",
     "dbStreams": "6 data streams · Continuously accumulating",
-    "mobileAccumulating": "Data accumulating",
-    "mobileDbDesc": "Industry knowledge graph · Data foundation layer",
+    "mobileAccumulating": "Intelligence accumulating",
+    "mobileDbDesc": "Industry knowledge graph · Sustainable plastics chain",
     "nodes": {
-      "thinkTank": { "label": "Think Tank", "tag": "Operations" },
-      "news": { "label": "Industry Media", "tag": "Operations" },
-      "events": { "label": "Events & Expos", "tag": "Operations" },
-      "association": { "label": "Association", "tag": "Operations" },
-      "technology": { "label": "Tech Development", "tag": "Support" },
-      "fund": { "label": "Investment Fund", "tag": "Support" }
+      "machinery":    { "label": "Green Machinery",      "tag": "Core Pillar" },
+      "materials":    { "label": "Sustainable Materials", "tag": "Core Pillar" },
+      "additives":    { "label": "Eco Additives",         "tag": "Core Pillar" },
+      "auxiliaries":  { "label": "Green Auxiliaries",     "tag": "Core Pillar" },
+      "recycling":    { "label": "Circular Recycling",    "tag": "Core Pillar" },
+      "carbonPolicy": { "label": "Carbon & Policy",       "tag": "Policy Pillar" }
     }
   },
 
   "footer": {
-    "brand": "Circular Plastics Hub",
-    "brandDesc": "Dedicated multi-dimensional information services for the plastics recycling industry, covering equipment, additives, molds, processing technologies, and materials — as well as application sectors including automotive plastics, consumer electronics, and packaging.",
-    "mission": "Committed to advancing China's circular plastics economy",
+    "brand": "SustainPlastics Hub",
+    "brandDesc": "Dedicated intelligence services for the sustainable plastics industry chain — covering Green Machinery, Sustainable Materials, Eco Additives, Green Auxiliaries, Circular Recycling, and Carbon & Policy across six core pillars.",
+    "mission": "Driving a new paradigm for sustainable plastics industry chains",
     "quickNav": "Quick Navigation",
     "hotTags": "Hot Topics",
     "links": {
-      "price": "Price Trends",
-      "policy": "Regulations",
-      "recycling": "Recycling Tech",
-      "corporate": "Corporate News",
-      "circular": "Circular Economy"
+      "machinery": "Green Machinery Trends",
+      "materials": "Sustainable Materials",
+      "recycling": "Circular Recycling Tech",
+      "carbonPolicy": "Carbon & Policy",
+      "additives": "Eco Additives"
     },
-    "copyright": "© 2025 China Plastics Recycling Industry Service Platform. All rights reserved.",
-    "tagline": "Green Circular Economy · Sustainable Future"
+    "copyright": "© 2025 SustainPlastics Hub. All rights reserved.",
+    "tagline": "Green Industry Chain · Sustainable Future"
   },
 
   "common": {
@@ -259,7 +270,7 @@
       "hero": {
         "badge": "Industry Alliance · Trust Ecosystem",
         "title": "Association",
-        "subtitle": "Uniting core enterprises across the plastics recycling value chain through standard-setting, knowledge exchange, and policy advocacy",
+        "subtitle": "Uniting core enterprises across the sustainable plastics value chain through standard-setting, knowledge exchange, and policy advocacy",
         "stat1Num": "200+",
         "stat1Label": "Member Organizations",
         "stat2Num": "3",
@@ -399,7 +410,7 @@
       "hero": {
         "badge": "Investment Enablement · Industry Acceleration",
         "title": "Industrial Capital & Funds",
-        "subtitle": "Targeting key nodes in the plastics circular economy, providing full-cycle investment support for high-potential projects with defensible technology moats",
+        "subtitle": "Targeting key nodes in the sustainable plastics industry chain, providing full-cycle investment support for high-potential projects with defensible technology moats",
         "stat1Num": "AUM 500M+",
         "stat1Label": "Assets Under Management",
         "stat2Num": "31%",
@@ -417,7 +428,7 @@
         "mechanical": "Mechanical Recycling",
         "chemical": "Chemical Recycling",
         "sorting": "Intelligent Sorting",
-        "materials": "Recycled Materials"
+        "materials": "Sustainable Materials"
       },
       "actions": {
         "applyFunding": "Apply for Funding",
@@ -442,7 +453,7 @@
       "hero": {
         "badge": "Curated · Daily Essential",
         "title": "Daily Intel",
-        "subtitle": "The most important updates in global plastics recycling, delivered to your inbox or enterprise messenger every day"
+        "subtitle": "The most important updates across the sustainable plastics industry, organized by pillar, delivered to your inbox every day"
       },
       "channels": {
         "email": "Email",

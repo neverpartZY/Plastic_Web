@@ -2,29 +2,39 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, ArrowRight, Waves, Recycle, Globe } from 'lucide-react'
+import { Search, ArrowRight, Settings2, Layers, FlaskConical, Box, RefreshCw, BarChart3 } from 'lucide-react'
 import type { HeroDictionary } from '@/i18n/types'
 
 const ZH: HeroDictionary = {
-  badge: '6位1体产业服务体系',
-  headline1: '构建中国塑料循环利用',
-  headline2: '行业数字基石',
-  subtitle: '6位1体服务闭环，引领行业从',
-  subtitleBold1: '经验决策',
-  subtitleBold2: '数据决策',
-  subtitleConnector: '向',
-  subtitleEnd: '跨越',
-  searchPlaceholder: '搜索资讯、企业、技术动态...',
+  badge: '六大支柱 · 全链可持续智库',
+  headline1: '驱动塑料产业链',
+  headline2: '可持续发展新范式',
+  subtitle: '从绿色机械到碳中和政策，覆盖',
+  subtitleBold1: '六大核心支柱',
+  subtitleBold2: '全球视野',
+  subtitleConnector: '，以',
+  subtitleEnd: '重塑行业情报格局',
+  searchPlaceholder: '搜索支柱动态、企业、技术趋势...',
   searchBtn: '搜索',
-  ctaPrimary: '探索平台',
-  ctaSecondary: '了解体系',
-  stat1Num: '6+',
-  stat1Label: '核心服务模块',
-  stat2Num: '2,400+',
-  stat2Label: '重点跟踪企业',
-  stat3Num: '日更新',
-  stat3Label: '产业情报推送',
+  ctaPrimary: '探索情报中心',
+  ctaSecondary: '了解六大支柱',
+  stat1Num: '6',
+  stat1Label: '大产业支柱',
+  stat2Num: '15,000+',
+  stat2Label: '覆盖企业',
+  stat3Num: '全球',
+  stat3Label: '多地区情报视野',
 }
+
+// Pillar visual config
+const PILLARS = [
+  { label: '绿色机械',   icon: Settings2,   color: '#1d4ed8', bg: 'rgba(29,78,216,0.08)',  border: 'rgba(29,78,216,0.18)',  query: 'machinery' },
+  { label: '可持续材料', icon: Layers,       color: '#0d9488', bg: 'rgba(13,148,136,0.08)', border: 'rgba(13,148,136,0.18)', query: 'materials' },
+  { label: '环保助剂',   icon: FlaskConical, color: '#7c3aed', bg: 'rgba(124,58,237,0.08)', border: 'rgba(124,58,237,0.18)', query: 'additives' },
+  { label: '绿色辅料',   icon: Box,          color: '#d97706', bg: 'rgba(217,119,6,0.08)',  border: 'rgba(217,119,6,0.18)',  query: 'auxiliaries' },
+  { label: '循环再生',   icon: RefreshCw,    color: '#059669', bg: 'rgba(5,150,105,0.08)',  border: 'rgba(5,150,105,0.18)', query: 'recycling' },
+  { label: '碳中和/政策',icon: BarChart3,    color: '#4338ca', bg: 'rgba(67,56,202,0.08)',  border: 'rgba(67,56,202,0.18)', query: 'carbonPolicy' },
+]
 
 interface Props {
   dict?: HeroDictionary
@@ -43,36 +53,59 @@ export default function HeroSearch({ dict }: Props) {
   return (
     <section className="relative -mt-16 min-h-screen flex flex-col items-center justify-center overflow-hidden bg-white">
 
-      {/* ── Layered gradient wash ── */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-cyan-50/60 to-emerald-50/30 pointer-events-none" />
+      {/* ── Multi-layer gradient ── */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white via-slate-50/80 to-cyan-50/40 pointer-events-none" />
 
-      {/* ── Top-center radial cyan glow ── */}
+      {/* ── Top radial glow ── */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[720px] pointer-events-none"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[700px] pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at 50% 0%, rgba(8,145,178,0.13) 0%, rgba(20,184,166,0.06) 40%, transparent 65%)',
+          background: 'radial-gradient(ellipse at 50% 0%, rgba(8,145,178,0.11) 0%, rgba(16,185,129,0.05) 45%, transparent 68%)',
         }}
       />
 
-      {/* ── Subtle dot grid ── */}
+      {/* ── Industrial fine grid ── */}
       <div
-        className="absolute inset-0 opacity-[0.020] pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(15,23,42,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,0.025) 1px, transparent 1px)',
+          backgroundSize: '64px 64px',
+        }}
+      />
+
+      {/* ── Dot accent at intersections ── */}
+      <div
+        className="absolute inset-0 opacity-[0.015] pointer-events-none"
         style={{
           backgroundImage: 'radial-gradient(circle, rgba(15,23,42,0.9) 1px, transparent 1px)',
-          backgroundSize: '36px 36px',
+          backgroundSize: '64px 64px',
+          backgroundPosition: '32px 32px',
         }}
       />
 
-      {/* ── Decorative floating icons ── */}
-      <Waves className="absolute top-[22%] left-[8%] h-8 w-8 text-cyan-200 -rotate-12 opacity-60 pointer-events-none hidden lg:block" />
-      <Recycle className="absolute top-[30%] right-[9%] h-9 w-9 text-emerald-200 rotate-12 opacity-50 pointer-events-none hidden lg:block" />
-      <Globe className="absolute bottom-[28%] left-[6%] h-7 w-7 text-teal-200 opacity-40 pointer-events-none hidden lg:block" />
+      {/* ── Floating pillar icons (desktop) ── */}
+      <div className="absolute top-[22%] left-[6%] pointer-events-none hidden xl:block" style={{ opacity: 0.25 }}>
+        <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(29,78,216,0.08)', border: '1px solid rgba(29,78,216,0.12)' }}>
+          <Settings2 className="h-5 w-5" style={{ color: '#1d4ed8' }} />
+        </div>
+      </div>
+      <div className="absolute top-[35%] right-[7%] pointer-events-none hidden xl:block" style={{ opacity: 0.22 }}>
+        <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.12)' }}>
+          <RefreshCw className="h-5 w-5" style={{ color: '#059669' }} />
+        </div>
+      </div>
+      <div className="absolute bottom-[30%] left-[5%] pointer-events-none hidden xl:block" style={{ opacity: 0.20 }}>
+        <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(67,56,202,0.08)', border: '1px solid rgba(67,56,202,0.12)' }}>
+          <BarChart3 className="h-5 w-5" style={{ color: '#4338ca' }} />
+        </div>
+      </div>
 
       {/* ── Content ── */}
-      <div className="relative z-10 container px-4 pt-16 text-center max-w-4xl mx-auto">
+      <div className="relative z-10 container px-4 pt-20 text-center max-w-4xl mx-auto">
 
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full border border-cyan-200 bg-cyan-50 text-cyan-700 text-sm font-semibold tracking-wide">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full border border-cyan-200 bg-cyan-50/80 text-cyan-700 text-sm font-semibold tracking-wide backdrop-blur-sm">
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
           {t.badge}
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
@@ -82,7 +115,7 @@ export default function HeroSearch({ dict }: Props) {
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.2rem] font-black text-slate-900 mb-6 leading-[1.08] tracking-tight">
           {t.headline1}
           <br />
-          <span className="bg-gradient-to-r from-cyan-700 via-teal-500 to-emerald-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-emerald-600 via-cyan-600 to-blue-600 bg-clip-text text-transparent">
             {t.headline2}
           </span>
         </h1>
@@ -90,15 +123,15 @@ export default function HeroSearch({ dict }: Props) {
         {/* Subtitle */}
         <p className="text-base sm:text-lg md:text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
           {t.subtitle}
-          <span className="text-slate-700 font-semibold">{t.subtitleBold1}</span>
-          {' '}{t.subtitleConnector}{' '}
+          <span className="text-slate-800 font-bold">{t.subtitleBold1}</span>
+          {t.subtitleConnector}
           <span className="text-cyan-700 font-bold">{t.subtitleBold2}</span>
           {' '}{t.subtitleEnd}
         </p>
 
         {/* ── Search bar ── */}
         <form onSubmit={handleSearch} className="relative max-w-xl mx-auto mb-10 group">
-          <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-r from-cyan-400/25 to-teal-400/20 blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
+          <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-r from-emerald-400/20 via-cyan-400/15 to-blue-400/15 blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
           <div className="relative flex items-center rounded-3xl border border-slate-200 bg-white shadow-[0_2px_16px_-4px_rgba(0,0,0,0.07)] focus-within:border-cyan-400 focus-within:shadow-[0_0_0_3px_rgba(8,145,178,0.10),0_2px_16px_-4px_rgba(0,0,0,0.07)] transition-all duration-300">
             <Search className="absolute left-4 h-4 w-4 text-slate-400 pointer-events-none" />
             <input
@@ -119,7 +152,7 @@ export default function HeroSearch({ dict }: Props) {
         {/* ── CTA buttons ── */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
-            onClick={() => router.push('/database')}
+            onClick={() => router.push('/news')}
             className="relative overflow-hidden group/btn flex items-center gap-2 px-8 py-3.5 rounded-3xl bg-cyan-700 hover:bg-cyan-600 text-white text-[14px] font-semibold transition-colors duration-200 shadow-[0_4px_20px_rgba(8,145,178,0.30)] hover:shadow-[0_8px_28px_rgba(8,145,178,0.40)]"
           >
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full skew-x-[-20deg] group-hover/btn:translate-x-[300%] transition-transform duration-700 ease-in-out pointer-events-none" />
@@ -127,30 +160,48 @@ export default function HeroSearch({ dict }: Props) {
             <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
           </button>
           <button
-            onClick={() => router.push('/news')}
-            className="flex items-center gap-2 px-8 py-3.5 rounded-3xl border border-cyan-200 hover:border-cyan-300 text-slate-700 hover:text-cyan-700 hover:bg-cyan-50 text-[14px] font-semibold transition-all duration-200"
+            onClick={() => router.push('/database')}
+            className="flex items-center gap-2 px-8 py-3.5 rounded-3xl border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 text-[14px] font-semibold transition-all duration-200"
           >
             {t.ctaSecondary}
           </button>
         </div>
 
+        {/* ── Six pillar quick-access ── */}
+        <div className="mt-14 mb-6">
+          <p className="text-[11px] text-slate-400 font-semibold tracking-[0.12em] uppercase mb-4">六大产业支柱 · 快速导览</p>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {PILLARS.map(({ label, icon: Icon, color, bg, border, query: pillarQuery }) => (
+              <button
+                key={pillarQuery}
+                onClick={() => router.push(`/news?pillar=${pillarQuery}`)}
+                className="group flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border text-[12.5px] font-semibold transition-all duration-200 hover:scale-[1.03] hover:shadow-sm"
+                style={{ background: bg, borderColor: border, color }}
+              >
+                <Icon className="h-3.5 w-3.5 flex-shrink-0" />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* ── Stats strip ── */}
-        <div className="mt-16 grid grid-cols-3 gap-4 max-w-xl mx-auto">
+        <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
           {[
             { num: t.stat1Num, label: t.stat1Label },
             { num: t.stat2Num, label: t.stat2Label },
             { num: t.stat3Num, label: t.stat3Label },
           ].map(({ num, label }) => (
-            <div key={label} className="flex flex-col items-center gap-1 px-4 py-3.5 rounded-3xl bg-white border border-cyan-100 shadow-sm">
+            <div key={label} className="flex flex-col items-center gap-1 px-4 py-3.5 rounded-3xl bg-white border border-slate-100 shadow-sm">
               <span className="text-xl font-black text-cyan-700">{num}</span>
-              <span className="text-[12px] text-slate-500 font-medium">{label}</span>
+              <span className="text-[11.5px] text-slate-500 font-medium text-center leading-tight">{label}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* ── Bottom fade ── */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-white to-transparent pointer-events-none" />
     </section>
   )
 }

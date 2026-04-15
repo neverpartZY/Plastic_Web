@@ -2,46 +2,46 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { BookOpen, Newspaper, Users, Calendar, Cpu, TrendingUp, Database } from 'lucide-react'
+import { Settings2, Layers, FlaskConical, Box, RefreshCw, BarChart3, Database } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { DataEcosystemDictionary } from '@/i18n/types'
 
 // ── Node visual config (locale-independent) ───────────────────────────────────
 
 const TOP_NODE_STYLE = [
-  { id: 'think-tank',  nodeKey: 'thinkTank' as const, tagType: 'top' as const, icon: BookOpen,  color: '#3b82f6', iconBg: 'bg-blue-50',    iconText: 'text-blue-600',    border: 'border-blue-200',    href: '/think-tank' },
-  { id: 'media',       nodeKey: 'news' as const,      tagType: 'top' as const, icon: Newspaper, color: '#10b981', iconBg: 'bg-emerald-50', iconText: 'text-emerald-600', border: 'border-emerald-200', href: '/news' },
+  { id: 'machinery',    nodeKey: 'machinery' as const,    icon: Settings2, color: '#1d4ed8', iconBg: 'bg-blue-50',   iconText: 'text-blue-600',   border: 'border-blue-200',   href: '/news?pillar=machinery' },
+  { id: 'carbonPolicy', nodeKey: 'carbonPolicy' as const, icon: BarChart3, color: '#4338ca', iconBg: 'bg-indigo-50', iconText: 'text-indigo-600', border: 'border-indigo-200', href: '/news?pillar=carbonPolicy' },
 ] as const
 
 const MID_NODE_STYLE = [
-  { id: 'events',      nodeKey: 'events' as const,      tagType: 'mid' as const, icon: Calendar,   color: '#f59e0b', iconBg: 'bg-amber-50',   iconText: 'text-amber-600',  border: 'border-amber-200',  href: '/events' },
-  { id: 'association', nodeKey: 'association' as const, tagType: 'mid' as const, icon: Users,      color: '#8b5cf6', iconBg: 'bg-violet-50',  iconText: 'text-violet-600', border: 'border-violet-200', href: '/association' },
-  { id: 'technology',  nodeKey: 'technology' as const,  tagType: 'mid' as const, icon: Cpu,        color: '#06b6d4', iconBg: 'bg-cyan-50',    iconText: 'text-cyan-600',   border: 'border-cyan-200',   href: '/technology' },
-  { id: 'fund',        nodeKey: 'fund' as const,        tagType: 'mid' as const, icon: TrendingUp, color: '#f43f5e', iconBg: 'bg-rose-50',    iconText: 'text-rose-600',   border: 'border-rose-200',   href: '/fund' },
+  { id: 'materials',   nodeKey: 'materials' as const,   icon: Layers,      color: '#0d9488', iconBg: 'bg-teal-50',   iconText: 'text-teal-600',   border: 'border-teal-200',   href: '/news?pillar=materials' },
+  { id: 'additives',   nodeKey: 'additives' as const,   icon: FlaskConical,color: '#7c3aed', iconBg: 'bg-violet-50', iconText: 'text-violet-600', border: 'border-violet-200', href: '/news?pillar=additives' },
+  { id: 'auxiliaries', nodeKey: 'auxiliaries' as const, icon: Box,         color: '#d97706', iconBg: 'bg-amber-50',  iconText: 'text-amber-600',  border: 'border-amber-200',  href: '/news?pillar=auxiliaries' },
+  { id: 'recycling',   nodeKey: 'recycling' as const,   icon: RefreshCw,   color: '#059669', iconBg: 'bg-emerald-50',iconText: 'text-emerald-600',border: 'border-emerald-200',href: '/news?pillar=recycling' },
 ] as const
 
 const ZH: DataEcosystemDictionary = {
-  badge: '数据引擎 · 实时运行中',
-  title: '产业服务体系 · 数据闭环引擎',
-  subtitle: '六大模块持续向底层数据库汇入数据流 · ',
-  subtitleHighlight: '数据库实时赋能各模块运作',
-  layerTop: '顶层 · 战略与传播',
-  layerMid: '中层 · 连接与赋能',
-  layerBase: '基石层 · 数据沉淀与反哺',
-  dbTitle: '底层数据库',
+  badge: '知识引擎 · 实时运行中',
+  title: '六大支柱 · 产业知识闭环引擎',
+  subtitle: '六大支柱持续向产业知识中枢汇入数据流 · ',
+  subtitleHighlight: '知识中枢实时赋能产业决策与情报分析',
+  layerTop: '产业两翼 · 装备与治理',
+  layerMid: '核心产业链 · 四大支柱',
+  layerBase: '知识中枢 · 数据沉淀与反哺',
+  dbTitle: '产业知识中枢',
   dbBadge: '数据基石层',
-  dbDesc: '中国塑料循环利用行业底层知识图谱 · 汇聚六大模块实时数据流 · 反向赋能产业运作与决策',
+  dbDesc: '可持续塑料产业链底层知识图谱 · 汇聚六大支柱实时情报数据 · 反向赋能产业运作与可持续决策',
   dbStatus: '运行中',
   dbStreams: '6 路数据流 · 持续沉淀',
-  mobileAccumulating: '数据持续沉淀',
-  mobileDbDesc: '行业底层知识图谱 · 数据基石层',
+  mobileAccumulating: '情报持续沉淀',
+  mobileDbDesc: '产业知识图谱 · 可持续塑料链',
   nodes: {
-    thinkTank:   { label: '智库',     tag: '运营服务' },
-    news:        { label: '行业媒体', tag: '运营服务' },
-    events:      { label: '会展平台', tag: '运营服务' },
-    association: { label: '行业协会', tag: '运营服务' },
-    technology:  { label: '技术开发', tag: '攻坚支撑' },
-    fund:        { label: '投资基金', tag: '攻坚支撑' },
+    machinery:    { label: '绿色机械',   tag: '核心支柱' },
+    materials:    { label: '可持续材料', tag: '核心支柱' },
+    additives:    { label: '环保助剂',   tag: '核心支柱' },
+    auxiliaries:  { label: '绿色辅料',   tag: '核心支柱' },
+    recycling:    { label: '循环再生',   tag: '核心支柱' },
+    carbonPolicy: { label: '碳中和/政策',tag: '政策支柱' },
   },
 }
 
@@ -117,66 +117,27 @@ function Connection({
 
       {/* Ambient base line */}
       <path d={d} fill="none" stroke={color} strokeWidth="1.2" strokeOpacity="0.15">
-        <animate
-          attributeName="stroke-opacity"
-          values="0.08;0.28;0.08"
-          dur={`${breathDur}s`}
-          repeatCount="indefinite"
-        />
+        <animate attributeName="stroke-opacity" values="0.08;0.28;0.08" dur={`${breathDur}s`} repeatCount="indefinite" />
       </path>
 
-      {/* Dashed flow ↓ */}
-      <path
-        d={d}
-        fill="none"
-        stroke={color}
-        strokeWidth="1.8"
-        strokeDasharray="4 14"
-        strokeLinecap="round"
-        opacity="0.55"
-      >
-        <animate
-          attributeName="stroke-dashoffset"
-          from="0"
-          to="-18"
-          dur={`${dashDur}s`}
-          repeatCount="indefinite"
-        />
+      {/* Dashed flow */}
+      <path d={d} fill="none" stroke={color} strokeWidth="1.8" strokeDasharray="4 14" strokeLinecap="round" opacity="0.55">
+        <animate attributeName="stroke-dashoffset" from="0" to="-18" dur={`${dashDur}s`} repeatCount="indefinite" />
       </path>
 
-      {/* Particle dots ↓ */}
+      {/* Particle dots */}
       <FlowDots pathId={pid} color={color} />
 
-      {/* Upward empowerment pulse ↑ */}
-      <path
-        d={d}
-        fill="none"
-        stroke={color}
-        strokeWidth="3"
-        filter={`url(#${fid})`}
-      >
-        <animate
-          attributeName="stroke-opacity"
-          values="0;0;0.5;0.4;0"
-          keyTimes="0;0.2;0.5;0.8;1"
-          dur={`${pulseDur}s`}
-          repeatCount="indefinite"
-          begin={pulseBegin}
-        />
-        <animate
-          attributeName="stroke-width"
-          values="1;1;3.5;2.5;1"
-          keyTimes="0;0.2;0.5;0.8;1"
-          dur={`${pulseDur}s`}
-          repeatCount="indefinite"
-          begin={pulseBegin}
-        />
+      {/* Upward empowerment pulse */}
+      <path d={d} fill="none" stroke={color} strokeWidth="3" filter={`url(#${fid})`}>
+        <animate attributeName="stroke-opacity" values="0;0;0.5;0.4;0" keyTimes="0;0.2;0.5;0.8;1" dur={`${pulseDur}s`} repeatCount="indefinite" begin={pulseBegin} />
+        <animate attributeName="stroke-width" values="1;1;3.5;2.5;1" keyTimes="0;0.2;0.5;0.8;1" dur={`${pulseDur}s`} repeatCount="indefinite" begin={pulseBegin} />
       </path>
     </g>
   )
 }
 
-// ── Node card (light theme) ────────────────────────────────────────────────────
+// ── Node card ─────────────────────────────────────────────────────────────────
 
 function NodeCard({
   node, dataId, label, tag, compact = false,
@@ -195,12 +156,8 @@ function NodeCard({
         node.border,
         compact ? 'p-3' : 'p-4',
       )}
-      onMouseEnter={e => {
-        ;(e.currentTarget as HTMLDivElement).style.boxShadow = `0 8px 24px -6px ${node.color}30`
-      }}
-      onMouseLeave={e => {
-        ;(e.currentTarget as HTMLDivElement).style.boxShadow = ''
-      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = `0 8px 24px -6px ${node.color}30` }}
+      onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '' }}
     >
       <div className={cn('flex items-center justify-center rounded-lg', node.iconBg, compact ? 'h-8 w-8' : 'h-10 w-10')}>
         <Icon className={cn(node.iconText, compact ? 'h-4 w-4' : 'h-5 w-5')} />
@@ -273,10 +230,7 @@ export default function DataEcosystem({ dict }: { dict?: DataEcosystemDictionary
   const dbPos = positions['database']
 
   return (
-    <section
-      ref={sectionRef}
-      className="py-20 md:py-28 bg-white overflow-hidden"
-    >
+    <section ref={sectionRef} className="py-20 md:py-28 bg-white overflow-hidden">
       <div className="container">
 
         {/* ── Section header ── */}
@@ -332,7 +286,7 @@ export default function DataEcosystem({ dict }: { dict?: DataEcosystemDictionary
               </svg>
             )}
 
-            {/* ── Top layer ── */}
+            {/* ── Top layer: 2 nodes (machinery + carbonPolicy) ── */}
             <LayerLabel label={t.layerTop} />
             <div className="grid grid-cols-2 gap-6 max-w-sm mx-auto mb-16">
               {TOP_NODE_STYLE.map(n => (
@@ -340,7 +294,7 @@ export default function DataEcosystem({ dict }: { dict?: DataEcosystemDictionary
               ))}
             </div>
 
-            {/* ── Middle layer ── */}
+            {/* ── Mid layer: 4 nodes ── */}
             <LayerLabel label={t.layerMid} />
             <div className="grid grid-cols-4 gap-4 mb-16">
               {MID_NODE_STYLE.map(n => (
@@ -348,22 +302,22 @@ export default function DataEcosystem({ dict }: { dict?: DataEcosystemDictionary
               ))}
             </div>
 
-            {/* ── Database ── */}
+            {/* ── Database / Knowledge Hub ── */}
             <LayerLabel label={t.layerBase} />
             <div
               data-node-id="database"
-              className="relative overflow-hidden rounded-2xl border border-emerald-200 bg-emerald-50"
+              className="relative overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-cyan-50/40"
             >
               {/* Animated scan beam */}
               <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
                 <div
-                  className="absolute top-0 bottom-0 w-40 bg-gradient-to-r from-transparent via-emerald-300/15 to-transparent"
+                  className="absolute top-0 bottom-0 w-48 bg-gradient-to-r from-transparent via-emerald-300/12 to-transparent"
                   style={{ animation: 'eco-scan 5s ease-in-out infinite' }}
                 />
               </div>
-              {/* Subtle grid */}
+              {/* Industrial grid */}
               <div
-                className="absolute inset-0 opacity-[0.06] pointer-events-none rounded-2xl overflow-hidden"
+                className="absolute inset-0 opacity-[0.05] pointer-events-none rounded-2xl overflow-hidden"
                 style={{
                   backgroundImage:
                     'linear-gradient(rgba(16,185,129,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.8) 1px, transparent 1px)',
@@ -383,9 +337,7 @@ export default function DataEcosystem({ dict }: { dict?: DataEcosystemDictionary
                       {t.dbBadge}
                     </span>
                   </div>
-                  <p className="text-sm text-slate-600 leading-relaxed">
-                    {t.dbDesc}
-                  </p>
+                  <p className="text-sm text-slate-600 leading-relaxed">{t.dbDesc}</p>
                 </div>
                 {/* Live indicator */}
                 <div className="flex flex-col items-end gap-2 flex-shrink-0">
@@ -415,17 +367,13 @@ export default function DataEcosystem({ dict }: { dict?: DataEcosystemDictionary
               return (
                 <div
                   key={node.id}
-                  className={cn(
-                    'flex items-center gap-2.5 p-3 rounded-xl border bg-white cursor-pointer',
-                    node.border,
-                  )}
-                  onClick={() => {}}
+                  className={cn('flex items-center gap-2.5 p-3 rounded-xl border bg-white', node.border)}
                 >
                   <div className={cn('flex h-8 w-8 items-center justify-center rounded-lg flex-shrink-0', node.iconBg)}>
                     <Icon className={cn('h-4 w-4', node.iconText)} />
                   </div>
                   <div>
-                    <p className={cn('text-xs font-semibold text-slate-800')}>{content.label}</p>
+                    <p className="text-xs font-semibold text-slate-800">{content.label}</p>
                     <p className="text-[10px] text-slate-400">{content.tag}</p>
                   </div>
                 </div>
@@ -444,10 +392,7 @@ export default function DataEcosystem({ dict }: { dict?: DataEcosystemDictionary
                   className="w-px h-7 rounded-full"
                   style={{ background: `linear-gradient(to bottom, ${node.color}99, ${node.color}11)` }}
                 />
-                <div
-                  className="w-1.5 h-1.5 rounded-full"
-                  style={{ background: node.color, opacity: 0.7 }}
-                />
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: node.color, opacity: 0.7 }} />
               </div>
             ))}
           </div>
