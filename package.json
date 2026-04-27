@@ -2,6 +2,9 @@
   "name": "plastic-web",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,6 +17,7 @@
     "postinstall": "prisma generate && prisma db push"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.91.1",
     "@auth/prisma-adapter": "^2.8.0",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.22.0",

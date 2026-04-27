@@ -3,39 +3,39 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id           String      @id @default(cuid())
-  email        String?     @unique
-  phone        String?     @unique
+  id           String   @id @default(cuid())
+  email        String?  @unique
+  phone        String?  @unique
   passwordHash String
   name         String
   avatarUrl    String?
-  role         String      @default("user")
-  isPremium    Boolean     @default(false)
-  isActive     Boolean     @default(true)
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  role         String   @default("user")
+  isPremium    Boolean  @default(false)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  dashboards   Dashboard[]
-  bookmarks    Bookmark[]
+  dashboards Dashboard[]
+  bookmarks  Bookmark[]
 
   @@index([email])
   @@index([phone])
 }
 
 model Tag {
-  id            String         @id @default(cuid())
-  name          String         @unique
-  slug          String         @unique
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
   /// entity | application | material | process | technology | region | topic
-  category      String
-  color         String         @default("#6B7280")
-  sortOrder     Int            @default(0)
-  createdAt     DateTime       @default(now())
+  category  String
+  color     String   @default("#6B7280")
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
 
   newsItems     NewsTag[]
   dashboardTags DashboardTag[]
@@ -44,29 +44,29 @@ model Tag {
 }
 
 model News {
-  id          String    @id @default(cuid())
+  id          String  @id @default(cuid())
   title       String
   summary     String
   content     String
   coverImage  String?
-  source      String?   // Media source name (e.g. "环球塑化网")
+  source      String? // Media source name (e.g. "环球塑化网")
   sourceUrl   String?
   author      String?
-  viewCount   Int       @default(0)
-  isPublished Boolean   @default(true)
+  viewCount   Int     @default(0)
+  isPublished Boolean @default(true)
 
   /// draft | published | archived
-  status      String    @default("published")
+  status String @default("published")
 
   /// ai | manual | scraper
-  dataSource  String    @default("manual")
+  dataSource String @default("manual")
 
-  publishedAt DateTime  @default(now())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  tags        NewsTag[]
-  bookmarks   Bookmark[]
+  tags      NewsTag[]
+  bookmarks Bookmark[]
 
   @@index([publishedAt])
   @@index([viewCount])
@@ -79,24 +79,24 @@ model NewsTag {
   newsId String
   tagId  String
 
-  news   News @relation(fields: [newsId], references: [id], onDelete: Cascade)
-  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  news News @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([newsId, tagId])
   @@index([tagId])
 }
 
 model Dashboard {
-  id        String         @id @default(cuid())
+  id        String   @id @default(cuid())
   userId    String
   name      String
-  isDefault Boolean        @default(false)
-  sortOrder Int            @default(0)
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  isDefault Boolean  @default(false)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tags      DashboardTag[]
+  user User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tags DashboardTag[]
 
   @@index([userId])
 }
@@ -105,8 +105,8 @@ model DashboardTag {
   dashboardId String
   tagId       String
 
-  dashboard   Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
-  tag         Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  dashboard Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+  tag       Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([dashboardId, tagId])
 }
@@ -117,8 +117,8 @@ model Bookmark {
   newsId    String
   createdAt DateTime @default(now())
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  news      News     @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  news News @relation(fields: [newsId], references: [id], onDelete: Cascade)
 
   @@unique([userId, newsId])
   @@index([userId])
@@ -127,71 +127,142 @@ model Bookmark {
 // ─── 产业地图 ────────────────────────────────────────────────────────────────
 
 model Company {
-  id          String   @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
-  slug        String   @unique
+  slug        String  @unique
   logo        String?
   description String?
   website     String?
 
   /// X轴实体维度: equipment | additive | mold | process | material
-  entityType  String
+  entityType String
 
   /// Y轴应用领域: automotive | electronics | packaging | construction | medical | agriculture
-  appDomain   String
+  appDomain String
 
   /// 处理能力 (吨/年)
-  capacity    Int?
+  capacity Int?
 
   /// 回收率 (0–100)
   recycleRate Float?
 
-  province    String?
-  city        String?
-  isVerified  Boolean  @default(false)
-  isPremium   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  province   String?
+  city       String?
+  isVerified Boolean  @default(false)
+  isPremium  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  intelligenceLinks IntelligenceCompany[]
 
   @@index([entityType])
   @@index([appDomain])
   @@index([province])
 }
 
+// ─── 采集源配置 ──────────────────────────────────────────────────────────────
+
+model CrawlSource {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  url           String
+  /// p0 | p1 | p2 | p3
+  priority      String    @default("p2")
+  /// zh | en
+  lang          String    @default("zh")
+  /// news | price | policy | standard
+  contentType   String    @default("news")
+  /// active | paused | error
+  status        String    @default("active")
+  lastCrawledAt DateTime?
+  crawlCount    Int       @default(0)
+  errorCount    Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  intelligenceItems Intelligence[]
+
+  @@index([priority])
+  @@index([status])
+  @@index([lang])
+}
+
 // ─── 每日情报 ────────────────────────────────────────────────────────────────
 
 model Intelligence {
-  id          String   @id @default(cuid())
-  title       String
-  summary     String
-  content     String   @default("")
+  id      String @id @default(cuid())
+  title   String
+  summary String
+  content String @default("")
+
+  /// 原始语言 title（供翻译后对照）
+  titleZh   String?
+  titleEn   String?
+  summaryZh String?
+  summaryEn String?
 
   /// policy | market | tech | enterprise | global
-  category    String
+  category String
 
-  source      String?
-  sourceUrl   String?
-  isHot       Boolean  @default(false)
-  isPremium   Boolean  @default(false)
-  publishedAt DateTime @default(now())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  /// 7大战略维度: molds | molding | materials | additives | auxiliaries | recycling | reuse
+  /// 逗号分隔，支持多维度
+  pillars String?
+
+  /// 国家/地区代码 CN | EU | US | UK | GLOBAL
+  countryCode String?
+
+  /// 重要性 1-5（AI评分，5=最高）
+  importance Int @default(3)
+
+  /// pending | translated | failed
+  translateStatus String @default("pending")
+
+  source        String?
+  sourceUrl     String?
+  crawlSourceId String?
+  isHot         Boolean  @default(false)
+  isPremium     Boolean  @default(false)
+  publishedAt   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  crawlSource  CrawlSource?          @relation(fields: [crawlSourceId], references: [id], onDelete: SetNull)
+  companyLinks IntelligenceCompany[]
 
   @@index([publishedAt])
   @@index([category])
   @@index([isHot])
+  @@index([pillars])
+  @@index([countryCode])
+  @@index([importance])
+  @@index([translateStatus])
+}
+
+// ─── 情报↔企业关联 ───────────────────────────────────────────────────────────
+
+model IntelligenceCompany {
+  intelligenceId String
+  companyId      String
+  /// 关联强度 0.0-1.0（AI计算）
+  relevanceScore Float  @default(0.5)
+
+  intelligence Intelligence @relation(fields: [intelligenceId], references: [id], onDelete: Cascade)
+  company      Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@id([intelligenceId, companyId])
+  @@index([companyId])
 }
 
 // ─── 订阅者 ──────────────────────────────────────────────────────────────────
 
 model Subscriber {
-  id        String   @id @default(cuid())
-  email     String?  @unique
-  phone     String?  @unique
-  name      String?
+  id    String  @id @default(cuid())
+  email String? @unique
+  phone String? @unique
+  name  String?
 
   /// email | wechat | feishu | whatsapp
-  channel   String   @default("email")
+  channel String @default("email")
 
   /// comma-separated tag slugs for interest matching
   interests String?
@@ -208,7 +279,7 @@ model ServiceReport {
   id          String   @id @default(cuid())
   title       String
   summary     String
-  category    String   /// research | whitepaper | guide | compliance
+  category    String /// research | whitepaper | guide | compliance
   author      String?
   pages       Int?
   isPremium   Boolean  @default(true)
@@ -243,7 +314,7 @@ model ServiceEvent {
 }
 
 model ServiceApplication {
-  id      String  @id @default(cuid())
+  id String @id @default(cuid())
 
   // Applicant
   name    String
@@ -252,7 +323,7 @@ model ServiceApplication {
   phone   String?
 
   /// report_request | association_join | event_register | tech_apply | fund_apply
-  type    String
+  type String
 
   // Relations
   eventId String?
@@ -261,8 +332,8 @@ model ServiceApplication {
   /// Extra fields as JSON string (project name, funding stage, etc.)
   metadata String?
 
-  status  String   @default("pending") /// pending | approved | rejected
-  note    String?
+  status    String   @default("pending") /// pending | approved | rejected
+  note      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

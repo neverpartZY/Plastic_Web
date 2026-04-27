@@ -496,6 +496,44 @@ async function main() {
   })
   console.log(`Created dashboards: ${dashboard1.name}, ${dashboard2.name}`)
 
+  // ── CrawlSource 种子：P0-P3 采集源配置 ─────────────────────────────────────
+
+  const crawlSources = [
+    // P0 — 每小时
+    { name: '卓创资讯-再生塑料', url: 'https://plastic.sci99.com/list/247-1.html', priority: 'p0', lang: 'zh', contentType: 'price' },
+    { name: '隆众资讯-再生塑料', url: 'https://plastic.oilchem.net/list-619-1.html', priority: 'p0', lang: 'zh', contentType: 'price' },
+    { name: '国家发改委-环资司', url: 'https://www.ndrc.gov.cn/xxgk/zcfb/tz/', priority: 'p0', lang: 'zh', contentType: 'policy' },
+    { name: '生态环境部-政策法规', url: 'https://www.mee.gov.cn/ywgz/fgbz/', priority: 'p0', lang: 'zh', contentType: 'policy' },
+    { name: 'Plastics Today', url: 'https://www.plasticstoday.com/', priority: 'p0', lang: 'en', contentType: 'news' },
+    { name: 'Resource Recycling', url: 'https://www.resource-recycling.com/plastics/', priority: 'p0', lang: 'en', contentType: 'news' },
+    { name: 'Packaging Dive', url: 'https://www.packagingdive.com/', priority: 'p0', lang: 'en', contentType: 'news' },
+    // P1 — 每8小时
+    { name: '塑料循环利用分会', url: 'https://www.replas.org.cn/', priority: 'p1', lang: 'zh', contentType: 'news' },
+    { name: '中国物资再生协会', url: 'http://www.chinacpra.org.cn/', priority: 'p1', lang: 'zh', contentType: 'news' },
+    { name: '巨潮资讯网', url: 'https://www.cninfo.com.cn/', priority: 'p1', lang: 'zh', contentType: 'news' },
+    { name: 'APR', url: 'https://www.plasticsrecycling.org/', priority: 'p1', lang: 'en', contentType: 'standard' },
+    { name: 'Plastics Recyclers Europe', url: 'https://www.plasticsrecyclers.eu/', priority: 'p1', lang: 'en', contentType: 'standard' },
+    { name: 'Packaging Europe', url: 'https://www.packagingeurope.com/', priority: 'p1', lang: 'en', contentType: 'news' },
+    // P2 — 每天
+    { name: '北极星固废网', url: 'https://gufei.bjx.com.cn/', priority: 'p2', lang: 'zh', contentType: 'news' },
+    { name: '荣格工业传媒', url: 'https://www.industrysourcing.cn/', priority: 'p2', lang: 'zh', contentType: 'news' },
+    { name: 'Recycling Today', url: 'https://www.recyclingtoday.com/', priority: 'p2', lang: 'en', contentType: 'news' },
+    { name: 'Circular Online', url: 'https://www.circularonline.co.uk/', priority: 'p2', lang: 'en', contentType: 'news' },
+    { name: 'Waste Dive', url: 'https://www.wastedive.com/news/plastic-recycling/', priority: 'p2', lang: 'en', contentType: 'news' },
+    // P3 — 每周
+    { name: 'Ellen MacArthur Foundation', url: 'https://ellenmacarthurfoundation.org/', priority: 'p3', lang: 'en', contentType: 'news' },
+    { name: 'European Circular Economy Platform', url: 'https://circulareconomy.europa.eu/', priority: 'p3', lang: 'en', contentType: 'policy' },
+  ]
+
+  for (const source of crawlSources) {
+    await prisma.crawlSource.upsert({
+      where: { name: source.name },
+      update: {},
+      create: source,
+    })
+  }
+  console.log(`Created ${crawlSources.length} crawl sources`)
+
   console.log('Seeding complete!')
 }
 

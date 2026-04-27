@@ -1,0 +1,24 @@
+{
+  "crons": [
+    {
+      "path": "/api/crawler/trigger",
+      "schedule": "0 * * * *",
+      "comment": "P0: 每小时 — 发改委政策、卓创价格、废塑料新观察"
+    },
+    {
+      "path": "/api/crawler/trigger",
+      "schedule": "0 */8 * * *",
+      "comment": "P1: 每8小时 — 行业协会、巨潮资讯、APR/PRE"
+    },
+    {
+      "path": "/api/crawler/trigger",
+      "schedule": "0 2 * * *",
+      "comment": "P2: 每天凌晨2点 — 化工资讯、北极星、Circular Online"
+    },
+    {
+      "path": "/api/crawler/trigger",
+      "schedule": "0 3 * * 1",
+      "comment": "P3: 每周一3点 — EMF报告、欧盟循环经济平台"
+    }
+  ]
+}
