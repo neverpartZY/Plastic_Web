@@ -1,13 +1,10 @@
-/**
- * POST /api/crawler/trigger
- * 由 Vercel Cron / 外部调度器调用，根据优先级决定本次采集哪些源
- *
- * Cron 设置 (vercel.json):
- *   P0 → "0 * * * *"       (每小时)
- *   P1 → "0 */8 * * *"     (每8小时)
- *   P2 → "0 2 * * *"       (每天凌晨2点)
- *   P3 → "0 3 * * 1"       (每周一)
- */
+// POST /api/crawler/trigger
+// 由 Vercel Cron / 外部调度器调用，根据优先级决定本次采集哪些源
+// Cron 设置 (vercel.json):
+//   P0: "0 * * * *"        每小时
+//   P1: "0 0,8,16 * * *"   每8小时
+//   P2: "0 2 * * *"        每天凌晨2点
+//   P3: "0 3 * * 1"        每周一
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'

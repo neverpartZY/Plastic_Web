@@ -7,7 +7,7 @@
     },
     {
       "path": "/api/crawler/trigger",
-      "schedule": "0 */8 * * *",
+      "schedule": "0 0,8,16 * * *",
       "comment": "P1: 每8小时 — 行业协会、巨潮资讯、APR/PRE"
     },
     {
