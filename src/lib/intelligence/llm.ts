@@ -31,7 +31,7 @@ function getProviders(): Provider[] {
     providers.push({
       name:   'SiliconFlow',
       url:    'https://api.siliconflow.cn/v1/chat/completions',
-      model:  'Qwen/Qwen2.5-7B-Instruct',
+      model:  'Qwen/Qwen3-8B',
       apiKey: sfKey,
     })
   }
