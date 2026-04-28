@@ -300,10 +300,10 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
           </blockquote>
         )}
 
-        {/* Body content */}
-        <div className="intelligence-body">
-          {item.content ? (
-            isHtml(item.content) ? (
+        {/* Body content — only rendered when non-empty */}
+        {item.content.trim() && (
+          <div className="intelligence-body">
+            {isHtml(item.content) ? (
               /* eslint-disable-next-line react/no-danger */
               <div
                 className="prose-intelligence-html"
@@ -313,13 +313,9 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
               <p className="text-slate-700 text-base leading-loose whitespace-pre-wrap">
                 {item.content}
               </p>
-            )
-          ) : (
-            <p className="text-gray-400 text-sm italic">
-              {lang === 'zh' ? '暂无详细正文内容。' : 'No detailed content available.'}
-            </p>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
         {/* Related companies */}
         {item.companyLinks.length > 0 && (
