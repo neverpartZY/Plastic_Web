@@ -2,9 +2,13 @@
  * 双向翻译引擎 — 中文↔英文，锁定行业专业术语
  * zh→en: 政策/价格报道 → 推送 /en 频道
  * en→zh: APR/PRE 标准  → 推送 /zh 频道
+ *
+ * 使用 GLM-4.7-Flash（智谱 AI，免费额度）
+ * 接口兼容 OpenAI Chat Completions 格式
  */
 
-import Anthropic from '@anthropic-ai/sdk'
+const GLM_API_URL = 'https://open.bigmodel.cn/api/paas/v4/chat/completions'
+const GLM_MODEL   = 'glm-4-flash'
 
 export interface TranslationResult {
   titleZh: string
@@ -12,8 +16,6 @@ export interface TranslationResult {
   summaryZh: string
   summaryEn: string
 }
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 // 锁定术语表 — 翻译时严格遵守，不得意译
 const TERMINOLOGY_LOCK = `
@@ -34,17 +36,48 @@ MANDATORY TERMINOLOGY (never translate these, use exact form):
 - Bottle flake → "瓶片" (for rPET feed material)
 `
 
-const ZH_TO_EN_PROMPT = `You are a professional translator for the plastics circular economy industry.
+const ZH_TO_EN_SYSTEM = `You are a professional translator for the plastics circular economy industry.
 Translate Chinese industry content to precise, professional English for international B2B readers.
 ${TERMINOLOGY_LOCK}
 Style: concise, factual, industry-standard. Avoid marketing language.
-Return ONLY valid JSON: {"titleEn": "...", "summaryEn": "..."}`
+Return ONLY valid JSON with no extra text: {"titleEn": "...", "summaryEn": "..."}`
 
-const EN_TO_ZH_PROMPT = `你是塑料循环经济行业的专业翻译。
+const EN_TO_ZH_SYSTEM = `你是塑料循环经济行业的专业翻译。
 将英文行业内容翻译为精准、专业的中文，面向中国B2B读者。
 ${TERMINOLOGY_LOCK}
 风格：简洁、客观、符合行业规范。避免营销语言。
-只返回有效JSON：{"titleZh": "...", "summaryZh": "..."}`
+只返回有效JSON，不要有多余文字：{"titleZh": "...", "summaryZh": "..."}`
+
+async function callGLM(systemPrompt: string, userContent: string): Promise<string> {
+  const apiKey = process.env.GLM_API_KEY
+  if (!apiKey) throw new Error('GLM_API_KEY is not set')
+
+  const res = await fetch(GLM_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: GLM_MODEL,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user',   content: userContent },
+      ],
+      max_tokens: 512,
+      temperature: 0.2,
+    }),
+  })
+
+  if (!res.ok) {
+    const errText = await res.text()
+    throw new Error(`GLM API error ${res.status}: ${errText}`)
+  }
+
+  const data = await res.json()
+  const text: string = data?.choices?.[0]?.message?.content ?? ''
+  return text
+}
 
 export async function translateIntelligence(
   title: string,
@@ -52,40 +85,30 @@ export async function translateIntelligence(
   sourceLang: 'zh' | 'en'
 ): Promise<Partial<TranslationResult>> {
   const isZhToEn = sourceLang === 'zh'
-  const prompt = isZhToEn ? ZH_TO_EN_PROMPT : EN_TO_ZH_PROMPT
-  const targetField = isZhToEn ? 'titleEn/summaryEn' : 'titleZh/summaryZh'
+  const systemPrompt = isZhToEn ? ZH_TO_EN_SYSTEM : EN_TO_ZH_SYSTEM
+  const userContent  = `Title: ${title}\n\nSummary: ${summary}`
 
-  const response = await client.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 512,
-    system: prompt,
-    messages: [
-      {
-        role: 'user',
-        content: `Title: ${title}\n\nSummary: ${summary}`,
-      },
-    ],
-  })
+  const raw = await callGLM(systemPrompt, userContent)
 
-  const raw = response.content[0].type === 'text' ? response.content[0].text : ''
+  // 从返回文本中提取 JSON（GLM 有时会加 ```json 围栏）
   const jsonMatch = raw.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) throw new Error(`Translation failed for ${targetField}`)
+  if (!jsonMatch) throw new Error(`GLM translation returned no JSON. Raw: ${raw.slice(0, 200)}`)
 
   const result = JSON.parse(jsonMatch[0])
 
   if (isZhToEn) {
     return {
-      titleZh: title,
+      titleZh:   title,
       summaryZh: summary,
-      titleEn: result.titleEn,
-      summaryEn: result.summaryEn,
+      titleEn:   result.titleEn   ?? title,
+      summaryEn: result.summaryEn ?? summary,
     }
   } else {
     return {
-      titleEn: title,
+      titleEn:   title,
       summaryEn: summary,
-      titleZh: result.titleZh,
-      summaryZh: result.summaryZh,
+      titleZh:   result.titleZh   ?? title,
+      summaryZh: result.summaryZh ?? summary,
     }
   }
 }
