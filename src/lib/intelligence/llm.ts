@@ -60,8 +60,10 @@ async function callProvider(
         { role: 'system', content: systemPrompt },
         { role: 'user',   content: userContent },
       ],
-      max_tokens:  maxTokens,
-      temperature: 0.2,
+      max_tokens:       maxTokens,
+      temperature:      0.2,
+      // Qwen3 系列默认开启思考模式，关闭可大幅降低延迟
+      ...(provider.name === 'SiliconFlow' ? { enable_thinking: false } : {}),
     }),
   })
 
