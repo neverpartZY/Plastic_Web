@@ -9,7 +9,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { classifyIntelligence } from '@/lib/intelligence/classifier'
-import { translateIntelligence } from '@/lib/intelligence/translator'
+import { translateIntelligence, generateTldr } from '@/lib/intelligence/translator'
 
 // 内部调度鉴权 — 生产环境替换为实际 secret
 const CRON_SECRET = process.env.CRON_SECRET ?? 'dev-secret'
@@ -86,6 +86,10 @@ async function processCrawlSource(
       // ── 4. 双向翻译 ─────────────────────────────────────────────────────────
       const translation = await translateIntelligence(item.title, item.summary, lang)
 
+      // ── 4b. 生成双语 TLDR ───────────────────────────────────────────────────
+      const bodyForTldr = item.content ?? item.summary
+      const tldr = await generateTldr(item.title, bodyForTldr, lang).catch(() => ({ tldrZh: null, tldrEn: null }))
+
       // ── 5. 写入数据库 ────────────────────────────────────────────────────────
       const intel = await prisma.intelligence.create({
         data: {
@@ -104,6 +108,8 @@ async function processCrawlSource(
           titleEn: translation.titleEn ?? null,
           summaryZh: translation.summaryZh ?? null,
           summaryEn: translation.summaryEn ?? null,
+          tldrZh: tldr.tldrZh,
+          tldrEn: tldr.tldrEn,
           translateStatus: 'translated',
           publishedAt: item.publishedAt ?? new Date(),
         },

@@ -12,6 +12,7 @@ import {
   Languages,
   Share2,
   Check,
+  Zap,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -27,6 +28,8 @@ export interface IntelligenceDetail {
   summary: string
   summaryZh: string | null
   summaryEn: string | null
+  tldrZh: string | null
+  tldrEn: string | null
   content: string
   category: string
   pillars: string | null
@@ -88,8 +91,6 @@ const COUNTRY_CONFIG: Record<string, { flag: string; labelZh: string; labelEn: s
   GLOBAL: { flag: '🌐',  labelZh: '全球',  labelEn: 'Global' },
 }
 
-// ── Helper: detect if content contains HTML tags ───────────────────────────
-
 function isHtml(str: string) {
   return /<[a-z][\s\S]*>/i.test(str)
 }
@@ -108,14 +109,12 @@ function ImportanceStars({ level }: { level: number }) {
 
 function ShareButton() {
   const [copied, setCopied] = useState(false)
-
   function handleCopy() {
     navigator.clipboard.writeText(window.location.href).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     })
   }
-
   return (
     <button
       onClick={handleCopy}
@@ -133,13 +132,10 @@ function ShareButton() {
 }
 
 function RelatedCard({ item, lang }: { item: RelatedItem; lang: 'zh' | 'en' }) {
-  const title = lang === 'zh' ? (item.titleZh ?? item.title) : (item.titleEn ?? item.title)
+  const title   = lang === 'zh' ? (item.titleZh ?? item.title) : (item.titleEn ?? item.title)
   const summary = lang === 'zh' ? (item.summaryZh ?? item.summary) : item.summary
   const pillars = (item.pillars ?? '').split(',').filter(Boolean) as Pillar[]
-  const date = new Date(item.publishedAt).toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', {
-    month: 'short',
-    day: 'numeric',
-  })
+  const date = new Date(item.publishedAt).toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', { month: 'short', day: 'numeric' })
   const firstPillar = pillars[0]
   const pillarCfg = firstPillar ? PILLAR_CONFIG[firstPillar] : undefined
 
@@ -151,7 +147,7 @@ function RelatedCard({ item, lang }: { item: RelatedItem; lang: 'zh' | 'en' }) {
       <div className="flex items-center gap-2 mb-2">
         {item.isHot && (
           <span className="text-[10px] font-bold text-rose-500 flex items-center gap-0.5">
-            <Flame className="h-2.5 w-2.5" />热点
+            <Flame className="h-2.5 w-2.5" />{lang === 'zh' ? '热点' : 'Hot'}
           </span>
         )}
         {pillarCfg && (
@@ -166,9 +162,7 @@ function RelatedCard({ item, lang }: { item: RelatedItem; lang: 'zh' | 'en' }) {
       <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed mb-3">{summary}</p>
       <div className="flex items-center justify-between">
         <span className="text-[10px] text-gray-300">{date}</span>
-        {item.source && (
-          <span className="text-[10px] text-gray-300 truncate max-w-[8rem]">{item.source}</span>
-        )}
+        {item.source && <span className="text-[10px] text-gray-300 truncate max-w-[8rem]">{item.source}</span>}
       </div>
     </Link>
   )
@@ -184,7 +178,8 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
   const canToggle = hasZh && hasEn
 
   const title   = lang === 'zh' ? (item.titleZh   ?? item.title)   : (item.titleEn   ?? item.title)
-  const summary = lang === 'zh' ? (item.summaryZh  ?? item.summary) : (item.summaryEn ?? item.summary)
+  const tldr    = lang === 'zh' ? (item.tldrZh     ?? item.summaryZh ?? item.summary)
+                                : (item.tldrEn     ?? item.summaryEn ?? item.summary)
 
   const pillars  = (item.pillars ?? '').split(',').filter(Boolean) as Pillar[]
   const category = CATEGORY_CONFIG[item.category] ?? { labelZh: item.category, labelEn: item.category }
@@ -198,22 +193,20 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
   return (
     <div className="min-h-screen bg-white">
 
-      {/* ── Sticky top bar ───────────────────────────────────────────────────── */}
+      {/* ── Sticky top bar ── */}
       <div className="bg-white/95 backdrop-blur border-b border-gray-100 sticky top-16 z-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 h-12 flex items-center justify-between gap-4">
-          {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm text-gray-400 min-w-0">
             <Link href="/intelligence" className="hover:text-emerald-600 transition-colors flex items-center gap-1 shrink-0">
               <ArrowLeft className="h-3.5 w-3.5" />
-              情报墙
+              {lang === 'zh' ? '情报墙' : 'Intelligence'}
             </Link>
             <span>/</span>
-            <span className="truncate text-gray-600 text-xs">{item.titleZh ?? item.title}</span>
+            <span className="truncate text-gray-600 text-xs">{title}</span>
           </nav>
 
-          {/* Lang toggle */}
           <button
-            onClick={() => setLang((l) => (l === 'zh' ? 'en' : 'zh'))}
+            onClick={() => setLang(l => l === 'zh' ? 'en' : 'zh')}
             disabled={!canToggle}
             title={canToggle ? (lang === 'zh' ? 'Switch to English' : '切换中文') : '暂无双语版本'}
             className={cn(
@@ -229,7 +222,7 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
         </div>
       </div>
 
-      {/* ── Article ──────────────────────────────────────────────────────────── */}
+      {/* ── Article ── */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 py-14">
 
         {/* Pillar + category badges */}
@@ -240,7 +233,7 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
               {lang === 'zh' ? '热点' : 'Hot'}
             </span>
           )}
-          {pillars.map((p) => {
+          {pillars.map(p => {
             const cfg = PILLAR_CONFIG[p]
             if (!cfg) return null
             return (
@@ -268,21 +261,23 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
             {publishedDate}
           </span>
 
+          {/* Source with link — required for traceability */}
           {item.source && (
             <span className="flex items-center gap-1.5">
               <Globe className="h-4 w-4 shrink-0" />
+              {lang === 'zh' ? '来源：' : 'Source: '}
               {item.sourceUrl ? (
                 <a
                   href={item.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-emerald-600 transition-colors inline-flex items-center gap-1"
+                  className="font-medium text-emerald-600 hover:text-emerald-700 transition-colors inline-flex items-center gap-1"
                 >
                   {item.source}
                   <ExternalLink className="h-3 w-3" />
                 </a>
               ) : (
-                <span>{item.source}</span>
+                <span className="font-medium text-gray-600">{item.source}</span>
               )}
             </span>
           )}
@@ -291,22 +286,55 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
             <span>{country.flag}</span>
             <span>{lang === 'zh' ? country.labelZh : country.labelEn}</span>
           </span>
+
+          {item.isPremium && (
+            <span className="flex items-center gap-1 text-amber-500">
+              <Lock className="h-3.5 w-3.5" />
+              Premium
+            </span>
+          )}
         </div>
 
-        {/* Summary blockquote */}
-        {summary && (
-          <blockquote className="relative pl-5 pr-4 py-5 mb-10 rounded-r-xl bg-emerald-50/50 border-l-4 border-emerald-500">
-            <p className="text-gray-600 text-base leading-loose italic">{summary}</p>
-          </blockquote>
+        {/* ── TLDR Section ── */}
+        {tldr && (
+          <div className="mb-10 rounded-xl border border-emerald-100 bg-emerald-50/60 p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <Zap className="h-4 w-4 text-emerald-600 shrink-0" />
+              <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest">
+                {lang === 'zh' ? '核心要点' : 'TL;DR'}
+              </span>
+              <span className="text-[10px] text-emerald-400 ml-auto">AI 摘要 · GLM</span>
+            </div>
+            <p className="text-gray-700 text-[15px] leading-loose">{tldr}</p>
+          </div>
         )}
 
-        {/* Body content — only rendered when non-empty */}
+        {/* ── Body content (original language, shown only when non-empty) ── */}
         {item.content.trim() && (
-          <div className="intelligence-body">
+          <div className="mb-10">
+            {/* Label: original article */}
+            <div className="flex items-center gap-2 mb-5">
+              <span className="inline-block w-1 h-4 bg-gray-300 rounded-full" />
+              <span className="text-xs text-gray-400 uppercase tracking-widest">
+                {lang === 'zh' ? '原文内容' : 'Full Article'}
+              </span>
+              {item.sourceUrl && (
+                <a
+                  href={item.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-auto text-xs text-gray-400 hover:text-emerald-600 flex items-center gap-1 transition-colors"
+                >
+                  {lang === 'zh' ? '查看原始来源' : 'View original source'}
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              )}
+            </div>
+
             {isHtml(item.content) ? (
-              /* eslint-disable-next-line react/no-danger */
               <div
                 className="prose-intelligence-html"
+                /* eslint-disable-next-line react/no-danger */
                 dangerouslySetInnerHTML={{ __html: item.content }}
               />
             ) : (
@@ -317,9 +345,29 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
           </div>
         )}
 
+        {/* No body — prompt user to view source */}
+        {!item.content.trim() && item.sourceUrl && (
+          <div className="mb-10 rounded-xl border border-gray-100 bg-gray-50 p-5 flex items-center justify-between gap-4">
+            <p className="text-sm text-gray-500">
+              {lang === 'zh'
+                ? '完整原文请访问原始来源'
+                : 'Read the full article at the original source'}
+            </p>
+            <a
+              href={item.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition-colors"
+            >
+              {lang === 'zh' ? '阅读原文' : 'Read original'}
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          </div>
+        )}
+
         {/* Related companies */}
         {item.companyLinks.length > 0 && (
-          <div className="mt-12 pt-6 border-t border-gray-100">
+          <div className="mt-10 pt-6 border-t border-gray-100">
             <p className="text-xs uppercase tracking-widest text-gray-400 mb-3">
               {lang === 'zh' ? '相关企业' : 'Related Companies'}
             </p>
@@ -359,7 +407,7 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
               </h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {related.map((r) => (
+              {related.map(r => (
                 <RelatedCard key={r.id} item={r} lang={lang} />
               ))}
             </div>

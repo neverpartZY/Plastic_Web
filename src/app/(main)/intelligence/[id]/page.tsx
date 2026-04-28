@@ -54,6 +54,7 @@ export default async function IntelligenceDetailPage({ params }: Props) {
     },
   })
 
+
   if (!item) notFound()
 
   // Find related items that share at least one pillar

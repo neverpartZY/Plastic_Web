@@ -79,6 +79,33 @@ async function callGLM(systemPrompt: string, userContent: string): Promise<strin
   return text
 }
 
+export async function generateTldr(
+  title: string,
+  body: string,
+  sourceLang: 'zh' | 'en'
+): Promise<{ tldrZh: string; tldrEn: string }> {
+  const isZh = sourceLang === 'zh'
+
+  const [tldrZh, tldrEn] = await Promise.all([
+    callGLM(
+      `你是塑料循环经济行业编辑，为中国B2B读者撰写文章导读。
+要求：用中文写 2-3 句话（100-150字）的核心要点，提炼关键数据与行业影响，语言专业简洁，不使用"本文"开头，PCR/rPET/PPWR/EPR等术语保留原文。只输出导读正文。`,
+      isZh
+        ? `标题：${title}\n\n内容：${body.slice(0, 1200)}`
+        : `Title: ${title}\n\nContent: ${body.slice(0, 1200)}`
+    ),
+    callGLM(
+      `You are an editor for the plastics circular economy industry writing for global B2B readers.
+Write a 2-3 sentence TL;DR (80-120 words) in professional English. Highlight key data and industry impact. Do not start with "This article". Keep PCR/rPET/PPWR/EPR as-is. Output only the TLDR text.`,
+      isZh
+        ? `标题：${title}\n\n内容：${body.slice(0, 1200)}`
+        : `Title: ${title}\n\nContent: ${body.slice(0, 1200)}`
+    ),
+  ])
+
+  return { tldrZh: tldrZh.trim(), tldrEn: tldrEn.trim() }
+}
+
 export async function translateIntelligence(
   title: string,
   summary: string,

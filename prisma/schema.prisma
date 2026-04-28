@@ -201,6 +201,10 @@ model Intelligence {
   summaryZh String?
   summaryEn String?
 
+  /// GLM 生成的 TLDR（100-150字，面向读者）
+  tldrZh String?
+  tldrEn String?
+
   /// policy | market | tech | enterprise | global
   category String
 
