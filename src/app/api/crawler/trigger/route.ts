@@ -1,20 +1,19 @@
-// POST /api/crawler/trigger
-// 由 Vercel Cron / 外部调度器调用，根据优先级决定本次采集哪些源
-// Cron 设置 (vercel.json):
-//   P0: "0 * * * *"        每小时
-//   P1: "0 0,8,16 * * *"   每8小时
-//   P2: "0 2 * * *"        每天凌晨2点
-//   P3: "0 3 * * 1"        每周一
+// GET /api/crawler/trigger?priority=p0&secret=...
+// POST /api/crawler/trigger  { priority, secret }
+// Vercel Cron calls GET with Authorization: Bearer CRON_SECRET
 
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { classifyIntelligence } from '@/lib/intelligence/classifier'
 import { translateIntelligence, generateTldr, translateContent } from '@/lib/intelligence/translator'
+import { crawlSite } from '@/lib/intelligence/crawler'
+import { getSiteConfig } from '@/lib/intelligence/sources'
 
-// 内部调度鉴权 — 生产环境替换为实际 secret
+export const maxDuration = 60
+
 const CRON_SECRET = process.env.CRON_SECRET ?? 'dev-secret'
 
-// 各优先级对应的最小间隔（分钟）
 const PRIORITY_INTERVAL: Record<string, number> = {
   p0: 60,
   p1: 480,
@@ -22,107 +21,108 @@ const PRIORITY_INTERVAL: Record<string, number> = {
   p3: 10080,
 }
 
-export async function POST(req: NextRequest) {
-  const authHeader = req.headers.get('authorization')
-  if (authHeader !== `Bearer ${CRON_SECRET}`) {
+function isAuthorized(req: NextRequest): boolean {
+  const auth = req.headers.get('authorization')
+  if (auth === `Bearer ${CRON_SECRET}`) return true
+  const url = new URL(req.url)
+  return url.searchParams.get('secret') === CRON_SECRET
+}
+
+export async function GET(req: NextRequest) {
+  if (!isAuthorized(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+  const priority = new URL(req.url).searchParams.get('priority') ?? 'p0'
+  return runCrawl(priority)
+}
 
+export async function POST(req: NextRequest) {
+  if (!isAuthorized(req)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const { priority = 'p0' } = await req.json().catch(() => ({}))
-  const intervalMinutes = PRIORITY_INTERVAL[priority] ?? 60
+  return runCrawl(priority)
+}
 
+async function runCrawl(priority: string) {
+  const intervalMinutes = PRIORITY_INTERVAL[priority] ?? 60
   const cutoff = new Date(Date.now() - intervalMinutes * 60 * 1000)
 
-  // 取出到期需要采集的源
   const sources = await prisma.crawlSource.findMany({
     where: {
       priority,
       status: 'active',
-      OR: [
-        { lastCrawledAt: null },
-        { lastCrawledAt: { lt: cutoff } },
-      ],
+      OR: [{ lastCrawledAt: null }, { lastCrawledAt: { lt: cutoff } }],
     },
-    take: 10, // 单次批量上限，防止超时
+    take: 10,
   })
 
   const results = await Promise.allSettled(
-    sources.map((source) => processCrawlSource(source.id, source.url, source.lang as 'zh' | 'en'))
+    sources.map((source) =>
+      processCrawlSource(source.id, source.name, source.lang as 'zh' | 'en')
+    )
   )
 
   const succeeded = results.filter((r) => r.status === 'fulfilled').length
-  const failed = results.filter((r) => r.status === 'rejected').length
+  const failed    = results.filter((r) => r.status === 'rejected').length
 
-  return NextResponse.json({
-    priority,
-    sourcesProcessed: sources.length,
-    succeeded,
-    failed,
-  })
+  if (succeeded > 0) revalidatePath('/intelligence')
+
+  return NextResponse.json({ priority, sourcesProcessed: sources.length, succeeded, failed })
 }
 
-async function processCrawlSource(
-  sourceId: string,
-  url: string,
-  lang: 'zh' | 'en'
-) {
+async function processCrawlSource(sourceId: string, sourceName: string, lang: 'zh' | 'en') {
+  const config = getSiteConfig(sourceName)
+  if (!config) throw new Error(`No config found for source: ${sourceName}`)
+
   try {
-    // ── 1. 抓取内容 ───────────────────────────────────────────────────────────
-    // 实际项目中替换为 Cheerio/Playwright 抓取逻辑
-    // 此处为结构示意，返回标准化的 RawItem[]
-    const rawItems = await fetchFromSource(url, lang)
+    const rawItems = await crawlSite(config)
 
     for (const item of rawItems) {
-      // ── 2. 去重检查 ─────────────────────────────────────────────────────────
       const exists = await prisma.intelligence.findFirst({
         where: { sourceUrl: item.url },
         select: { id: true },
       })
       if (exists) continue
 
-      // ── 3. AI 分类 ──────────────────────────────────────────────────────────
-      const classification = await classifyIntelligence(item.title, item.summary, lang)
+      const [classification, translation] = await Promise.all([
+        classifyIntelligence(item.title, item.summary, lang),
+        translateIntelligence(item.title, item.summary, lang),
+      ])
 
-      // ── 4. 双向翻译 ─────────────────────────────────────────────────────────
-      const translation = await translateIntelligence(item.title, item.summary, lang)
-
-      // ── 4b. 翻译正文 + 生成双语 TLDR ────────────────────────────────────────
       const bodyForTldr = item.content ?? item.summary
       const [tldr, contentZh] = await Promise.all([
         generateTldr(item.title, bodyForTldr, lang).catch(() => ({ tldrZh: null, tldrEn: null })),
-        // 英文正文翻译为中文
-        (lang === 'en' && item.content)
+        lang === 'en' && item.content
           ? translateContent(translation.titleZh ?? item.title, item.content).catch(() => null)
           : Promise.resolve(null),
       ])
 
-      // ── 5. 写入数据库 ────────────────────────────────────────────────────────
       const intel = await prisma.intelligence.create({
         data: {
-          title: item.title,
-          summary: item.summary,
-          content: item.content ?? '',
-          category: classification.category,
-          pillars: classification.pillars.join(','),
-          countryCode: classification.countryCode,
-          importance: classification.importance,
-          isHot: classification.isHot,
-          source: item.sourceName,
-          sourceUrl: item.url,
-          crawlSourceId: sourceId,
-          titleZh: translation.titleZh ?? null,
-          titleEn: translation.titleEn ?? null,
-          summaryZh: translation.summaryZh ?? null,
-          summaryEn: translation.summaryEn ?? null,
-          tldrZh: tldr.tldrZh,
-          tldrEn: tldr.tldrEn,
-          contentZh: contentZh ?? null,
+          title:           item.title,
+          summary:         item.summary,
+          content:         item.content ?? '',
+          category:        classification.category,
+          pillars:         classification.pillars.join(','),
+          countryCode:     classification.countryCode,
+          importance:      classification.importance,
+          isHot:           classification.isHot,
+          source:          item.sourceName,
+          sourceUrl:       item.url,
+          crawlSourceId:   sourceId,
+          titleZh:         translation.titleZh ?? null,
+          titleEn:         translation.titleEn ?? null,
+          summaryZh:       translation.summaryZh ?? null,
+          summaryEn:       translation.summaryEn ?? null,
+          tldrZh:          tldr.tldrZh,
+          tldrEn:          tldr.tldrEn,
+          contentZh:       contentZh ?? null,
           translateStatus: 'translated',
-          publishedAt: item.publishedAt ?? new Date(),
+          publishedAt:     item.publishedAt ?? new Date(),
         },
       })
 
-      // ── 6. 关联企业推荐 ──────────────────────────────────────────────────────
       await linkRelevantCompanies(intel.id, classification.pillars)
     }
 
@@ -139,15 +139,14 @@ async function processCrawlSource(
   }
 }
 
-// pillar → Company.entityType 映射
 const PILLAR_TO_ENTITY: Record<string, string[]> = {
-  molds: ['mold'],
-  molding: ['process'],
-  materials: ['material'],
-  additives: ['additive'],
+  molds:       ['mold'],
+  molding:     ['process'],
+  materials:   ['material'],
+  additives:   ['additive'],
   auxiliaries: ['auxiliary'],
-  recycling: ['material', 'equipment'],
-  reuse: ['material', 'packaging'],
+  recycling:   ['material', 'equipment'],
+  reuse:       ['material', 'packaging'],
 }
 
 async function linkRelevantCompanies(intelligenceId: string, pillars: string[]) {
@@ -155,10 +154,7 @@ async function linkRelevantCompanies(intelligenceId: string, pillars: string[]) 
   if (entityTypes.length === 0) return
 
   const companies = await prisma.company.findMany({
-    where: {
-      entityType: { in: entityTypes },
-      isVerified: true,
-    },
+    where: { entityType: { in: entityTypes }, isVerified: true },
     take: 5,
     orderBy: { isPremium: 'desc' },
     select: { id: true },
@@ -169,27 +165,9 @@ async function linkRelevantCompanies(intelligenceId: string, pillars: string[]) 
   await prisma.intelligenceCompany.createMany({
     data: companies.map((c) => ({
       intelligenceId,
-      companyId: c.id,
-      relevanceScore: 0.7,
+      companyId:       c.id,
+      relevanceScore:  0.7,
     })),
     skipDuplicates: true,
   })
-}
-
-// ── 占位抓取函数 ─────────────────────────────────────────────────────────────
-// 实际替换为 Cheerio/Playwright 实现，每个 CrawlSource 可配置 selector 规则
-interface RawItem {
-  title: string
-  summary: string
-  content?: string
-  url: string
-  sourceName: string
-  publishedAt?: Date
-}
-
-async function fetchFromSource(url: string, _lang: 'zh' | 'en'): Promise<RawItem[]> {
-  // TODO: 实现真实的 HTTP 抓取 + HTML 解析
-  // 示例结构，生产中替换为 Cheerio/Playwright 逻辑
-  console.log(`[Crawler] Fetching: ${url}`)
-  return []
 }
