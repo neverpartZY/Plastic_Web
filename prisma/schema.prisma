@@ -7,6 +7,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ─── 用户 ─────────────────────────────────────────────────────────────────────
+
 model User {
   id           String   @id @default(cuid())
   email        String?  @unique
@@ -20,12 +22,15 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  dashboards Dashboard[]
-  bookmarks  Bookmark[]
+  dashboards    Dashboard[]
+  bookmarks     Bookmark[]
+  subscriptions Subscription[]
 
   @@index([email])
   @@index([phone])
 }
+
+// ─── 标签 ─────────────────────────────────────────────────────────────────────
 
 model Tag {
   id        String   @id @default(cuid())
@@ -43,13 +48,15 @@ model Tag {
   @@index([category])
 }
 
+// ─── 行业资讯 ─────────────────────────────────────────────────────────────────
+
 model News {
   id          String  @id @default(cuid())
   title       String
   summary     String
   content     String
   coverImage  String?
-  source      String? // Media source name (e.g. "环球塑化网")
+  source      String?
   sourceUrl   String?
   author      String?
   viewCount   Int     @default(0)
@@ -86,6 +93,8 @@ model NewsTag {
   @@index([tagId])
 }
 
+// ─── 用户看板 ─────────────────────────────────────────────────────────────────
+
 model Dashboard {
   id        String   @id @default(cuid())
   userId    String
@@ -110,6 +119,8 @@ model DashboardTag {
 
   @@id([dashboardId, tagId])
 }
+
+// ─── 收藏 ─────────────────────────────────────────────────────────────────────
 
 model Bookmark {
   id        String   @id @default(cuid())
@@ -233,8 +244,27 @@ model Intelligence {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  crawlSource  CrawlSource?          @relation(fields: [crawlSourceId], references: [id], onDelete: SetNull)
-  companyLinks IntelligenceCompany[]
+  crawlSource    CrawlSource?          @relation(fields: [crawlSourceId], references: [id], onDelete: SetNull)
+  companyLinks   IntelligenceCompany[]
+  versions       IntelligenceVersion[]
+
+  /// ── Task 2 扩展字段 ────────────────────────────────────────────────────────
+  /// URL SHA256 前32位，用于去重（唯一索引）
+  urlHash     String   @unique
+  /// 指向原始语言情报ID（如英文章指向中文翻译，反之亦然）
+  originalId  String?
+  /// 人工审核后版本号（每次修改+1）
+  version     Int      @default(1)
+  /// 7维度 Enum（冗余存储，查询方便）
+  dimension   String?
+  /// 区域
+  region      String?
+  /// 标签数组
+  tags        String[] @default([])
+  /// 语言
+  lang        String   @default("en")
+  /// AI翻译标题
+  translatedTitle String?
 
   @@index([publishedAt])
   @@index([category])
@@ -243,6 +273,30 @@ model Intelligence {
   @@index([countryCode])
   @@index([importance])
   @@index([translateStatus])
+  @@index([urlHash])
+  @@index([originalId])
+}
+
+// ─── 情报版本历史（人工审核追踪）────────────────────────────────────────────
+
+model IntelligenceVersion {
+  id             String   @id @default(cuid())
+  intelligenceId String
+  version        Int      // 版本号，首次创建为1，人工修改后+1
+  title          String
+  summary        String
+  content        String   @default("")
+  dimension      String?
+  region         String?
+  importance     Int      @default(3)
+  tags           String[] @default([])
+  editedBy       String?  // 审核人邮箱
+  editNote       String?  // 修改说明
+  createdAt      DateTime @default(now())
+
+  intelligence   Intelligence @relation(fields: [intelligenceId], references: [id], onDelete: Cascade)
+
+  @@index([intelligenceId, version])
 }
 
 // ─── 情报↔企业关联 ───────────────────────────────────────────────────────────
@@ -258,6 +312,47 @@ model IntelligenceCompany {
 
   @@id([intelligenceId, companyId])
   @@index([companyId])
+}
+
+// ─── 订阅 ─────────────────────────────────────────────────────────────────────
+
+model Subscription {
+  id          String   @id @default(cuid())
+  userId      String?
+  email       String?
+  phone       String?
+  channel     String   @default("email") // email|wechat|feishu|webhook
+  interests   String[] @default([])      // 订阅的维度/标签数组
+  frequency   String   @default("daily") // realtime|daily|weekly
+  webhookUrl  String?                  // Webhook地址
+  lastSentAt  DateTime?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  pushLogs PushLog[]
+
+  @@index([userId])
+  @@index([channel])
+  @@index([isActive])
+}
+
+// ─── 推送日志 ────────────────────────────────────────────────────────────────
+
+model PushLog {
+  id             String   @id @default(cuid())
+  subscriptionId String
+  intelligenceId String
+  status         String   // sent|failed|webhook_error
+  response       String?  // Webhook响应内容
+  error          String?  // 错误信息
+  createdAt      DateTime @default(now())
+
+  subscription  Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([subscriptionId, createdAt])
+  @@index([intelligenceId])
 }
 
 // ─── 订阅者 ──────────────────────────────────────────────────────────────────
@@ -286,7 +381,7 @@ model ServiceReport {
   id          String   @id @default(cuid())
   title       String
   summary     String
-  category    String /// research | whitepaper | guide | compliance
+  category    String   /// research | whitepaper | guide | compliance
   author      String?
   pages       Int?
   isPremium   Boolean  @default(true)

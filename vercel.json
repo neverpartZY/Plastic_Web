@@ -2,11 +2,11 @@
   "crons": [
     {
       "path": "/api/crawler/trigger?priority=p0",
-      "schedule": "0 * * * *"
+      "schedule": "0 8 * * *"
     },
     {
       "path": "/api/crawler/trigger?priority=p1",
-      "schedule": "0 0,8,16 * * *"
+      "schedule": "0 0 * * *"
     },
     {
       "path": "/api/crawler/trigger?priority=p2",
