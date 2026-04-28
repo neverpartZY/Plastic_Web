@@ -1,5 +1,7 @@
+import { Suspense } from 'react'
 import { prisma } from '@/lib/prisma'
 import IntelligenceCard from '@/components/intelligence/IntelligenceCard'
+import ScrollRestorer from '@/components/ScrollRestorer'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -65,6 +67,7 @@ export default async function IntelligencePage({ searchParams }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50/50">
+      <Suspense fallback={null}><ScrollRestorer /></Suspense>
       {/* ── Header ── */}
       <div className="bg-white border-b">
         <div className="container py-8">

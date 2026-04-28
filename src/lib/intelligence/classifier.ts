@@ -1,7 +1,9 @@
 /**
  * AI分类引擎 — 将原始内容映射到7大战略维度 + 自动打分
- * 使用 GLM-4-Flash（智谱AI，免费额度）
+ * 通过统一 LLM 层调用（GLM / SiliconFlow 自动负载均衡）
  */
+
+import { callLLM } from './llm'
 
 export type Pillar =
   | 'molds'
@@ -23,10 +25,9 @@ export interface ClassifyResult {
   isHot: boolean
 }
 
-const VALID_PILLARS = new Set(['molds', 'molding', 'materials', 'additives', 'auxiliaries', 'recycling', 'reuse'])
+const VALID_PILLARS    = new Set(['molds', 'molding', 'materials', 'additives', 'auxiliaries', 'recycling', 'reuse'])
 const VALID_CATEGORIES = new Set(['policy', 'market', 'tech', 'enterprise', 'global'])
 
-// 本地关键词快速预匹配（API 失败时的 fallback）
 const PILLAR_KEYWORDS: Record<Pillar, string[]> = {
   molds:       ['模具', '注塑模', 'mold', 'tooling', 'die'],
   molding:     ['注塑', '成型', '挤出', 'injection molding', 'extrusion', 'blow molding'],
@@ -65,7 +66,7 @@ function localFallback(text: string): ClassifyResult {
   }
 }
 
-const GLM_SYSTEM = `You are a senior analyst for the plastics circular economy industry.
+const CLASSIFY_SYSTEM = `You are a senior analyst for the plastics circular economy industry.
 Classify the article and return ONLY valid JSON with no extra text:
 {"pillars":["recycling"],"category":"global","importance":3,"countryCode":"GLOBAL","isHot":false,"tags":[]}
 
@@ -92,35 +93,17 @@ export async function classifyIntelligence(
   const text = `${title}\n\n${summary}`
 
   try {
-    const body = JSON.stringify({
-      model: 'glm-4-flash',
-      messages: [
-        { role: 'system', content: GLM_SYSTEM },
-        { role: 'user', content: `Classify this ${sourceLang === 'zh' ? 'Chinese' : 'English'} article:\n\nTitle: ${title}\n\nSummary: ${summary}` },
-      ],
-      max_tokens: 150,
-      temperature: 0.1,
-    })
+    const raw = await callLLM(
+      CLASSIFY_SYSTEM,
+      `Classify this ${sourceLang === 'zh' ? 'Chinese' : 'English'} article:\n\nTitle: ${title}\n\nSummary: ${summary}`,
+      150,
+    )
 
-    const res = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.GLM_API_KEY}`,
-      },
-      body,
-    })
-
-    if (!res.ok) throw new Error(`GLM HTTP ${res.status}`)
-
-    const data = await res.json() as any
-    const raw: string = data?.choices?.[0]?.message?.content ?? ''
     const m = raw.match(/\{[\s\S]*\}/)
-    if (!m) throw new Error('No JSON in GLM response')
+    if (!m) throw new Error('No JSON in LLM response')
 
     const result = JSON.parse(m[0])
 
-    // 验证并修正字段
     const pillars = (result.pillars ?? [])
       .filter((p: string) => VALID_PILLARS.has(p))
       .slice(0, 3) as Pillar[]
