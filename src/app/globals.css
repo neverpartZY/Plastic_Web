@@ -80,3 +80,37 @@
 .article-content blockquote {
   @apply my-5 pl-4 border-l-2 border-emerald-300 text-slate-500 italic;
 }
+
+/* ── Intelligence detail body ───────────────────────────────────────────────── */
+.prose-intelligence-html h2 { @apply text-2xl font-bold mt-10 mb-4 text-slate-900; }
+.prose-intelligence-html h3 { @apply text-xl font-semibold mt-8 mb-3 text-slate-900; }
+.prose-intelligence-html h4 { @apply text-base font-semibold mt-6 mb-2 text-slate-800; }
+.prose-intelligence-html p  { @apply mb-5 leading-loose text-[15px] text-slate-700; }
+.prose-intelligence-html ul { @apply list-disc pl-6 mb-5 space-y-2; }
+.prose-intelligence-html ol { @apply list-decimal pl-6 mb-5 space-y-2; }
+.prose-intelligence-html li { @apply leading-loose text-[15px] text-slate-700; }
+.prose-intelligence-html a  {
+  @apply text-emerald-600 underline underline-offset-2 hover:text-emerald-700 transition-colors;
+}
+.prose-intelligence-html blockquote {
+  @apply my-6 pl-5 py-3 border-l-4 border-emerald-500 bg-emerald-50/40 rounded-r-lg
+         text-slate-600 italic text-[15px] leading-loose;
+}
+.prose-intelligence-html img {
+  @apply rounded-xl my-8 w-full shadow-sm object-cover;
+}
+.prose-intelligence-html table {
+  @apply w-full my-6 text-sm border-collapse;
+}
+.prose-intelligence-html th {
+  @apply bg-slate-50 text-left font-semibold text-slate-700 px-4 py-2.5 border border-slate-200;
+}
+.prose-intelligence-html td {
+  @apply px-4 py-2.5 border border-slate-100 text-slate-600;
+}
+.prose-intelligence-html tr:nth-child(even) td {
+  @apply bg-slate-50/50;
+}
+.prose-intelligence-html strong { @apply font-semibold text-slate-900; }
+.prose-intelligence-html em     { @apply italic text-slate-600; }
+.prose-intelligence-html hr     { @apply my-8 border-slate-100; }
