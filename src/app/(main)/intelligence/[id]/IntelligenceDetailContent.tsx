@@ -31,6 +31,7 @@ export interface IntelligenceDetail {
   tldrZh: string | null
   tldrEn: string | null
   content: string
+  contentZh: string | null
   category: string
   pillars: string | null
   countryCode: string | null
@@ -178,8 +179,14 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
   const canToggle = hasZh && hasEn
 
   const title   = lang === 'zh' ? (item.titleZh   ?? item.title)   : (item.titleEn   ?? item.title)
-  const tldr    = lang === 'zh' ? (item.tldrZh     ?? item.summaryZh ?? item.summary)
-                                : (item.tldrEn     ?? item.summaryEn ?? item.summary)
+  const tldrRaw = lang === 'zh' ? (item.tldrZh ?? item.summaryZh ?? item.summary)
+                                : (item.tldrEn ?? item.summaryEn ?? item.summary)
+
+  // 解析结构化要点（• 分隔）；无结构则整段显示
+  const tldrPoints = tldrRaw
+    ? tldrRaw.split('\n').map(l => l.trim()).filter(l => l.startsWith('•')).map(l => l.slice(1).trim()).filter(Boolean)
+    : []
+  const tldrFallback = tldrPoints.length === 0 ? tldrRaw : null
 
   const pillars  = (item.pillars ?? '').split(',').filter(Boolean) as Pillar[]
   const category = CATEGORY_CONFIG[item.category] ?? { labelZh: item.category, labelEn: item.category }
@@ -296,54 +303,79 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
         </div>
 
         {/* ── TLDR Section ── */}
-        {tldr && (
+        {(tldrPoints.length > 0 || tldrFallback) && (
           <div className="mb-10 rounded-xl border border-emerald-100 bg-emerald-50/60 p-5">
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-4">
               <Zap className="h-4 w-4 text-emerald-600 shrink-0" />
               <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest">
-                {lang === 'zh' ? '核心要点' : 'TL;DR'}
+                {lang === 'zh' ? '核心要点' : 'Key Takeaways'}
               </span>
-              <span className="text-[10px] text-emerald-400 ml-auto">AI 摘要 · GLM</span>
-            </div>
-            <p className="text-gray-700 text-[15px] leading-loose">{tldr}</p>
-          </div>
-        )}
-
-        {/* ── Body content (original language, shown only when non-empty) ── */}
-        {item.content.trim() && (
-          <div className="mb-10">
-            {/* Label: original article */}
-            <div className="flex items-center gap-2 mb-5">
-              <span className="inline-block w-1 h-4 bg-gray-300 rounded-full" />
-              <span className="text-xs text-gray-400 uppercase tracking-widest">
-                {lang === 'zh' ? '原文内容' : 'Full Article'}
-              </span>
-              {item.sourceUrl && (
-                <a
-                  href={item.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-auto text-xs text-gray-400 hover:text-emerald-600 flex items-center gap-1 transition-colors"
-                >
-                  {lang === 'zh' ? '查看原始来源' : 'View original source'}
-                  <ExternalLink className="h-3 w-3" />
-                </a>
-              )}
+              <span className="text-[10px] text-emerald-400 ml-auto">AI · GLM</span>
             </div>
 
-            {isHtml(item.content) ? (
-              <div
-                className="prose-intelligence-html"
-                /* eslint-disable-next-line react/no-danger */
-                dangerouslySetInnerHTML={{ __html: item.content }}
-              />
+            {tldrPoints.length > 0 ? (
+              <ul className="space-y-3">
+                {tldrPoints.map((point, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="shrink-0 mt-1 w-5 h-5 rounded-full bg-emerald-500 text-white text-[10px] font-bold flex items-center justify-center">
+                      {i + 1}
+                    </span>
+                    <p className="text-gray-700 text-[15px] leading-relaxed">{point}</p>
+                  </li>
+                ))}
+              </ul>
             ) : (
-              <p className="text-slate-700 text-base leading-loose whitespace-pre-wrap">
-                {item.content}
-              </p>
+              <p className="text-gray-700 text-[15px] leading-relaxed">{tldrFallback}</p>
             )}
           </div>
         )}
+
+        {/* ── Body content ── */}
+        {(() => {
+          // zh 用户优先显示中文正文；en 用户显示原文
+          const bodyZh = item.contentZh?.trim()
+          const bodyEn = item.content?.trim()
+          const displayBody = lang === 'zh' ? (bodyZh || bodyEn) : (bodyEn || bodyZh)
+          if (!displayBody) return null
+
+          return (
+            <div className="mb-10">
+              <div className="flex items-center gap-2 mb-5">
+                <span className="inline-block w-1 h-4 bg-gray-200 rounded-full" />
+                <span className="text-xs text-gray-400 uppercase tracking-widest">
+                  {lang === 'zh' ? '正文' : 'Full Article'}
+                </span>
+                {item.sourceUrl && (
+                  <a
+                    href={item.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-auto text-xs text-gray-400 hover:text-emerald-600 flex items-center gap-1 transition-colors"
+                  >
+                    {lang === 'zh' ? '查看来源' : 'Original source'}
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                )}
+              </div>
+
+              {isHtml(displayBody) ? (
+                <div
+                  className="prose-intelligence-html"
+                  /* eslint-disable-next-line react/no-danger */
+                  dangerouslySetInnerHTML={{ __html: displayBody }}
+                />
+              ) : (
+                <div className="space-y-4">
+                  {displayBody.split(/\n{2,}/).filter(Boolean).map((para, i) => (
+                    <p key={i} className="text-slate-700 text-base leading-loose">
+                      {para.trim()}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+          )
+        })()}
 
         {/* No body — prompt user to view source */}
         {!item.content.trim() && item.sourceUrl && (

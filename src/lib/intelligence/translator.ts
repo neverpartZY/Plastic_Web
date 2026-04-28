@@ -85,25 +85,36 @@ export async function generateTldr(
   sourceLang: 'zh' | 'en'
 ): Promise<{ tldrZh: string; tldrEn: string }> {
   const isZh = sourceLang === 'zh'
+  const inputZh = isZh ? `标题：${title}\n\n${body.slice(0, 1200)}` : `Title: ${title}\n\nContent: ${body.slice(0, 1200)}`
+  const inputEn = inputZh
 
   const [tldrZh, tldrEn] = await Promise.all([
     callGLM(
-      `你是塑料循环经济行业编辑，为中国B2B读者撰写文章导读。
-要求：用中文写 2-3 句话（100-150字）的核心要点，提炼关键数据与行业影响，语言专业简洁，不使用"本文"开头，PCR/rPET/PPWR/EPR等术语保留原文。只输出导读正文。`,
-      isZh
-        ? `标题：${title}\n\n内容：${body.slice(0, 1200)}`
-        : `Title: ${title}\n\nContent: ${body.slice(0, 1200)}`
+      `你是塑料循环经济行业编辑，为中国B2B读者提炼文章核心。
+严格输出 3 条要点，每条以「• 」开头，每条 20-40 字。
+不要输出标题、前言或序号。PCR/rPET/PPWR/EPR 保留原文。`,
+      inputZh,
     ),
     callGLM(
-      `You are an editor for the plastics circular economy industry writing for global B2B readers.
-Write a 2-3 sentence TL;DR (80-120 words) in professional English. Highlight key data and industry impact. Do not start with "This article". Keep PCR/rPET/PPWR/EPR as-is. Output only the TLDR text.`,
-      isZh
-        ? `标题：${title}\n\n内容：${body.slice(0, 1200)}`
-        : `Title: ${title}\n\nContent: ${body.slice(0, 1200)}`
+      `You are an editor for the plastics circular economy industry.
+Output exactly 3 bullet points, each starting with "• ", each 15-30 words.
+No title, preamble, or numbering. Keep PCR/rPET/PPWR/EPR as-is.`,
+      inputEn,
     ),
   ])
 
   return { tldrZh: tldrZh.trim(), tldrEn: tldrEn.trim() }
+}
+
+export async function translateContent(
+  titleZh: string,
+  contentEn: string,
+): Promise<string> {
+  return callGLM(
+    `你是塑料循环经济行业专业翻译，将英文正文译为中文，面向中国B2B读者。
+规则：保持段落结构，段间空行；PCR/rPET/PPWR/EPR/GRS 保留原文；chemical recycling→化学回收；bottle flake→瓶片；直接输出译文。`,
+    `标题：${titleZh}\n\n原文：\n${contentEn.slice(0, 2000)}`,
+  )
 }
 
 export async function translateIntelligence(

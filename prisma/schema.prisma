@@ -201,7 +201,10 @@ model Intelligence {
   summaryZh String?
   summaryEn String?
 
-  /// GLM 生成的 TLDR（100-150字，面向读者）
+  /// 正文中文翻译（GLM 翻译，供中文读者阅读）
+  contentZh String?
+
+  /// GLM 生成的 TLDR — 3条要点，每条以 • 开头
   tldrZh String?
   tldrEn String?
 

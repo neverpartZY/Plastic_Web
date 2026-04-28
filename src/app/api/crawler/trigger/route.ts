@@ -9,7 +9,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { classifyIntelligence } from '@/lib/intelligence/classifier'
-import { translateIntelligence, generateTldr } from '@/lib/intelligence/translator'
+import { translateIntelligence, generateTldr, translateContent } from '@/lib/intelligence/translator'
 
 // 内部调度鉴权 — 生产环境替换为实际 secret
 const CRON_SECRET = process.env.CRON_SECRET ?? 'dev-secret'
@@ -86,9 +86,15 @@ async function processCrawlSource(
       // ── 4. 双向翻译 ─────────────────────────────────────────────────────────
       const translation = await translateIntelligence(item.title, item.summary, lang)
 
-      // ── 4b. 生成双语 TLDR ───────────────────────────────────────────────────
+      // ── 4b. 翻译正文 + 生成双语 TLDR ────────────────────────────────────────
       const bodyForTldr = item.content ?? item.summary
-      const tldr = await generateTldr(item.title, bodyForTldr, lang).catch(() => ({ tldrZh: null, tldrEn: null }))
+      const [tldr, contentZh] = await Promise.all([
+        generateTldr(item.title, bodyForTldr, lang).catch(() => ({ tldrZh: null, tldrEn: null })),
+        // 英文正文翻译为中文
+        (lang === 'en' && item.content)
+          ? translateContent(translation.titleZh ?? item.title, item.content).catch(() => null)
+          : Promise.resolve(null),
+      ])
 
       // ── 5. 写入数据库 ────────────────────────────────────────────────────────
       const intel = await prisma.intelligence.create({
@@ -110,6 +116,7 @@ async function processCrawlSource(
           summaryEn: translation.summaryEn ?? null,
           tldrZh: tldr.tldrZh,
           tldrEn: tldr.tldrEn,
+          contentZh: contentZh ?? null,
           translateStatus: 'translated',
           publishedAt: item.publishedAt ?? new Date(),
         },
