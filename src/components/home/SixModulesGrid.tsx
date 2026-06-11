@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Settings2, Layers, FlaskConical, Box, RefreshCw, BarChart3, ArrowUpRight } from 'lucide-react'
+import { PenTool, Box, RotateCcw, Leaf, FlaskConical, Package, RefreshCw, Repeat2, ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import type { SixModulesDictionary } from '@/i18n/types'
+import type { EightModulesDictionary } from '@/i18n/types'
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Visual config — locale-independent
@@ -12,8 +12,8 @@ import type { SixModulesDictionary } from '@/i18n/types'
 
 const MODULE_STYLE = [
   {
-    key: 'machinery' as const,    href: '/news?pillar=machinery',
-    icon: Settings2,
+    key: 'molds' as const,       href: '/news?dimension=molds',
+    icon: PenTool,
     tagKey: 'tagPrimary' as const,
     iconGrad: 'linear-gradient(135deg, #1d4ed8 0%, #0ea5e9 100%)',
     accentColor: '#1d4ed8', accentBg: '#eff6ff',
@@ -21,8 +21,8 @@ const MODULE_STYLE = [
     borderHover: '#3b82f6',
   },
   {
-    key: 'materials' as const,    href: '/news?pillar=materials',
-    icon: Layers,
+    key: 'molding' as const,     href: '/news?dimension=molding',
+    icon: Box,
     tagKey: 'tagPrimary' as const,
     iconGrad: 'linear-gradient(135deg, #0d9488 0%, #10b981 100%)',
     accentColor: '#0d9488', accentBg: '#f0fdfa',
@@ -30,8 +30,8 @@ const MODULE_STYLE = [
     borderHover: '#14b8a6',
   },
   {
-    key: 'additives' as const,    href: '/news?pillar=additives',
-    icon: FlaskConical,
+    key: 'recycled' as const,    href: '/news?dimension=recycled',
+    icon: RotateCcw,
     tagKey: 'tagPrimary' as const,
     iconGrad: 'linear-gradient(135deg, #7c3aed 0%, #c026d3 100%)',
     accentColor: '#7c3aed', accentBg: '#f5f3ff',
@@ -39,26 +39,44 @@ const MODULE_STYLE = [
     borderHover: '#8b5cf6',
   },
   {
-    key: 'auxiliaries' as const,  href: '/news?pillar=auxiliaries',
-    icon: Box,
+    key: 'bio' as const,         href: '/news?dimension=bio',
+    icon: Leaf,
     tagKey: 'tagPrimary' as const,
-    iconGrad: 'linear-gradient(135deg, #d97706 0%, #f97316 100%)',
+    iconGrad: 'linear-gradient(135deg, #059669 0%, #22c55e 100%)',
+    accentColor: '#059669', accentBg: '#ecfdf5',
+    tagColor: '#059669', tagBg: '#ecfdf5',
+    borderHover: '#10b981',
+  },
+  {
+    key: 'additives' as const,   href: '/news?dimension=additives',
+    icon: FlaskConical,
+    tagKey: 'tagPrimary' as const,
+    iconGrad: 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)',
     accentColor: '#d97706', accentBg: '#fffbeb',
     tagColor: '#d97706', tagBg: '#fffbeb',
     borderHover: '#f59e0b',
   },
   {
-    key: 'recycling' as const,    href: '/news?pillar=recycling',
-    icon: RefreshCw,
+    key: 'auxiliaries' as const, href: '/news?dimension=auxiliaries',
+    icon: Package,
     tagKey: 'tagPrimary' as const,
+    iconGrad: 'linear-gradient(135deg, #ea580c 0%, #f97316 100%)',
+    accentColor: '#ea580c', accentBg: '#fff7ed',
+    tagColor: '#ea580c', tagBg: '#fff7ed',
+    borderHover: '#f97316',
+  },
+  {
+    key: 'recycling' as const,   href: '/news?dimension=recycling',
+    icon: RefreshCw,
+    tagKey: 'tagSecondary' as const,
     iconGrad: 'linear-gradient(135deg, #059669 0%, #14b8a6 100%)',
     accentColor: '#059669', accentBg: '#ecfdf5',
     tagColor: '#059669', tagBg: '#ecfdf5',
     borderHover: '#10b981',
   },
   {
-    key: 'carbonPolicy' as const, href: '/news?pillar=carbonPolicy',
-    icon: BarChart3,
+    key: 'reuse' as const,       href: '/news?dimension=reuse',
+    icon: Repeat2,
     tagKey: 'tagSecondary' as const,
     iconGrad: 'linear-gradient(135deg, #4338ca 0%, #0e7490 100%)',
     accentColor: '#4338ca', accentBg: '#eef2ff',
@@ -67,28 +85,30 @@ const MODULE_STYLE = [
   },
 ]
 
-const ZH: SixModulesDictionary = {
-  badge: '六大支柱 · 数据闭环',
-  title: '每个支柱，都在向知识中枢汇流',
-  subtitle: '六大产业支柱持续汇聚行业数据，知识中枢沉淀后反向赋能，',
+const ZH: EightModulesDictionary = {
+  badge: '八大维度 · 数据闭环',
+  title: '每个维度，都在向知识中枢汇流',
+  subtitle: '八大产业维度持续汇聚行业数据，知识中枢沉淀后反向赋能，',
   subtitleEnd: '形成自我强化的产业数字生态',
-  tagPrimary: '核心支柱',
-  tagSecondary: '政策支柱',
+  tagPrimary: '核心维度',
+  tagSecondary: '循环维度',
   connected: '数据已接入产业知识中枢',
-  bottomHint1: '六大支柱的情报数据汇聚至',
+  bottomHint1: '八大维度的情报数据汇聚至',
   bottomDatabase: '产业知识中枢',
   bottomHint2: '，形成可持续塑料产业知识图谱',
   modules: {
-    machinery:    { label: '绿色机械',   desc: '注塑、挤出、造粒等装备能效升级与智能化改造，追踪绿色制造最新标准' },
-    materials:    { label: '可持续材料', desc: '生物基、PCR 再生料、可降解聚合物研究前沿，覆盖材料认证与标准动态' },
-    additives:    { label: '环保助剂',   desc: '无重金属稳定剂、生物基增塑剂、无卤阻燃剂等绿色化学助剂体系' },
-    auxiliaries:  { label: '绿色辅料',   desc: '模具工艺、功能薄膜与绿色包装辅料，赋能生产全流程降碳减排' },
-    recycling:    { label: '循环再生',   desc: '机械/化学/酶解回收四大路径，推动再生产业链规模化与高值化' },
-    carbonPolicy: { label: '碳中和/政策',desc: '欧盟 CBAM、EPR 法规、中国双碳目标及全球塑料公约深度解读' },
+    molds:       { label: '模具',       desc: '注塑模具设计、热流道系统、高效冷却与精密加工技术，追踪模具制造最新标准' },
+    molding:     { label: '成型',       desc: '注塑、挤出、吹膜、造粒等成型工艺创新与智能化改造，追踪绿色制造最新标准' },
+    recycled:    { label: '再生塑料',   desc: 'PCR 再生料品质标准、认证体系与全球供需动态，覆盖食品级再生塑料法规进展' },
+    bio:         { label: '生物基材料', desc: 'PLA、PHA、PBS 等生物基聚合物研发前沿，覆盖材料认证、降解标准与产业化动态' },
+    additives:   { label: '助剂',       desc: '无重金属稳定剂、生物基增塑剂、无卤阻燃剂等绿色化学助剂体系' },
+    auxiliaries: { label: '辅料',       desc: '功能薄膜、绿色包装辅料、模具钢材与表面处理，赋能生产全流程降碳减排' },
+    recycling:   { label: '回收再生',   desc: '机械/化学/酶解回收四大路径，推动再生产业链规模化与高值化' },
+    reuse:       { label: '重复使用',   desc: '可循环包装设计、减量化策略、重复使用商业模式与全球塑料公约深度解读' },
   },
 }
 
-export default function SixModulesGrid({ dict }: { dict?: SixModulesDictionary }) {
+export default function EightModulesGrid({ dict }: { dict?: EightModulesDictionary }) {
   const t = dict ?? ZH
   const sectionRef = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
@@ -135,10 +155,10 @@ export default function SixModulesGrid({ dict }: { dict?: SixModulesDictionary }
           'text-center mb-14 transition-all duration-700',
           visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6',
         )}>
-          {/* Six-pillar color bar */}
+          {/* Eight-dimension color bar */}
           <div className="flex items-center justify-center gap-1 mb-5">
-            {['bg-blue-500', 'bg-teal-500', 'bg-violet-500', 'bg-amber-500', 'bg-emerald-500', 'bg-indigo-500'].map((c, i) => (
-              <div key={i} className={`h-0.5 w-10 rounded-full ${c} opacity-60`} />
+            {['bg-blue-500', 'bg-cyan-500', 'bg-purple-500', 'bg-green-500', 'bg-amber-500', 'bg-orange-500', 'bg-emerald-500', 'bg-indigo-500'].map((c, i) => (
+              <div key={i} className={`h-0.5 w-7 rounded-full ${c} opacity-60`} />
             ))}
           </div>
           <div className="inline-flex items-center gap-2 px-3.5 py-1 mb-5 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 text-xs font-semibold tracking-wide">
@@ -156,7 +176,7 @@ export default function SixModulesGrid({ dict }: { dict?: SixModulesDictionary }
         </div>
 
         {/* ── Bento card grid ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {MODULE_STYLE.map((mod, i) => {
             const Icon = mod.icon
             const content = t.modules[mod.key]

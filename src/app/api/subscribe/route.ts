@@ -1,53 +1,47 @@
 /**
  * POST /api/subscribe — 订阅接口
- * 允许用户通过 POST 提交标签选择（维度/兴趣标签）
- *
- * GET /api/subscribe — 查询用户的所有订阅
+ * 极简化线索收集：邮箱（唯一ID）+ 公司信息 + 手机（选填）
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import type { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 
 // ── 类型定义 ──────────────────────────────────────────────────────────────────
 
-type Channel   = 'email' | 'wechat' | 'feishu' | 'webhook'
+type Channel   = 'email' | 'webhook'
 type Frequency = 'realtime' | 'daily' | 'weekly'
 
-interface SubscribeRequest {
-  email?:      string
-  phone?:      string
-  userId?:     string
-  channel?:    Channel
-  interests:   string[]   // 订阅的维度/标签数组，如 ["molds", "recycling"]
-  frequency?:  Frequency
-  webhookUrl?: string
-}
-
-// ── 验证 Schema ────────────────────────────────────────────────────────────────
+// ── 验证 Schema ────────────────────────────────────────────────────────────
 
 const SubscribeSchema = z.object({
-  email:      z.string().email().optional(),
-  phone:      z.string().optional(),
-  userId:     z.string().optional(),
-  channel:    z.enum(['email', 'wechat', 'feishu', 'webhook']).default('email'),
-  interests:  z.array(z.string()).min(1).max(20),
-  frequency:  z.enum(['realtime', 'daily', 'weekly']).default('daily'),
-  webhookUrl: z.string().url().optional().refine(
+  email:       z.string().email('请输入有效的公司邮箱'),
+  phone:       z.string().max(30).optional(),
+  userId:      z.string().optional(),
+  channel:     z.enum(['email', 'webhook']).default('email'),
+  interests:   z.array(z.string()).min(1).max(20, '请至少选择一个维度'),
+  frequency:   z.enum(['realtime', 'daily', 'weekly']).default('daily'),
+  webhookUrl:  z.string().url().optional().refine(
     (val) => !val || val.startsWith('https://'),
-    { message: 'webhookUrl must use HTTPS' },
+    { message: 'webhookUrl 必须使用 HTTPS' },
   ),
+  // Lead 字段
+  companyName: z.string().max(200).optional(),
+  jobTitle:    z.string().max(100).optional(),
+  sourcePage:  z.string().max(200).optional(),
+  lang:        z.enum(['zh', 'en']).optional(),
 }).refine(
   (data) => data.email || data.phone || data.userId,
-  { message: 'Must provide at least one of: email, phone, userId' },
+  { message: '请提供邮箱、手机号或用户ID' },
 )
 
 const DIMENSION_VALUES = [
-  'molds', 'molding', 'materials', 'additives',
+  'molds', 'molding', 'recycled', 'bio', 'additives',
   'auxiliaries', 'recycling', 'reuse',
 ] as const
 
-// ── POST: 创建或更新订阅 ──────────────────────────────────────────────────────
+// ── POST: 创建或更新订阅 ────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
   try {
@@ -58,7 +52,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Validation failed',
+          error: '校验失败',
           details: parsed.error.errors.map((e) => ({
             field: e.path.join('.'),
             message: e.message,
@@ -68,43 +62,78 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { email, phone, userId, channel, interests, frequency, webhookUrl } = parsed.data
+    const {
+      email, phone, userId, channel, interests, frequency, webhookUrl,
+      companyName, jobTitle, sourcePage, lang,
+    } = parsed.data
 
-    // 校验 interests 包含有效的维度或标签
+    // 过滤无效 interests
     const validInterests = interests.filter(
       (i) => typeof i === 'string' && i.length > 0 && i.length <= 50,
     )
     if (validInterests.length === 0) {
       return NextResponse.json(
-        { success: false, error: 'interests cannot be empty' },
+        { success: false, error: 'interests 不能为空' },
         { status: 422 },
       )
     }
 
-    // 查找已存在的同渠道订阅（去重）
-    const existingConditions: Parameters<typeof prisma.subscription.findMany>[0]['where'] = {
-      channel,
+    // ── Lead: 邮箱存在则更新，否则创建 ───────────────────────────────────
+    if (email) {
+      const existing = await prisma.lead.findUnique({ where: { email } })
+      if (existing) {
+        await prisma.lead.update({
+          where: { email },
+          data: {
+            phone:        phone ?? existing.phone,
+            companyName:  companyName ?? existing.companyName,
+            jobTitle:     jobTitle ?? existing.jobTitle,
+            sourcePage:   sourcePage ?? existing.sourcePage,
+            interestedPillars: validInterests,
+            channel:      channel ?? 'email',
+            frequency:    frequency ?? 'daily',
+            isActive:     true,
+            lang:         lang ?? existing.lang,
+          },
+        })
+      } else {
+        await prisma.lead.create({
+          data: {
+            email:           email,
+            phone:           phone ?? null,
+            companyName:     companyName ?? null,
+            jobTitle:        jobTitle ?? null,
+            interestedPillars: validInterests,
+            sourcePage:     sourcePage ?? null,
+            channel:        channel ?? 'email',
+            frequency:      frequency ?? 'daily',
+            isActive:       true,
+            lang:           lang ?? 'zh',
+          },
+        })
+      }
     }
 
-    if (email)  Object.assign(existingConditions, { email })
-    if (phone)  Object.assign(existingConditions, { phone })
-    if (userId) Object.assign(existingConditions, { userId })
+    // ── 订阅记录（兼容旧逻辑）────────────────────────────────────────────
+    const existingConditions: Prisma.SubscriptionWhereInput = { channel: channel ?? 'email' }
+    if (email)  existingConditions.email = email
+    if (phone)  existingConditions.phone = phone
+    if (userId) existingConditions.userId = userId
 
     const existing = await prisma.subscription.findFirst({ where: existingConditions })
 
     if (existing) {
-      // 更新已有订阅
       const updated = await prisma.subscription.update({
         where: { id: existing.id },
         data: {
           interests:  validInterests,
-          frequency:  frequency ?? 'daily',
+          frequency: frequency ?? 'daily',
           webhookUrl: webhookUrl ?? null,
           isActive:   true,
+          lang:       lang ?? 'zh',
           updatedAt:  new Date(),
         },
       })
-
       return NextResponse.json({
         success: true,
         subscription: sanitized(updated),
@@ -112,7 +141,6 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // 创建新订阅
     const subscription = await prisma.subscription.create({
       data: {
         email:      email ?? null,
@@ -120,9 +148,10 @@ export async function POST(req: NextRequest) {
         userId:     userId ?? null,
         channel:    channel ?? 'email',
         interests:  validInterests,
-        frequency:  frequency ?? 'daily',
+        frequency: frequency ?? 'daily',
         webhookUrl: webhookUrl ?? null,
         isActive:   true,
+        lang:       lang ?? 'zh',
       },
     })
 
@@ -134,11 +163,11 @@ export async function POST(req: NextRequest) {
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : String(e)
     console.error('[/api/subscribe POST]', message)
-    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ success: false, error: '服务器内部错误' }, { status: 500 })
   }
 }
 
-// ── GET: 查询订阅列表 ─────────────────────────────────────────────────────────
+// ── GET: 查询订阅 ───────────────────────────────────────────────────────────
 
 export async function GET(req: NextRequest) {
   try {
@@ -149,12 +178,12 @@ export async function GET(req: NextRequest) {
 
     if (!userId && !email) {
       return NextResponse.json(
-        { error: 'userId or email query parameter is required' },
+        { error: 'userId 或 email 查询参数必填' },
         { status: 400 },
       )
     }
 
-    const where: Parameters<typeof prisma.subscription.findMany>[0]['where'] = { isActive: true }
+    const where = { isActive: true } as Prisma.SubscriptionWhereInput
     if (userId) where.userId = userId
     if (email)  where.email = email
     if (channel) where.channel = channel
@@ -193,20 +222,17 @@ export async function GET(req: NextRequest) {
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : String(e)
     console.error('[/api/subscribe GET]', message)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ error: '服务器内部错误' }, { status: 500 })
   }
 }
 
-// ── DELETE: 取消订阅 ──────────────────────────────────────────────────────────
+// ── DELETE: 取消订阅 ────────────────────────────────────────────────────────
 
 export async function DELETE(req: NextRequest) {
   try {
     const { searchParams } = req.nextUrl
     const id = searchParams.get('id')
-
-    if (!id) {
-      return NextResponse.json({ error: 'id required' }, { status: 400 })
-    }
+    if (!id) return NextResponse.json({ error: 'id 必填' }, { status: 400 })
 
     await prisma.subscription.update({
       where: { id },
@@ -215,12 +241,12 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({ success: true })
 
-  } catch (e: unknown) {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: '服务器内部错误' }, { status: 500 })
   }
 }
 
-// ── 工具函数 ──────────────────────────────────────────────────────────────────
+// ── 工具函数 ────────────────────────────────────────────────────────────────
 
 function sanitized(sub: {
   id: string
@@ -248,7 +274,6 @@ function sanitized(sub: {
     lastSentAt: sub.lastSentAt?.toISOString() ?? null,
     createdAt: sub.createdAt.toISOString(),
     updatedAt: sub.updatedAt.toISOString(),
-    // 不暴露 webhookUrl 的完整内容
     hasWebhook: !!sub.webhookUrl,
   }
 }

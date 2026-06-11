@@ -2,51 +2,59 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Settings2, Layers, FlaskConical, Box, RefreshCw, BarChart3, Database } from 'lucide-react'
+import { PenTool, Box, RotateCcw, Leaf, FlaskConical, Package, RefreshCw, Repeat2, Database } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { DataEcosystemDictionary } from '@/i18n/types'
 
 // ── Node visual config (locale-independent) ───────────────────────────────────
 
 const TOP_NODE_STYLE = [
-  { id: 'machinery',    nodeKey: 'machinery' as const,    icon: Settings2, color: '#1d4ed8', iconBg: 'bg-blue-50',   iconText: 'text-blue-600',   border: 'border-blue-200',   href: '/news?pillar=machinery' },
-  { id: 'carbonPolicy', nodeKey: 'carbonPolicy' as const, icon: BarChart3, color: '#4338ca', iconBg: 'bg-indigo-50', iconText: 'text-indigo-600', border: 'border-indigo-200', href: '/news?pillar=carbonPolicy' },
+  { id: 'molds',   nodeKey: 'molds' as const,   icon: PenTool, color: '#1d4ed8', iconBg: 'bg-blue-50',   iconText: 'text-blue-600',   border: 'border-blue-200',   href: '/news?dimension=molds' },
+  { id: 'molding', nodeKey: 'molding' as const, icon: Box,     color: '#0d9488', iconBg: 'bg-cyan-50',   iconText: 'text-cyan-600',   border: 'border-cyan-200',   href: '/news?dimension=molding' },
 ] as const
 
 const MID_NODE_STYLE = [
-  { id: 'materials',   nodeKey: 'materials' as const,   icon: Layers,      color: '#0d9488', iconBg: 'bg-teal-50',   iconText: 'text-teal-600',   border: 'border-teal-200',   href: '/news?pillar=materials' },
-  { id: 'additives',   nodeKey: 'additives' as const,   icon: FlaskConical,color: '#7c3aed', iconBg: 'bg-violet-50', iconText: 'text-violet-600', border: 'border-violet-200', href: '/news?pillar=additives' },
-  { id: 'auxiliaries', nodeKey: 'auxiliaries' as const, icon: Box,         color: '#d97706', iconBg: 'bg-amber-50',  iconText: 'text-amber-600',  border: 'border-amber-200',  href: '/news?pillar=auxiliaries' },
-  { id: 'recycling',   nodeKey: 'recycling' as const,   icon: RefreshCw,   color: '#059669', iconBg: 'bg-emerald-50',iconText: 'text-emerald-600',border: 'border-emerald-200',href: '/news?pillar=recycling' },
+  { id: 'recycled',    nodeKey: 'recycled' as const,    icon: RotateCcw,   color: '#7c3aed', iconBg: 'bg-purple-50', iconText: 'text-purple-600', border: 'border-purple-200', href: '/news?dimension=recycled' },
+  { id: 'bio',         nodeKey: 'bio' as const,         icon: Leaf,        color: '#059669', iconBg: 'bg-green-50',  iconText: 'text-green-600',  border: 'border-green-200',  href: '/news?dimension=bio' },
+  { id: 'additives',   nodeKey: 'additives' as const,   icon: FlaskConical,color: '#d97706', iconBg: 'bg-amber-50',  iconText: 'text-amber-600',  border: 'border-amber-200',  href: '/news?dimension=additives' },
+  { id: 'auxiliaries', nodeKey: 'auxiliaries' as const, icon: Package,     color: '#ea580c', iconBg: 'bg-orange-50', iconText: 'text-orange-600', border: 'border-orange-200', href: '/news?dimension=auxiliaries' },
+] as const
+
+const BOTTOM_NODE_STYLE = [
+  { id: 'recycling', nodeKey: 'recycling' as const, icon: RefreshCw, color: '#059669', iconBg: 'bg-emerald-50',iconText: 'text-emerald-600',border: 'border-emerald-200',href: '/news?dimension=recycling' },
+  { id: 'reuse',     nodeKey: 'reuse' as const,     icon: Repeat2,   color: '#4338ca', iconBg: 'bg-indigo-50', iconText: 'text-indigo-600', border: 'border-indigo-200', href: '/news?dimension=reuse' },
 ] as const
 
 const ZH: DataEcosystemDictionary = {
   badge: '知识引擎 · 实时运行中',
-  title: '六大支柱 · 产业知识闭环引擎',
-  subtitle: '六大支柱持续向产业知识中枢汇入数据流 · ',
+  title: '八大维度 · 产业知识闭环引擎',
+  subtitle: '八大维度持续向产业知识中枢汇入数据流 · ',
   subtitleHighlight: '知识中枢实时赋能产业决策与情报分析',
-  layerTop: '产业两翼 · 装备与治理',
-  layerMid: '核心产业链 · 四大支柱',
+  layerTop: '产业上游 · 模具与成型',
+  layerMid: '核心产业链 · 材料与配方',
+  layerBottom: '循环闭环 · 回收与重用',
   layerBase: '知识中枢 · 数据沉淀与反哺',
   dbTitle: '产业知识中枢',
   dbBadge: '数据基石层',
-  dbDesc: '可持续塑料产业链底层知识图谱 · 汇聚六大支柱实时情报数据 · 反向赋能产业运作与可持续决策',
+  dbDesc: '可持续塑料产业链底层知识图谱 · 汇聚八大维度实时情报数据 · 反向赋能产业运作与可持续决策',
   dbStatus: '运行中',
-  dbStreams: '6 路数据流 · 持续沉淀',
+  dbStreams: '8 路数据流 · 持续沉淀',
   mobileAccumulating: '情报持续沉淀',
   mobileDbDesc: '产业知识图谱 · 可持续塑料链',
   nodes: {
-    machinery:    { label: '绿色机械',   tag: '核心支柱' },
-    materials:    { label: '可持续材料', tag: '核心支柱' },
-    additives:    { label: '环保助剂',   tag: '核心支柱' },
-    auxiliaries:  { label: '绿色辅料',   tag: '核心支柱' },
-    recycling:    { label: '循环再生',   tag: '核心支柱' },
-    carbonPolicy: { label: '碳中和/政策',tag: '政策支柱' },
+    molds:       { label: '模具',       tag: '核心维度' },
+    molding:     { label: '成型',       tag: '核心维度' },
+    recycled:    { label: '再生塑料',   tag: '核心维度' },
+    bio:         { label: '生物基材料', tag: '核心维度' },
+    additives:   { label: '助剂',       tag: '核心维度' },
+    auxiliaries: { label: '辅料',       tag: '核心维度' },
+    recycling:   { label: '回收再生',   tag: '循环维度' },
+    reuse:       { label: '重复使用',   tag: '循环维度' },
   },
 }
 
-type AnyNodeStyle = (typeof TOP_NODE_STYLE)[number] | (typeof MID_NODE_STYLE)[number]
-const ALL_NODE_STYLE: AnyNodeStyle[] = [...TOP_NODE_STYLE, ...MID_NODE_STYLE]
+type AnyNodeStyle = (typeof TOP_NODE_STYLE)[number] | (typeof MID_NODE_STYLE)[number] | (typeof BOTTOM_NODE_STYLE)[number]
+const ALL_NODE_STYLE: AnyNodeStyle[] = [...TOP_NODE_STYLE, ...MID_NODE_STYLE, ...BOTTOM_NODE_STYLE]
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -286,7 +294,7 @@ export default function DataEcosystem({ dict }: { dict?: DataEcosystemDictionary
               </svg>
             )}
 
-            {/* ── Top layer: 2 nodes (machinery + carbonPolicy) ── */}
+            {/* ── Top layer: 2 nodes (molds + molding) ── */}
             <LayerLabel label={t.layerTop} />
             <div className="grid grid-cols-2 gap-6 max-w-sm mx-auto mb-16">
               {TOP_NODE_STYLE.map(n => (
@@ -299,6 +307,14 @@ export default function DataEcosystem({ dict }: { dict?: DataEcosystemDictionary
             <div className="grid grid-cols-4 gap-4 mb-16">
               {MID_NODE_STYLE.map(n => (
                 <NodeCard key={n.id} node={n} dataId={n.id} label={t.nodes[n.nodeKey].label} tag={t.nodes[n.nodeKey].tag} compact />
+              ))}
+            </div>
+
+            {/* ── Bottom layer: 2 nodes (recycling + reuse) ── */}
+            <LayerLabel label={t.layerBottom} />
+            <div className="grid grid-cols-2 gap-6 max-w-sm mx-auto mb-16">
+              {BOTTOM_NODE_STYLE.map(n => (
+                <NodeCard key={n.id} node={n} dataId={n.id} label={t.nodes[n.nodeKey].label} tag={t.nodes[n.nodeKey].tag} />
               ))}
             </div>
 

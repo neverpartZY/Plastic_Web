@@ -6,7 +6,8 @@
 export type Dimension =
   | 'molds'
   | 'molding'
-  | 'materials'
+  | 'recycled'
+  | 'bio'
   | 'additives'
   | 'auxiliaries'
   | 'recycling'
@@ -104,11 +105,11 @@ export const KEYWORD_MATRIX: DimensionKeywords[] = [
     ],
   },
 
-  // ── 3. 材料 (Materials) ─────────────────────────────────────────────────────
+  // ── 3. 再生塑料 (Recycled) ─────────────────────────────────────────────────
   {
-    dimension: 'materials',
-    labelZh: '再生/生物基材料',
-    labelEn: 'Recycled & Bio-based Materials',
+    dimension: 'recycled',
+    labelZh: '再生塑料',
+    labelEn: 'Recycled Plastic',
     keywords: [
       { en: 'post-consumer resin',              zh: 'PCR再生料',           abbr: 'PCR',    weight: 3 },
       { en: 'recycled PET',                    zh: '再生PET',             abbr: 'rPET',   weight: 3 },
@@ -116,14 +117,6 @@ export const KEYWORD_MATRIX: DimensionKeywords[] = [
       { en: 'recycled PE',                     zh: '再生PE',              abbr: 'rPE',    weight: 3 },
       { en: 'recycled HDPE',                   zh: '再生高密度聚乙烯',    abbr: 'rHDPE',  weight: 3 },
       { en: 'recycled LDPE',                   zh: '再生低密度聚乙烯',    abbr: 'rLDPE',  weight: 2 },
-      { en: 'bio-based polymer',                zh: '生物基聚合物',         weight: 3 },
-      { en: 'polylactic acid',                 zh: '聚乳酸',               abbr: 'PLA',    weight: 3 },
-      { en: 'polyhydroxyalkanoate',            zh: '聚羟基烷酸酯',         abbr: 'PHA',    weight: 3 },
-      { en: 'PBAT',                             zh: 'PBAT生物降解塑料',    abbr: 'PBAT',   weight: 2 },
-      { en: 'bio-PE',                           zh: '生物基聚乙烯',         weight: 2 },
-      { en: 'bio-PP',                           zh: '生物基聚丙烯',         weight: 2 },
-      { en: 'compostable plastic',              zh: '可堆肥塑料',           weight: 3 },
-      { en: 'biodegradable plastic',            zh: '可生物降解塑料',       weight: 3 },
       { en: 'post-industrial resin',            zh: '工业后再生料',         abbr: 'PIR',    weight: 2 },
       { en: 'ocean-bound plastic',              zh: '海洋回收塑料',         abbr: 'OBP',    weight: 3 },
       { en: 'food-grade recycled',              zh: '食品级再生料',         weight: 3 },
@@ -134,14 +127,35 @@ export const KEYWORD_MATRIX: DimensionKeywords[] = [
       { en: 'mass balance',                     zh: '质量平衡法',           weight: 2 },
       { en: 'recycled content',                 zh: '再生料含量',           abbr: 'RC',     weight: 3 },
       { en: 'high-purity flake',                zh: '高纯度片料',           abbr: 'HPF',    weight: 2 },
-      { en: 'depolymerized monomer',             zh: '解聚单体',             weight: 3 },
-      { en: 'bio-attributed monomer',           zh: '生物属性单体',         weight: 2 },
       { en: 'mechanical recycled granules',    zh: '机械再生颗粒',          abbr: 'MRG',    weight: 2 },
       { en: 'chemically recycled resin',        zh: '化学再生料',           abbr: 'CRR',    weight: 3 },
+      { en: 'rPET',                              zh: '再生PET粒子',         weight: 3 },
+      { en: 'depolymerized monomer',             zh: '解聚单体',             weight: 3 },
     ],
   },
 
-  // ── 4. 助剂 (Additives) ──────────────────────────────────────────────────────
+  // ── 4. 生物基材料 (Bio-based) ─────────────────────────────────────────────
+  {
+    dimension: 'bio',
+    labelZh: '生物基材料',
+    labelEn: 'Bio-based Materials',
+    keywords: [
+      { en: 'bio-based polymer',                zh: '生物基聚合物',         weight: 3 },
+      { en: 'polylactic acid',                 zh: '聚乳酸',               abbr: 'PLA',    weight: 3 },
+      { en: 'polyhydroxyalkanoate',            zh: '聚羟基烷酸酯',         abbr: 'PHA',    weight: 3 },
+      { en: 'PBAT',                             zh: 'PBAT生物降解塑料',    abbr: 'PBAT',   weight: 2 },
+      { en: 'bio-PE',                           zh: '生物基聚乙烯',         weight: 2 },
+      { en: 'bio-PP',                           zh: '生物基聚丙烯',         weight: 2 },
+      { en: 'compostable plastic',              zh: '可堆肥塑料',           weight: 3 },
+      { en: 'biodegradable plastic',            zh: '可生物降解塑料',       weight: 3 },
+      { en: 'bio-attributed monomer',           zh: '生物属性单体',         weight: 2 },
+      { en: 'bio-based plasticizer',            zh: '生物基增塑剂',         weight: 3 },
+      { en: 'starch-based plastic',            zh: '淀粉基塑料',           weight: 2 },
+      { en: 'cellulose-based',                 zh: '纤维素基材料',         weight: 2 },
+    ],
+  },
+
+  // ── 5. 助剂 (Additives) ──────────────────────────────────────────────────────
   {
     dimension: 'additives',
     labelZh: '助剂化学品',
@@ -178,7 +192,7 @@ export const KEYWORD_MATRIX: DimensionKeywords[] = [
     ],
   },
 
-  // ── 5. 辅料 (Auxiliaries) ───────────────────────────────────────────────────
+  // ── 6. 辅料 (Auxiliaries) ───────────────────────────────────────────────────
   {
     dimension: 'auxiliaries',
     labelZh: '辅助材料与设备',
@@ -216,7 +230,7 @@ export const KEYWORD_MATRIX: DimensionKeywords[] = [
     ],
   },
 
-  // ── 6. 回收再生 (Recycling) ─────────────────────────────────────────────────
+  // ── 7. 回收再生 (Recycling) ─────────────────────────────────────────────────
   {
     dimension: 'recycling',
     labelZh: '回收再生',
@@ -256,7 +270,7 @@ export const KEYWORD_MATRIX: DimensionKeywords[] = [
     ],
   },
 
-  // ── 7. 重复使用 (Reuse) ─────────────────────────────────────────────────────
+  // ── 8. 重复使用 (Reuse) ─────────────────────────────────────────────────────
   {
     dimension: 'reuse',
     labelZh: '重复使用',
@@ -368,7 +382,7 @@ export function isNegative(text: string): boolean {
 export function inferDimensions(text: string): Dimension[] {
   const lower = text.toLowerCase()
   const scores: Record<Dimension, number> = {
-    molds: 0, molding: 0, materials: 0,
+    molds: 0, molding: 0, recycled: 0, bio: 0,
     additives: 0, auxiliaries: 0, recycling: 0, reuse: 0,
   }
 

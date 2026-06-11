@@ -2,38 +2,40 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, ArrowRight, Settings2, Layers, FlaskConical, Box, RefreshCw, BarChart3 } from 'lucide-react'
+import { Search, ArrowRight, PenTool, Box, RotateCcw, Leaf, FlaskConical, Package, RefreshCw, Repeat2 } from 'lucide-react'
 import type { HeroDictionary } from '@/i18n/types'
 
 const ZH: HeroDictionary = {
-  badge: '六大支柱 · 全链可持续智库',
+  badge: '八大维度 · 全链可持续智库',
   headline1: '驱动塑料产业链',
   headline2: '可持续发展新范式',
-  subtitle: '从绿色机械到碳中和政策，覆盖',
-  subtitleBold1: '六大核心支柱',
+  subtitle: '从模具制造到重复使用，覆盖',
+  subtitleBold1: '八大核心维度',
   subtitleBold2: '全球视野',
   subtitleConnector: '，以',
   subtitleEnd: '重塑行业情报格局',
-  searchPlaceholder: '搜索支柱动态、企业、技术趋势...',
+  searchPlaceholder: '搜索维度动态、企业、技术趋势...',
   searchBtn: '搜索',
   ctaPrimary: '探索情报中心',
-  ctaSecondary: '了解六大支柱',
-  stat1Num: '6',
-  stat1Label: '大产业支柱',
+  ctaSecondary: '了解八大维度',
+  stat1Num: '8',
+  stat1Label: '大产业维度',
   stat2Num: '15,000+',
   stat2Label: '覆盖企业',
   stat3Num: '全球',
   stat3Label: '多地区情报视野',
 }
 
-// Pillar visual config
-const PILLARS = [
-  { label: '绿色机械',   icon: Settings2,   color: '#1d4ed8', bg: 'rgba(29,78,216,0.08)',  border: 'rgba(29,78,216,0.18)',  query: 'machinery' },
-  { label: '可持续材料', icon: Layers,       color: '#0d9488', bg: 'rgba(13,148,136,0.08)', border: 'rgba(13,148,136,0.18)', query: 'materials' },
-  { label: '环保助剂',   icon: FlaskConical, color: '#7c3aed', bg: 'rgba(124,58,237,0.08)', border: 'rgba(124,58,237,0.18)', query: 'additives' },
-  { label: '绿色辅料',   icon: Box,          color: '#d97706', bg: 'rgba(217,119,6,0.08)',  border: 'rgba(217,119,6,0.18)',  query: 'auxiliaries' },
-  { label: '循环再生',   icon: RefreshCw,    color: '#059669', bg: 'rgba(5,150,105,0.08)',  border: 'rgba(5,150,105,0.18)', query: 'recycling' },
-  { label: '碳中和/政策',icon: BarChart3,    color: '#4338ca', bg: 'rgba(67,56,202,0.08)',  border: 'rgba(67,56,202,0.18)', query: 'carbonPolicy' },
+// Dimension visual config
+const DIMENSIONS = [
+  { label: '模具',       icon: PenTool,      color: '#1d4ed8', bg: 'rgba(29,78,216,0.08)',  border: 'rgba(29,78,216,0.18)',  query: 'molds' },
+  { label: '成型',       icon: Box,          color: '#0d9488', bg: 'rgba(13,148,136,0.08)', border: 'rgba(13,148,136,0.18)', query: 'molding' },
+  { label: '再生塑料',   icon: RotateCcw,    color: '#7c3aed', bg: 'rgba(124,58,237,0.08)', border: 'rgba(124,58,237,0.18)', query: 'recycled' },
+  { label: '生物基材料', icon: Leaf,         color: '#059669', bg: 'rgba(5,150,105,0.08)',  border: 'rgba(5,150,105,0.18)',  query: 'bio' },
+  { label: '助剂',       icon: FlaskConical, color: '#d97706', bg: 'rgba(217,119,6,0.08)',  border: 'rgba(217,119,6,0.18)',  query: 'additives' },
+  { label: '辅料',       icon: Package,      color: '#ea580c', bg: 'rgba(234,88,12,0.08)',  border: 'rgba(234,88,12,0.18)',  query: 'auxiliaries' },
+  { label: '回收再生',   icon: RefreshCw,    color: '#059669', bg: 'rgba(5,150,105,0.08)',  border: 'rgba(5,150,105,0.18)',  query: 'recycling' },
+  { label: '重复使用',   icon: Repeat2,      color: '#4338ca', bg: 'rgba(67,56,202,0.08)',  border: 'rgba(67,56,202,0.18)',  query: 'reuse' },
 ]
 
 interface Props {
@@ -84,10 +86,10 @@ export default function HeroSearch({ dict }: Props) {
         }}
       />
 
-      {/* ── Floating pillar icons (desktop) ── */}
+      {/* ── Floating dimension icons (desktop) ── */}
       <div className="absolute top-[22%] left-[6%] pointer-events-none hidden xl:block" style={{ opacity: 0.25 }}>
         <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(29,78,216,0.08)', border: '1px solid rgba(29,78,216,0.12)' }}>
-          <Settings2 className="h-5 w-5" style={{ color: '#1d4ed8' }} />
+          <PenTool className="h-5 w-5" style={{ color: '#1d4ed8' }} />
         </div>
       </div>
       <div className="absolute top-[35%] right-[7%] pointer-events-none hidden xl:block" style={{ opacity: 0.22 }}>
@@ -97,7 +99,7 @@ export default function HeroSearch({ dict }: Props) {
       </div>
       <div className="absolute bottom-[30%] left-[5%] pointer-events-none hidden xl:block" style={{ opacity: 0.20 }}>
         <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(67,56,202,0.08)', border: '1px solid rgba(67,56,202,0.12)' }}>
-          <BarChart3 className="h-5 w-5" style={{ color: '#4338ca' }} />
+          <Repeat2 className="h-5 w-5" style={{ color: '#4338ca' }} />
         </div>
       </div>
 
@@ -167,14 +169,14 @@ export default function HeroSearch({ dict }: Props) {
           </button>
         </div>
 
-        {/* ── Six pillar quick-access ── */}
+        {/* ── Eight dimension quick-access ── */}
         <div className="mt-14 mb-6">
-          <p className="text-[11px] text-slate-400 font-semibold tracking-[0.12em] uppercase mb-4">六大产业支柱 · 快速导览</p>
+          <p className="text-[11px] text-slate-400 font-semibold tracking-[0.12em] uppercase mb-4">八大产业维度 · 快速导览</p>
           <div className="flex flex-wrap items-center justify-center gap-2">
-            {PILLARS.map(({ label, icon: Icon, color, bg, border, query: pillarQuery }) => (
+            {DIMENSIONS.map(({ label, icon: Icon, color, bg, border, query: dimQuery }) => (
               <button
-                key={pillarQuery}
-                onClick={() => router.push(`/news?pillar=${pillarQuery}`)}
+                key={dimQuery}
+                onClick={() => router.push(`/news?dimension=${dimQuery}`)}
                 className="group flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border text-[12.5px] font-semibold transition-all duration-200 hover:scale-[1.03] hover:shadow-sm"
                 style={{ background: bg, borderColor: border, color }}
               >

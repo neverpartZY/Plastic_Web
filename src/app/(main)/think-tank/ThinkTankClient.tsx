@@ -8,6 +8,7 @@ import {
   MessageSquare, Star, BarChart2, ShieldCheck,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import ResearchLeadModal from '@/components/research/ResearchLeadModal'
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Mock data — Research Reports
@@ -339,8 +340,15 @@ function DashboardCard({
 /* ─────────────────────────────────────────────────────────────────────────────
    Report Card
    ───────────────────────────────────────────────────────────────────────────── */
-function ReportCard({ report }: { report: Report }) {
+function ReportCard({ report, onCTAClick }: { report: Report; onCTAClick?: (title: string) => void }) {
   const isPremium = report.tier === 'premium'
+
+  function handleCTA(e: React.MouseEvent) {
+    e.stopPropagation()
+    if (isPremium && onCTAClick) {
+      onCTAClick(report.title)
+    }
+  }
 
   return (
     <article
@@ -461,6 +469,7 @@ function ReportCard({ report }: { report: Report }) {
             {report.date}
           </span>
           <button
+            onClick={handleCTA}
             className="ml-auto inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-[12px] font-bold text-white transition-all duration-200 hover:brightness-110 active:scale-95 flex-shrink-0"
             style={{
               background: `linear-gradient(135deg, ${report.accentColor}cc, ${report.accentColor})`,
@@ -490,6 +499,13 @@ function ReportCard({ report }: { report: Report }) {
    ═════════════════════════════════════════════════════════════════════════════ */
 export default function ThinkTankClient() {
   const [activeCategory, setActiveCategory] = useState('全部')
+  const [leadModalOpen, setLeadModalOpen] = useState(false)
+  const [leadReportTitle, setLeadReportTitle] = useState('')
+
+  function openLeadModal(title: string) {
+    setLeadReportTitle(title)
+    setLeadModalOpen(true)
+  }
 
   const filteredReports =
     activeCategory === '全部'
@@ -497,6 +513,7 @@ export default function ThinkTankClient() {
       : MOCK_REPORTS.filter((r) => r.category === activeCategory)
 
   return (
+    <>
     <div className="min-h-screen">
 
       {/* ══════════════════════════════════════════════════════════════════════
@@ -667,7 +684,7 @@ export default function ThinkTankClient() {
             {filteredReports.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {filteredReports.map((report) => (
-                  <ReportCard key={report.id} report={report} />
+                  <ReportCard key={report.id} report={report} onCTAClick={openLeadModal} />
                 ))}
               </div>
             ) : (
@@ -771,6 +788,7 @@ export default function ThinkTankClient() {
                     <p className="text-[11.5px] text-slate-500">平均响应时间 &lt; 4小时</p>
                   </div>
                   <button
+                    onClick={() => openLeadModal('定制研究服务 — 联系首席分析师')}
                     className="relative overflow-hidden group w-full py-3 rounded-xl text-[14px] font-bold text-white transition-all duration-200 hover:brightness-110 active:scale-95"
                     style={{
                       background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)',
@@ -790,5 +808,12 @@ export default function ThinkTankClient() {
       </section>
 
     </div>
+
+    <ResearchLeadModal
+      isOpen={leadModalOpen}
+      onClose={() => setLeadModalOpen(false)}
+      reportTitle={leadReportTitle}
+    />
+    </>
   )
 }

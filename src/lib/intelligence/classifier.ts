@@ -8,7 +8,8 @@ import { callLLM } from './llm'
 export type Pillar =
   | 'molds'
   | 'molding'
-  | 'materials'
+  | 'recycled'
+  | 'bio'
   | 'additives'
   | 'auxiliaries'
   | 'recycling'
@@ -25,16 +26,17 @@ export interface ClassifyResult {
   isHot: boolean
 }
 
-const VALID_PILLARS    = new Set(['molds', 'molding', 'materials', 'additives', 'auxiliaries', 'recycling', 'reuse'])
+const VALID_PILLARS    = new Set(['molds', 'molding', 'recycled', 'bio', 'additives', 'auxiliaries', 'recycling', 'reuse'])
 const VALID_CATEGORIES = new Set(['policy', 'market', 'tech', 'enterprise', 'global'])
 
 const PILLAR_KEYWORDS: Record<Pillar, string[]> = {
   molds:       ['模具', '注塑模', 'mold', 'tooling', 'die'],
   molding:     ['注塑', '成型', '挤出', 'injection molding', 'extrusion', 'blow molding'],
-  materials:   ['再生料', 'PCR', 'rPET', 'rPP', 'rPE', 'bio-based', 'post-consumer resin'],
+  recycled:    ['再生料', 'PCR', 'rPET', 'rPP', 'rPE', 'post-consumer resin', 'bottle flake'],
+  bio:         ['生物基', 'PLA', 'PHA', 'PBAT', 'bio-based', 'compostable', 'biodegradable'],
   additives:   ['助剂', '增塑剂', 'plasticizer', 'stabilizer', 'flame retardant', 'antioxidant'],
   auxiliaries: ['辅料', '色母', 'masterbatch', 'packaging auxiliary'],
-  recycling:   ['回收', '再生', 'recycling', 'chemical recycling', 'mechanical recycling', 'bottle flake', 'rPET'],
+  recycling:   ['回收', '再生', 'recycling', 'chemical recycling', 'mechanical recycling', 'rPET'],
   reuse:       ['重复使用', '循环使用', 'reuse', 'refill', 'deposit', 'PPWR'],
 }
 
@@ -70,10 +72,11 @@ const CLASSIFY_SYSTEM = `You are a senior analyst for the plastics circular econ
 Classify the article and return ONLY valid JSON with no extra text:
 {"pillars":["recycling"],"category":"global","importance":3,"countryCode":"GLOBAL","isHot":false,"tags":[]}
 
-pillars (1-3 most relevant): molds|molding|materials|additives|auxiliaries|recycling|reuse
+pillars (1-3 most relevant): molds|molding|recycled|bio|additives|auxiliaries|recycling|reuse
 - molds: injection/blow molds, tooling, die design
 - molding: injection/extrusion/blow molding, processing equipment
-- materials: PCR, rPET, rPP, rPE, bio-based polymers, recycled compounds
+- recycled: PCR, rPET, rPP, rPE, recycled compounds, mechanical recycling, bottle flake
+- bio: PLA, PHA, PBAT, bio-based polymers, compostable, biodegradable
 - additives: plasticizers, stabilizers, flame retardants, antioxidants
 - auxiliaries: masterbatches, functional films, packaging auxiliaries
 - recycling: mechanical/chemical recycling, waste plastic, bottle flake prices

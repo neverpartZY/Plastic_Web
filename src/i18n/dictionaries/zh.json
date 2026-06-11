@@ -2,32 +2,37 @@
   "nav": {
     "logo": "可持续塑料产业链平台",
     "intelligence": "情报中心",
-    "pillars": "六大支柱",
+    "intelligenceDesc": "AI 实时监测 · 全球塑料科技 24h 滚动更新",
+    "dimensions": "八大维度",
     "services": "服务平台",
     "database": "数据中台",
     "subscribe": "订阅情报",
     "login": "登录",
     "register": "注册",
-    "searchPlaceholder": "搜索支柱、资讯、企业...",
+    "searchPlaceholder": "搜索维度、资讯、企业...",
     "news": "产业资讯",
-    "newsDesc": "六大支柱实时情报，多维地区筛选",
+    "newsDesc": "八大维度实时情报，多维地区筛选",
     "explore": "产业地图",
     "exploreDesc": "企业坐标系，精准定位产业链节点",
-    "daily": "每日情报",
+    "daily": "数据看板",
     "dailyDesc": "精选推送，直达邮件与企业微信",
     "dailyBadge": "热门",
-    "machinery": "绿色机械",
-    "machineryDesc": "注塑、挤出、造粒等绿色装备动态",
-    "materials": "可持续材料",
-    "materialsDesc": "生物基、PCR、可降解材料研究前沿",
-    "additives": "环保助剂",
-    "additivesDesc": "抗氧化剂、稳定剂、生物基助剂体系",
-    "auxiliaries": "绿色辅料",
-    "auxiliariesDesc": "模具、薄膜、包装辅助材料与工艺",
-    "recycling": "循环再生",
-    "recyclingDesc": "机械/化学/酶解回收技术与产业化",
-    "carbonPolicy": "碳中和/政策",
-    "carbonPolicyDesc": "ESG、碳关税、欧盟法规、碳中和路线",
+    "molds": "模具",
+    "moldsDesc": "模具设计与制造技术前沿，热流道、高效冷却与精密加工动态",
+    "molding": "成型",
+    "moldingDesc": "注塑、挤出、吹膜、造粒等成型工艺创新与智能化升级",
+    "recycled": "再生塑料",
+    "recycledDesc": "PCR 再生料品质标准、认证体系、市场供需与价格行情",
+    "bio": "生物基材料",
+    "bioDesc": "PLA、PHA、PBS 等生物基聚合物研发进展与产业化进程",
+    "additives": "助剂",
+    "additivesDesc": "无重金属稳定剂、生物基增塑剂、无卤阻燃剂等绿色助剂体系",
+    "auxiliaries": "辅料",
+    "auxiliariesDesc": "功能薄膜、绿色包装辅料、模具钢材与表面处理工艺",
+    "recycling": "回收再生",
+    "recyclingDesc": "机械/化学/酶解回收技术路径，再生产业链规模化与高值化",
+    "reuse": "重复使用",
+    "reuseDesc": "可循环设计、减量化策略、重复使用模式与商业模式创新",
     "thinkTank": "智库研究",
     "thinkTankDesc": "战略洞察与深度研究报告",
     "association": "行业协会",
@@ -45,20 +50,20 @@
   },
 
   "hero": {
-    "badge": "六大支柱 · 全链可持续智库",
+    "badge": "八大维度 · 全链可持续智库",
     "headline1": "驱动塑料产业链",
     "headline2": "可持续发展新范式",
-    "subtitle": "从绿色机械到碳中和政策，覆盖",
-    "subtitleBold1": "六大核心支柱",
+    "subtitle": "从模具制造到重复使用，覆盖",
+    "subtitleBold1": "八大核心维度",
     "subtitleBold2": "全球视野",
     "subtitleConnector": "，以",
     "subtitleEnd": "重塑行业情报格局",
-    "searchPlaceholder": "搜索支柱动态、企业、技术趋势...",
+    "searchPlaceholder": "搜索维度动态、企业、技术趋势...",
     "searchBtn": "搜索",
     "ctaPrimary": "探索情报中心",
-    "ctaSecondary": "了解六大支柱",
-    "stat1Num": "6",
-    "stat1Label": "大产业支柱",
+    "ctaSecondary": "了解八大维度",
+    "stat1Num": "8",
+    "stat1Label": "大产业维度",
     "stat2Num": "15,000+",
     "stat2Label": "覆盖企业",
     "stat3Num": "全球",
@@ -66,145 +71,175 @@
   },
 
   "features": {
-    "badge": "六大产业支柱 · 全链覆盖",
+    "badge": "八大产业维度 · 全链覆盖",
     "title": "全链布局，可持续驱动",
-    "subtitle": "从绿色装备制造到碳中和政策，",
-    "subtitleBold": "六大核心支柱",
+    "subtitle": "从模具制造到重复使用，",
+    "subtitleBold": "八大核心维度",
     "subtitleEnd": "全面覆盖塑料产业链可持续发展关键节点",
     "learnMore": "了解更多",
-    "ctaQuestion": "想深入了解某个支柱的情报服务？欢迎与我们直接沟通",
+    "ctaQuestion": "想深入了解某个维度的情报服务？欢迎与我们直接沟通",
     "ctaSubscribe": "订阅每日情报",
     "ctaDatabase": "探索数据中台",
     "cards": {
-      "machinery": {
-        "label": "绿色机械",
-        "tagline": "装备升级 · 绿色制造",
-        "desc": "覆盖注塑、挤出、吹膜、造粒等全系列绿色塑料加工装备，追踪能效升级与智能制造前沿动态。",
+      "molds": {
+        "label": "模具",
+        "tagline": "精密制造 · 设计前沿",
+        "desc": "聚焦注塑模具、热流道系统、高效冷却技术及模具钢材表面处理，追踪模具设计与精密制造最新进展。",
+        "bullet1": "热流道与高效冷却模具技术",
+        "bullet2": "模具钢材与表面处理新工艺",
+        "bullet3": "精密模具设计与仿真优化"
+      },
+      "molding": {
+        "label": "成型",
+        "tagline": "工艺升级 · 智能制造",
+        "desc": "覆盖注塑、挤出、吹膜、造粒等全系列塑料成型工艺，追踪能效升级与智能化改造前沿动态。",
         "bullet1": "注塑/挤出/吹膜设备能效新标准",
         "bullet2": "智能化改造与工业互联网融合",
-        "bullet3": "国内外主流装备厂商动态"
+        "bullet3": "国内外主流装备厂商技术动态"
       },
-      "materials": {
-        "label": "可持续材料",
+      "recycled": {
+        "label": "再生塑料",
+        "tagline": "品质标准 · 市场供需",
+        "desc": "聚焦 PCR 再生料品质标准、认证体系与全球市场供需，追踪 rPET、rPP、rPE 等关键品类价格行情。",
+        "bullet1": "PCR 再生料品质标准与认证体系",
+        "bullet2": "rPET/rPP/rPE 价格行情与供需动态",
+        "bullet3": "食品级再生塑料法规与准入进展"
+      },
+      "bio": {
+        "label": "生物基材料",
         "tagline": "绿色原料 · 材料创新",
-        "desc": "聚焦生物基塑料、PCR再生料、可降解材料及高性能可持续聚合物，追踪材料科学最新突破。",
-        "bullet1": "生物基 PLA/PHA/PBS 研发进展",
-        "bullet2": "PCR 再生料品质标准与认证体系",
-        "bullet3": "可降解材料法规与市场化进程"
+        "desc": "聚焦 PLA、PHA、PBS 等生物基聚合物及可降解材料，追踪材料科学最新突破与产业化进程。",
+        "bullet1": "PLA/PHA/PBS 生物基塑料研发进展",
+        "bullet2": "可降解材料法规与市场化进程",
+        "bullet3": "生物基单体与聚合技术前沿"
       },
       "additives": {
-        "label": "环保助剂",
+        "label": "助剂",
         "tagline": "配方创新 · 绿色化学",
-        "desc": "深度覆盖抗氧化剂、热稳定剂、生物基增塑剂等环保助剂体系，助力配方绿色化转型。",
+        "desc": "深度覆盖抗氧化剂、热稳定剂、生物基增塑剂等绿色助剂体系，助力配方绿色化转型。",
         "bullet1": "无重金属稳定剂替代方案",
         "bullet2": "生物基增塑剂与无卤阻燃技术",
         "bullet3": "REACH/RoHS 合规助剂趋势"
       },
       "auxiliaries": {
-        "label": "绿色辅料",
-        "tagline": "辅助升级 · 工艺优化",
-        "desc": "关注模具工艺、功能薄膜、绿色包装辅料及精密成型辅助材料，赋能生产全流程降碳减排。",
-        "bullet1": "高效冷却与热流道模具技术",
-        "bullet2": "可回收功能薄膜与绿色包装",
-        "bullet3": "模具钢材与表面处理新工艺"
+        "label": "辅料",
+        "tagline": "辅料升级 · 工艺优化",
+        "desc": "关注功能薄膜、绿色包装辅料、模具钢材及精密成型辅助材料，赋能生产全流程降碳减排。",
+        "bullet1": "可回收功能薄膜与绿色包装材料",
+        "bullet2": "模具钢材与特种合金最新进展",
+        "bullet3": "高效冷却与表面处理辅料技术"
       },
       "recycling": {
-        "label": "循环再生",
+        "label": "回收再生",
         "tagline": "闭环经济 · 技术突破",
         "desc": "系统追踪机械回收、化学回收、酶解技术、智能分选四大路径，推动再生产业链规模化与高值化。",
         "bullet1": "化学回收（解聚/热裂解）最新产能",
         "bullet2": "AI 智能分选技术与设备进展",
-        "bullet3": "再生料价格行情与供需动态"
+        "bullet3": "再生料食品级应用与高值化路径"
       },
-      "carbonPolicy": {
-        "label": "碳中和/政策",
-        "tagline": "政策引导 · ESG 合规",
-        "desc": "深度解读欧盟 CBAM、EPR 法规、中国双碳目标及全球塑料公约，为企业 ESG 合规提供情报支撑。",
-        "bullet1": "欧盟 CBAM 碳边境税落地进程",
-        "bullet2": "中国双碳目标与塑料产业路线图",
-        "bullet3": "全球塑料公约谈判与企业应对策略"
+      "reuse": {
+        "label": "重复使用",
+        "tagline": "循环设计 · 模式创新",
+        "desc": "关注可循环包装设计、减量化策略、重复使用商业模式及全球塑料公约相关法规动态。",
+        "bullet1": "可循环包装设计与减量化策略",
+        "bullet2": "重复使用商业模式与案例分析",
+        "bullet3": "全球塑料公约与EPR制度深度解读"
       }
     }
   },
 
-  "sixModules": {
-    "badge": "六大支柱 · 数据闭环",
-    "title": "每个支柱，都在向知识中枢汇流",
-    "subtitle": "六大产业支柱持续汇聚行业数据，知识中枢沉淀后反向赋能，",
+  "eightModules": {
+    "badge": "八大维度 · 数据闭环",
+    "title": "每个维度，都在向知识中枢汇流",
+    "subtitle": "八大产业维度持续汇聚行业数据，知识中枢沉淀后反向赋能，",
     "subtitleEnd": "形成自我强化的产业数字生态",
-    "tagPrimary": "核心支柱",
-    "tagSecondary": "政策支柱",
+    "tagPrimary": "核心维度",
+    "tagSecondary": "循环维度",
     "connected": "数据已接入产业知识中枢",
-    "bottomHint1": "六大支柱的情报数据汇聚至",
+    "bottomHint1": "八大维度的情报数据汇聚至",
     "bottomDatabase": "产业知识中枢",
     "bottomHint2": "，形成可持续塑料产业知识图谱",
     "modules": {
-      "machinery": {
-        "label": "绿色机械",
-        "desc": "注塑、挤出、造粒等装备能效升级与智能化改造，追踪绿色制造最新标准"
+      "molds": {
+        "label": "模具",
+        "desc": "注塑模具设计、热流道系统、高效冷却与精密加工技术，追踪模具制造最新标准"
       },
-      "materials": {
-        "label": "可持续材料",
-        "desc": "生物基、PCR 再生料、可降解聚合物研究前沿，覆盖材料认证与标准动态"
+      "molding": {
+        "label": "成型",
+        "desc": "注塑、挤出、吹膜、造粒等成型工艺创新与智能化改造，追踪绿色制造最新标准"
+      },
+      "recycled": {
+        "label": "再生塑料",
+        "desc": "PCR 再生料品质标准、认证体系与全球供需动态，覆盖食品级再生塑料法规进展"
+      },
+      "bio": {
+        "label": "生物基材料",
+        "desc": "PLA、PHA、PBS 等生物基聚合物研发前沿，覆盖材料认证、降解标准与产业化动态"
       },
       "additives": {
-        "label": "环保助剂",
+        "label": "助剂",
         "desc": "无重金属稳定剂、生物基增塑剂、无卤阻燃剂等绿色化学助剂体系"
       },
       "auxiliaries": {
-        "label": "绿色辅料",
-        "desc": "模具工艺、功能薄膜与绿色包装辅料，赋能生产全流程降碳减排"
+        "label": "辅料",
+        "desc": "功能薄膜、绿色包装辅料、模具钢材与表面处理，赋能生产全流程降碳减排"
       },
       "recycling": {
-        "label": "循环再生",
+        "label": "回收再生",
         "desc": "机械/化学/酶解回收四大路径，推动再生产业链规模化与高值化"
       },
-      "carbonPolicy": {
-        "label": "碳中和/政策",
-        "desc": "欧盟 CBAM、EPR 法规、中国双碳目标及全球塑料公约深度解读"
+      "reuse": {
+        "label": "重复使用",
+        "desc": "可循环包装设计、减量化策略、重复使用商业模式与全球塑料公约深度解读"
       }
     }
   },
 
   "dataEcosystem": {
     "badge": "知识引擎 · 实时运行中",
-    "title": "六大支柱 · 产业知识闭环引擎",
-    "subtitle": "六大支柱持续向产业知识中枢汇入数据流 · ",
+    "title": "八大维度 · 产业知识闭环引擎",
+    "subtitle": "八大维度持续向产业知识中枢汇入数据流 · ",
     "subtitleHighlight": "知识中枢实时赋能产业决策与情报分析",
-    "layerTop": "产业两翼 · 装备与治理",
-    "layerMid": "核心产业链 · 四大支柱",
+    "layerTop": "产业上游 · 模具与成型",
+    "layerMid": "核心产业链 · 材料与配方",
+    "layerBottom": "循环闭环 · 回收与重用",
     "layerBase": "知识中枢 · 数据沉淀与反哺",
     "dbTitle": "产业知识中枢",
     "dbBadge": "数据基石层",
-    "dbDesc": "可持续塑料产业链底层知识图谱 · 汇聚六大支柱实时情报数据 · 反向赋能产业运作与可持续决策",
+    "dbDesc": "可持续塑料产业链底层知识图谱 · 汇聚八大维度实时情报数据 · 反向赋能产业运作与可持续决策",
     "dbStatus": "运行中",
-    "dbStreams": "6 路数据流 · 持续沉淀",
+    "dbStreams": "8 路数据流 · 持续沉淀",
     "mobileAccumulating": "情报持续沉淀",
     "mobileDbDesc": "产业知识图谱 · 可持续塑料链",
     "nodes": {
-      "machinery":    { "label": "绿色机械",   "tag": "核心支柱" },
-      "materials":    { "label": "可持续材料", "tag": "核心支柱" },
-      "additives":    { "label": "环保助剂",   "tag": "核心支柱" },
-      "auxiliaries":  { "label": "绿色辅料",   "tag": "核心支柱" },
-      "recycling":    { "label": "循环再生",   "tag": "核心支柱" },
-      "carbonPolicy": { "label": "碳中和/政策","tag": "政策支柱" }
+      "molds":       { "label": "模具",       "tag": "核心维度" },
+      "molding":     { "label": "成型",       "tag": "核心维度" },
+      "recycled":    { "label": "再生塑料",   "tag": "核心维度" },
+      "bio":         { "label": "生物基材料", "tag": "核心维度" },
+      "additives":   { "label": "助剂",       "tag": "核心维度" },
+      "auxiliaries": { "label": "辅料",       "tag": "核心维度" },
+      "recycling":   { "label": "回收再生",   "tag": "循环维度" },
+      "reuse":       { "label": "重复使用",   "tag": "循环维度" }
     }
   },
 
   "footer": {
-    "brand": "可持续塑料产业链平台",
-    "brandDesc": "专注塑料产业链可持续发展情报服务，覆盖绿色机械、可持续材料、环保助剂、绿色辅料、循环再生与碳中和政策六大核心支柱，服务全球塑料产业链参与者。",
+    "brand": "GreenPlastic AI",
+    "brandDesc": "国嘉基业旗下专注塑料产业链可持续发展的智能情报平台，覆盖模具、成型、再生塑料、生物基材料、助剂、辅料、回收再生、重复使用八大行业维度，服务全球塑料产业链参与者。",
     "mission": "驱动塑料产业链可持续发展新范式",
     "quickNav": "快速导航",
     "hotTags": "热门话题",
     "links": {
-      "machinery": "绿色机械动态",
-      "materials": "可持续材料",
-      "recycling": "循环再生技术",
-      "carbonPolicy": "碳中和/政策",
-      "additives": "环保助剂"
+      "molds": "模具技术动态",
+      "molding": "成型工艺创新",
+      "recycled": "再生塑料市场",
+      "bio": "生物基材料前沿",
+      "additives": "绿色助剂",
+      "auxiliaries": "辅料升级",
+      "recycling": "回收再生技术",
+      "reuse": "重复使用模式"
     },
-    "copyright": "© 2025 可持续塑料产业链平台. All rights reserved.",
+    "copyright": "© 2026 国嘉基业信息咨询有限公司. All rights reserved.",
     "tagline": "绿色产业链 · 可持续未来"
   },
 
@@ -449,11 +484,34 @@
       }
     },
 
+    "intelligence": {
+      "headerTitle": "情报中心",
+      "headerSubtitle": "覆盖8大战略维度 · 实时采集全球21个核心信息源",
+      "allDimensions": "全部维度",
+      "allRegions": "全部地区",
+      "hotOnly": "🔥 仅看热点",
+      "hotCount": "{n} 条热点",
+      "tabHighlights": "每日精选",
+      "tabHighlightsCount": "24",
+      "tabAll": "全量资讯",
+      "empty": "暂无符合条件的情报",
+      "prevPage": "上一页",
+      "nextPage": "下一页",
+      "pageInfo": "第 {page} 页，共 {total} 页",
+      "countries": {
+        "CN": "🇨🇳 中国",
+        "EU": "🇪🇺 欧盟",
+        "US": "🇺🇸 美国",
+        "UK": "🇬🇧 英国",
+        "GLOBAL": "🌐 全球"
+      }
+    },
+
     "subscribe": {
       "hero": {
         "badge": "精选推送 · 每日必读",
         "title": "每日情报",
-        "subtitle": "精选全球可持续塑料产业最重要动态，按支柱分类，每日直达您的邮件或企业微信"
+        "subtitle": "精选全球可持续塑料产业最重要动态，按维度分类，每日直达您的邮件或企业微信"
       },
       "channels": {
         "email": "邮件订阅",

@@ -1,7 +1,8 @@
 export interface NavDictionary {
   logo: string
   intelligence: string    // "情报中心" — first nav group
-  pillars: string         // "六大支柱" — second nav group
+  intelligenceDesc: string
+  dimensions: string      // "八大维度" — second nav group
   services: string        // "服务平台" — third nav group
   database: string
   subscribe: string
@@ -16,19 +17,23 @@ export interface NavDictionary {
   daily: string
   dailyDesc: string
   dailyBadge: string
-  // Six Pillar sub-links
-  machinery: string
-  machineryDesc: string
-  materials: string
-  materialsDesc: string
+  // Eight Dimension sub-links
+  molds: string
+  moldsDesc: string
+  molding: string
+  moldingDesc: string
+  recycled: string
+  recycledDesc: string
+  bio: string
+  bioDesc: string
   additives: string
   additivesDesc: string
   auxiliaries: string
   auxiliariesDesc: string
   recycling: string
   recyclingDesc: string
-  carbonPolicy: string
-  carbonPolicyDesc: string
+  reuse: string
+  reuseDesc: string
   // Service sub-links
   thinkTank: string
   thinkTankDesc: string
@@ -88,12 +93,14 @@ export interface FeaturesDictionary {
   ctaSubscribe: string
   ctaDatabase: string
   cards: {
-    machinery: FeatureCard
-    materials: FeatureCard
+    molds: FeatureCard
+    molding: FeatureCard
+    recycled: FeatureCard
+    bio: FeatureCard
     additives: FeatureCard
     auxiliaries: FeatureCard
     recycling: FeatureCard
-    carbonPolicy: FeatureCard
+    reuse: FeatureCard
   }
 }
 
@@ -102,7 +109,7 @@ export interface ModuleEntry {
   desc: string
 }
 
-export interface SixModulesDictionary {
+export interface EightModulesDictionary {
   badge: string
   title: string
   subtitle: string
@@ -114,12 +121,14 @@ export interface SixModulesDictionary {
   bottomDatabase: string
   bottomHint2: string
   modules: {
-    machinery: ModuleEntry
-    materials: ModuleEntry
+    molds: ModuleEntry
+    molding: ModuleEntry
+    recycled: ModuleEntry
+    bio: ModuleEntry
     additives: ModuleEntry
     auxiliaries: ModuleEntry
     recycling: ModuleEntry
-    carbonPolicy: ModuleEntry
+    reuse: ModuleEntry
   }
 }
 
@@ -135,6 +144,7 @@ export interface DataEcosystemDictionary {
   subtitleHighlight: string
   layerTop: string
   layerMid: string
+  layerBottom: string
   layerBase: string
   dbTitle: string
   dbBadge: string
@@ -144,12 +154,14 @@ export interface DataEcosystemDictionary {
   mobileAccumulating: string
   mobileDbDesc: string
   nodes: {
-    machinery: DataNodeEntry
-    materials: DataNodeEntry
+    molds: DataNodeEntry
+    molding: DataNodeEntry
+    recycled: DataNodeEntry
+    bio: DataNodeEntry
     additives: DataNodeEntry
     auxiliaries: DataNodeEntry
     recycling: DataNodeEntry
-    carbonPolicy: DataNodeEntry
+    reuse: DataNodeEntry
   }
 }
 
@@ -160,11 +172,14 @@ export interface FooterDictionary {
   quickNav: string
   hotTags: string
   links: {
-    machinery: string
-    materials: string
-    recycling: string
-    carbonPolicy: string
+    molds: string
+    molding: string
+    recycled: string
+    bio: string
     additives: string
+    auxiliaries: string
+    recycling: string
+    reuse: string
   }
   copyright: string
   tagline: string
@@ -323,16 +338,40 @@ export interface Dictionary {
   nav: NavDictionary
   hero: HeroDictionary
   features: FeaturesDictionary
-  sixModules: SixModulesDictionary
+  eightModules: EightModulesDictionary
   dataEcosystem: DataEcosystemDictionary
   footer: FooterDictionary
   common: CommonDictionary
   pages: {
+    intelligence: IntelligencePageDictionary
     thinkTank: ThinkTankPageDictionary
     association: AssociationPageDictionary
     events: EventsPageDictionary
     technology: TechnologyPageDictionary
     fund: FundPageDictionary
     subscribe: SubscribePageDictionary
+  }
+}
+
+export interface IntelligencePageDictionary {
+  headerTitle: string
+  headerSubtitle: string
+  allDimensions: string
+  allRegions: string
+  hotOnly: string
+  hotCount: string
+  tabHighlights: string
+  tabHighlightsCount: string
+  tabAll: string
+  empty: string
+  prevPage: string
+  nextPage: string
+  pageInfo: string
+  countries: {
+    CN: string
+    EU: string
+    US: string
+    UK: string
+    GLOBAL: string
   }
 }

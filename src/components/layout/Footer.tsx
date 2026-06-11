@@ -3,19 +3,22 @@ import { Leaf, RefreshCw } from 'lucide-react'
 import type { FooterDictionary } from '@/i18n/types'
 
 const ZH: FooterDictionary = {
-  brand: '可持续塑料产业链平台',
-  brandDesc: '专注塑料产业链可持续发展情报服务，覆盖绿色机械、可持续材料、环保助剂、绿色辅料、循环再生与碳中和政策六大核心支柱，服务全球塑料产业链参与者。',
+  brand: 'GreenPlastic AI',
+  brandDesc: '国嘉基业旗下专注塑料产业链可持续发展的智能情报平台，覆盖模具、成型、再生塑料、生物基材料、助剂、辅料、回收再生、重复使用八大行业维度，服务全球塑料产业链参与者。',
   mission: '驱动塑料产业链可持续发展新范式',
   quickNav: '快速导航',
   hotTags: '热门话题',
   links: {
-    machinery: '绿色机械动态',
-    materials: '可持续材料',
-    recycling: '循环再生技术',
-    carbonPolicy: '碳中和/政策',
-    additives: '环保助剂',
+    molds: '模具技术动态',
+    molding: '成型工艺创新',
+    recycled: '再生塑料市场',
+    bio: '生物基材料前沿',
+    additives: '绿色助剂',
+    auxiliaries: '辅料升级',
+    recycling: '回收再生技术',
+    reuse: '重复使用模式',
   },
-  copyright: '© 2025 可持续塑料产业链平台. All rights reserved.',
+  copyright: '© 2026 国嘉基业信息咨询有限公司. All rights reserved.',
   tagline: '绿色产业链 · 可持续未来',
 }
 
@@ -25,9 +28,9 @@ export default function Footer({ dict }: { dict?: FooterDictionary }) {
     <footer className="bg-slate-900 mt-16">
       <div className="container py-12">
 
-        {/* ── Six pillar accent strip ── */}
+        {/* ── Eight dimension accent strip ── */}
         <div className="flex items-center gap-1 mb-10 opacity-40">
-          {['bg-blue-500', 'bg-teal-500', 'bg-violet-500', 'bg-amber-500', 'bg-emerald-500', 'bg-indigo-500'].map((c, i) => (
+          {['bg-blue-500', 'bg-cyan-500', 'bg-purple-500', 'bg-green-500', 'bg-amber-500', 'bg-orange-500', 'bg-emerald-500', 'bg-indigo-500'].map((c, i) => (
             <div key={i} className={`h-0.5 flex-1 rounded-full ${c}`} />
           ))}
         </div>
@@ -50,15 +53,17 @@ export default function Footer({ dict }: { dict?: FooterDictionary }) {
               <span className="text-xs text-emerald-400 font-medium">{t.mission}</span>
             </div>
 
-            {/* Six pillar pills */}
+            {/* Eight dimension pills */}
             <div className="flex flex-wrap gap-1.5 mt-5">
               {[
-                { label: '绿色机械', color: 'bg-blue-500/15 text-blue-400 border-blue-500/20' },
-                { label: '可持续材料', color: 'bg-teal-500/15 text-teal-400 border-teal-500/20' },
-                { label: '环保助剂', color: 'bg-violet-500/15 text-violet-400 border-violet-500/20' },
-                { label: '绿色辅料', color: 'bg-amber-500/15 text-amber-400 border-amber-500/20' },
-                { label: '循环再生', color: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' },
-                { label: '碳中和/政策', color: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/20' },
+                { label: '模具', color: 'bg-blue-500/15 text-blue-400 border-blue-500/20' },
+                { label: '成型', color: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/20' },
+                { label: '再生塑料', color: 'bg-purple-500/15 text-purple-400 border-purple-500/20' },
+                { label: '生物基材料', color: 'bg-green-500/15 text-green-400 border-green-500/20' },
+                { label: '助剂', color: 'bg-amber-500/15 text-amber-400 border-amber-500/20' },
+                { label: '辅料', color: 'bg-orange-500/15 text-orange-400 border-orange-500/20' },
+                { label: '回收再生', color: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' },
+                { label: '重复使用', color: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/20' },
               ].map(({ label, color }) => (
                 <span key={label} className={`text-[10px] px-2 py-0.5 rounded-full border font-medium ${color}`}>
                   {label}
@@ -71,11 +76,14 @@ export default function Footer({ dict }: { dict?: FooterDictionary }) {
           <div>
             <h4 className="font-semibold mb-4 text-sm text-white">{t.quickNav}</h4>
             <ul className="space-y-2.5 text-sm text-slate-400">
-              <li><Link href="/news?pillar=machinery"    className="hover:text-emerald-400 transition-colors">{t.links.machinery}</Link></li>
-              <li><Link href="/news?pillar=materials"    className="hover:text-emerald-400 transition-colors">{t.links.materials}</Link></li>
-              <li><Link href="/news?pillar=recycling"    className="hover:text-emerald-400 transition-colors">{t.links.recycling}</Link></li>
-              <li><Link href="/news?pillar=carbonPolicy" className="hover:text-emerald-400 transition-colors">{t.links.carbonPolicy}</Link></li>
-              <li><Link href="/news?pillar=additives"    className="hover:text-emerald-400 transition-colors">{t.links.additives}</Link></li>
+              <li><Link href="/news?dimension=molds"       className="hover:text-emerald-400 transition-colors">{t.links.molds}</Link></li>
+              <li><Link href="/news?dimension=molding"     className="hover:text-emerald-400 transition-colors">{t.links.molding}</Link></li>
+              <li><Link href="/news?dimension=recycled"    className="hover:text-emerald-400 transition-colors">{t.links.recycled}</Link></li>
+              <li><Link href="/news?dimension=bio"         className="hover:text-emerald-400 transition-colors">{t.links.bio}</Link></li>
+              <li><Link href="/news?dimension=additives"   className="hover:text-emerald-400 transition-colors">{t.links.additives}</Link></li>
+              <li><Link href="/news?dimension=auxiliaries" className="hover:text-emerald-400 transition-colors">{t.links.auxiliaries}</Link></li>
+              <li><Link href="/news?dimension=recycling"   className="hover:text-emerald-400 transition-colors">{t.links.recycling}</Link></li>
+              <li><Link href="/news?dimension=reuse"       className="hover:text-emerald-400 transition-colors">{t.links.reuse}</Link></li>
             </ul>
           </div>
 

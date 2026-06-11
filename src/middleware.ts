@@ -77,8 +77,9 @@ export async function middleware(req: NextRequest) {
   }
 
   // ── 5. All other paths (/news, /explore, …) → pass through ───────────────
+  const locale = detectLocale(req)
   const res = NextResponse.next()
-  res.headers.set('x-lng', DEFAULT_LOCALE)
+  res.headers.set('x-lng', locale)
   return res
 }
 

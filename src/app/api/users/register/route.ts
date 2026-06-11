@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
+import crypto from 'crypto'
 import { prisma } from '@/lib/prisma'
 import { registerSchema } from '@/lib/validations'
+import { sendIndustryEmail } from '@/lib/mail'
+import { buildVerifyEmailHtml } from '@/lib/emails/verify-email'
 
 function isEmail(str: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str)
@@ -47,6 +50,7 @@ export async function POST(req: NextRequest) {
   }
 
   const passwordHash = await bcrypt.hash(password, 12)
+  const verificationToken = crypto.randomBytes(32).toString('hex')
 
   const user = await prisma.user.create({
     data: {
@@ -54,9 +58,17 @@ export async function POST(req: NextRequest) {
       email: emailField,
       phone: phoneField,
       passwordHash,
+      verificationToken,
     },
     select: { id: true, name: true, email: true, phone: true },
   })
+
+  // Send verification email if email provided
+  if (emailField) {
+    const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/verify-email?token=${verificationToken}`
+    const html = buildVerifyEmailHtml({ name, verifyUrl })
+    await sendIndustryEmail({ to: emailField, subject: '验证您的邮箱地址', html }).catch(console.error)
+  }
 
   return NextResponse.json(user, { status: 201 })
 }

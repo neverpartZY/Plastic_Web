@@ -1,20 +1,8 @@
 {
   "crons": [
     {
-      "path": "/api/crawler/trigger?priority=p0",
-      "schedule": "0 8 * * *"
-    },
-    {
-      "path": "/api/crawler/trigger?priority=p1",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/crawler/trigger?priority=p2",
-      "schedule": "0 2 * * *"
-    },
-    {
-      "path": "/api/crawler/trigger?priority=p3",
-      "schedule": "0 3 * * 1"
+      "path": "/api/cron/send-daily-digest",
+      "schedule": "57 23 * * *"
     }
   ]
 }

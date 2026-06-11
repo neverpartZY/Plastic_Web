@@ -12,7 +12,7 @@ export const revalidate = 300
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const item = await prisma.intelligence.findUnique({
     where: { id: params.id },
-    select: { title: true, titleZh: true, titleEn: true, summary: true, summaryZh: true, summaryEn: true },
+    select: { title: true, titleZh: true, titleEn: true, summary: true, summaryZh: true, summaryEn: true, contentEn: true },
   })
   if (!item) return { title: '情报不存在 — SustainPlastics Hub' }
 

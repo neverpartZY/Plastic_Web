@@ -4,6 +4,7 @@
  * 支持指数退避重试、HTML 邮件模板、PushLog 全链路追踪
  */
 
+import type { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 
 // ── 类型定义 ──────────────────────────────────────────────────────────────────
@@ -38,7 +39,8 @@ export interface PushResult {
 const DIM_COLORS: Record<string, string> = {
   molds:      '#3B82F6',  // 蓝
   molding:    '#14B8A6',  // 青
-  materials:  '#8B5CF6',  // 紫
+  recycled:   '#8B5CF6',  // 紫
+  bio:        '#14B8A6',  // 青
   additives:  '#F59E0B',  // 琥珀
   auxiliaries:'#F97316',  // 橙
   recycling:  '#10B981',  // 绿
@@ -114,7 +116,7 @@ export function generateEmailHtml(payload: PushPayload): string {
   </div>
 
   <div class="footer">
-    本邮件由 <strong>SustainPlastics Hub</strong> 自动推送 · 退订回复 <a href="mailto:unsubscribe@example.com?subject=unsubscribe">TD</a>
+    本邮件由 <strong>GreenPlastic Intelligence</strong> 自动推送 · 退订回复 <a href="mailto:unsubscribe@greenplastic.ai?subject=unsubscribe">TD</a>
   </div>
 </div>
 </body>
@@ -251,7 +253,7 @@ export async function pushToSubscribers(
   }
 
   // 构建查询条件：活跃订阅者 且 兴趣包含情报维度或任意标签
-  const whereClause: Parameters<typeof prisma.subscription.findMany>[0]['where'] = {
+  const whereClause: Prisma.SubscriptionWhereInput = {
     isActive: true,
     OR: [
       { interests: { has: intel.dimension ?? 'recycling' } },

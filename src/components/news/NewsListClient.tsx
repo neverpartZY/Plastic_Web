@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback, useState } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
-import { Filter, SlidersHorizontal, Settings2, Layers, FlaskConical, Box, RefreshCw, BarChart3, Globe2, X } from 'lucide-react'
+import { Filter, SlidersHorizontal, PenTool, Box, RotateCcw, Leaf, FlaskConical, Package, RefreshCw, Repeat2, Globe2, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
@@ -15,15 +15,17 @@ import NewsCard from './NewsCard'
 import NewsCardSkeleton from './NewsCardSkeleton'
 import type { NewsListItem, PaginatedResponse, TagsByCategory } from '@/types'
 
-// ── Six pillar definitions ────────────────────────────────────────────────────
+// ── Eight dimension definitions ───────────────────────────────────────────────
 
-const PILLARS = [
-  { key: 'machinery',    label: '绿色机械',    icon: Settings2,   active: 'bg-blue-100 text-blue-700 border-blue-300',    rest: 'bg-white text-slate-600 border-slate-200 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700' },
-  { key: 'materials',    label: '可持续材料',  icon: Layers,       active: 'bg-teal-100 text-teal-700 border-teal-300',    rest: 'bg-white text-slate-600 border-slate-200 hover:bg-teal-50 hover:border-teal-200 hover:text-teal-700' },
-  { key: 'additives',    label: '环保助剂',    icon: FlaskConical, active: 'bg-violet-100 text-violet-700 border-violet-300', rest: 'bg-white text-slate-600 border-slate-200 hover:bg-violet-50 hover:border-violet-200 hover:text-violet-700' },
-  { key: 'auxiliaries',  label: '绿色辅料',    icon: Box,          active: 'bg-amber-100 text-amber-700 border-amber-300',   rest: 'bg-white text-slate-600 border-slate-200 hover:bg-amber-50 hover:border-amber-200 hover:text-amber-700' },
-  { key: 'recycling',    label: '循环再生',    icon: RefreshCw,    active: 'bg-emerald-100 text-emerald-700 border-emerald-300', rest: 'bg-white text-slate-600 border-slate-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700' },
-  { key: 'carbonPolicy', label: '碳中和/政策', icon: BarChart3,    active: 'bg-indigo-100 text-indigo-700 border-indigo-300', rest: 'bg-white text-slate-600 border-slate-200 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700' },
+const DIMENSIONS = [
+  { key: 'molds',       label: '模具',       icon: PenTool,      active: 'bg-blue-100 text-blue-700 border-blue-300',       rest: 'bg-white text-slate-600 border-slate-200 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700' },
+  { key: 'molding',     label: '成型',       icon: Box,          active: 'bg-cyan-100 text-cyan-700 border-cyan-300',       rest: 'bg-white text-slate-600 border-slate-200 hover:bg-cyan-50 hover:border-cyan-200 hover:text-cyan-700' },
+  { key: 'recycled',    label: '再生塑料',   icon: RotateCcw,    active: 'bg-purple-100 text-purple-700 border-purple-300',   rest: 'bg-white text-slate-600 border-slate-200 hover:bg-purple-50 hover:border-purple-200 hover:text-purple-700' },
+  { key: 'bio',         label: '生物基材料', icon: Leaf,         active: 'bg-green-100 text-green-700 border-green-300',     rest: 'bg-white text-slate-600 border-slate-200 hover:bg-green-50 hover:border-green-200 hover:text-green-700' },
+  { key: 'additives',   label: '助剂',       icon: FlaskConical, active: 'bg-amber-100 text-amber-700 border-amber-300',     rest: 'bg-white text-slate-600 border-slate-200 hover:bg-amber-50 hover:border-amber-200 hover:text-amber-700' },
+  { key: 'auxiliaries', label: '辅料',       icon: Package,      active: 'bg-orange-100 text-orange-700 border-orange-300',   rest: 'bg-white text-slate-600 border-slate-200 hover:bg-orange-50 hover:border-orange-200 hover:text-orange-700' },
+  { key: 'recycling',   label: '回收再生',   icon: RefreshCw,    active: 'bg-emerald-100 text-emerald-700 border-emerald-300', rest: 'bg-white text-slate-600 border-slate-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700' },
+  { key: 'reuse',       label: '重复使用',   icon: Repeat2,      active: 'bg-indigo-100 text-indigo-700 border-indigo-300',  rest: 'bg-white text-slate-600 border-slate-200 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700' },
 ]
 
 const REGIONS = [
@@ -86,7 +88,7 @@ export default function NewsListClient({
     if (sortBy !== 'latest') params.set('sort', sortBy)
     if (currentPage > 1) params.set('page', String(currentPage))
     if (debouncedQuery) params.set('q', debouncedQuery)
-    if (activePillar) params.set('pillar', activePillar)
+    if (activePillar) params.set('dimension', activePillar)
     if (activeRegion) params.set('region', activeRegion)
 
     // Update URL without navigation
@@ -140,13 +142,13 @@ export default function NewsListClient({
       <div className="border-b border-slate-100 bg-white sticky top-16 z-30">
         <div className="container py-3 space-y-2.5">
 
-          {/* ── Row 1: Six Pillar Filter ── */}
+          {/* ── Row 1: Eight Dimension Filter ── */}
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
             <span className="text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.1em] whitespace-nowrap flex-shrink-0">
-              支柱
+              维度
             </span>
             <div className="flex items-center gap-1.5 flex-nowrap">
-              {PILLARS.map(({ key, label, icon: Icon, active, rest }) => {
+              {DIMENSIONS.map(({ key, label, icon: Icon, active, rest }) => {
                 const isActive = activePillar === key
                 return (
                   <button
@@ -282,7 +284,7 @@ export default function NewsListClient({
             {(selectedTags.length > 0 || activePillar || activeRegion) && (
               <div className="flex flex-wrap gap-1.5 mb-4">
                 {activePillar && (() => {
-                  const p = PILLARS.find(p => p.key === activePillar)
+                  const p = DIMENSIONS.find(p => p.key === activePillar)
                   if (!p) return null
                   const Icon = p.icon
                   return (
@@ -334,7 +336,7 @@ export default function NewsListClient({
               共 <span className="font-medium text-foreground">{data.total}</span> 条结果
               {activePillar && (
                 <span className="ml-2 text-cyan-600 font-medium">
-                  · {PILLARS.find(p => p.key === activePillar)?.label}
+                  · {DIMENSIONS.find(p => p.key === activePillar)?.label}
                 </span>
               )}
               {activeRegion && (

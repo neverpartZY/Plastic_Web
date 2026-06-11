@@ -1,73 +1,132 @@
 import { Suspense } from 'react'
+import { headers } from 'next/headers'
 import { prisma } from '@/lib/prisma'
-import IntelligenceCard from '@/components/intelligence/IntelligenceCard'
+import IntelligencePageClient from '@/components/intelligence/IntelligencePageClient'
 import ScrollRestorer from '@/components/ScrollRestorer'
+import { KEYWORD_MATRIX } from '@/lib/intelligence/keywords'
+import { isValidLocale } from '@/i18n/config'
+import { getDictionary } from '@/i18n/dictionaries'
 import type { Metadata } from 'next'
+import type { Locale } from '@/i18n/config'
+import type { IntelligencePageDictionary } from '@/i18n/types'
 
 export const metadata: Metadata = {
-  title: '每日情报 — SustainPlastics Hub',
+  title: '情报中心 — SustainPlastics Hub',
 }
 
-export const revalidate = 60
-
-const PILLARS = [
-  { value: '', labelZh: '全部维度', labelEn: 'All Pillars' },
-  { value: 'molds', labelZh: '模具', labelEn: 'Molds' },
-  { value: 'molding', labelZh: '成型', labelEn: 'Molding' },
-  { value: 'materials', labelZh: '材料', labelEn: 'Materials' },
-  { value: 'additives', labelZh: '助剂', labelEn: 'Additives' },
-  { value: 'auxiliaries', labelZh: '辅料', labelEn: 'Auxiliaries' },
-  { value: 'recycling', labelZh: '回收再生', labelEn: 'Recycling' },
-  { value: 'reuse', labelZh: '重复使用', labelEn: 'Reuse' },
-]
-
-const COUNTRIES = [
-  { value: '', labelZh: '全部地区' },
-  { value: 'CN', labelZh: '🇨🇳 中国' },
-  { value: 'EU', labelZh: '🇪🇺 欧盟' },
-  { value: 'US', labelZh: '🇺🇸 美国' },
-  { value: 'UK', labelZh: '🇬🇧 英国' },
-  { value: 'GLOBAL', labelZh: '🌐 全球' },
-]
+const PAGE_SIZE = 20
 
 interface Props {
-  searchParams: { pillar?: string; country?: string; hot?: string }
+  searchParams: { pillar?: string; country?: string; hot?: string; tab?: string; page?: string }
 }
 
-async function getIntelligence(pillar?: string, country?: string, hotOnly?: boolean) {
-  const where: any = {}
-  if (pillar) where.pillars = { contains: pillar }
+function href(params: Record<string, string | undefined>): string {
+  const q = new URLSearchParams()
+  for (const [k, v] of Object.entries(params)) {
+    if (v) q.set(k, v)
+  }
+  const s = q.toString()
+  return '/intelligence' + (s ? '?' + s : '')
+}
+
+async function getIntelligence(
+  pillar: string,
+  country: string,
+  hotOnly: boolean,
+  tab: 'highlights' | 'all',
+  page: number,
+) {
+  const now = new Date()
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+  const where: Record<string, unknown> = {}
+  if (pillar)  where.pillars     = { contains: pillar }
   if (country) where.countryCode = country
-  if (hotOnly) where.isHot = true
+  if (hotOnly) where.isHot       = true
 
-  const items = await prisma.intelligence.findMany({
-    where,
-    orderBy: [
-      { isHot: 'desc' },
-      { importance: 'desc' },
-      { publishedAt: 'desc' },
-    ],
-    take: 24,
-  })
+  // highlights：昨天 UTC 零点至今 + importance≥3（日历日，与 cron 一致，无空窗）
+  if (tab === 'highlights') {
+    const now = new Date()
+    where.publishedAt = { gte: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 1)) }
+    where.importance  = { gte: 3 }
+  }
 
-  return items.map((item) => ({
-    ...item,
-    publishedAt: item.publishedAt.toISOString(),
-    companies: [],
-  }))
+  const [totalCount, items] = await Promise.all([
+    prisma.intelligence.count({ where }),
+    tab === 'all'
+      ? prisma.intelligence.findMany({
+          where,
+          orderBy: [{ publishedAt: 'desc' }, { importance: 'desc' }],
+          skip:    (page - 1) * PAGE_SIZE,
+          take:    PAGE_SIZE,
+        })
+      : prisma.intelligence.findMany({
+          where,
+          orderBy: [{ publishedAt: 'desc' }, { isHot: 'desc' }, { importance: 'desc' }],
+          take: 24,
+        }),
+  ])
+
+  return {
+    items:      items.map(i => ({ ...i, publishedAt: i.publishedAt.toISOString(), companies: [] as never[] })),
+    totalCount,
+    totalPages: Math.ceil(totalCount / PAGE_SIZE),
+  }
 }
 
 export default async function IntelligencePage({ searchParams }: Props) {
-  const pillar = searchParams.pillar ?? ''
+  const pillar  = searchParams.pillar  ?? ''
   const country = searchParams.country ?? ''
   const hotOnly = searchParams.hot === 'true'
+  const tab     = searchParams.tab === 'all' ? 'all' : 'highlights'
+  const page    = Math.max(1, parseInt(searchParams.page ?? '1'))
 
-  const items = await getIntelligence(pillar || undefined, country || undefined, hotOnly)
-  const hotCount = items.filter((i) => i.isHot).length
+  const headersList = headers()
+  const lang = (headersList.get('x-lng') as 'zh' | 'en') ?? 'zh'
+  const locale: Locale = isValidLocale(lang) ? lang : 'zh'
+  const dict = await getDictionary(locale)
+  const i18n = dict.pages.intelligence
+
+  const { items, totalCount, totalPages } = await getIntelligence(pillar, country, hotOnly, tab, page)
+  const hotCount = items.filter(i => i.isHot).length
+
+  // 始终查询 highlights 真实数量（昨天 UTC 零点至今 + importance≥3 + 相同筛选条件）
+  const now = new Date()
+  const highlightsWhere: Record<string, unknown> = {
+    publishedAt: { gte: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 1)) },
+    importance:  { gte: 3 },
+  }
+  if (pillar)  highlightsWhere.pillars     = { contains: pillar }
+  if (country) highlightsWhere.countryCode = country
+  if (hotOnly) highlightsWhere.isHot       = true
+  const highlightsCount = await prisma.intelligence.count({ where: highlightsWhere })
+
+  // Build localized pillar & country filter arrays
+  const PILLARS = [
+    { value: '', label: i18n.allDimensions },
+    ...KEYWORD_MATRIX.map(d => ({ value: d.dimension, label: lang === 'en' ? d.labelEn : d.labelZh })),
+  ]
+  const COUNTRIES = [
+    { value: '', label: i18n.allRegions },
+    { value: 'CN',     label: i18n.countries.CN },
+    { value: 'EU',     label: i18n.countries.EU },
+    { value: 'US',     label: i18n.countries.US },
+    { value: 'UK',     label: i18n.countries.UK },
+    { value: 'GLOBAL', label: i18n.countries.GLOBAL },
+  ]
+
+  // Shared filter params (without tab/page) — used to build all hrefs
+  const f = {
+    pillar:  pillar  || undefined,
+    country: country || undefined,
+    hot:     hotOnly ? 'true' : undefined,
+  }
+  const t = tab === 'all' ? 'all' : undefined
 
   return (
     <div className="min-h-screen bg-gray-50/50">
       <Suspense fallback={null}><ScrollRestorer /></Suspense>
+
       {/* ── Header ── */}
       <div className="bg-white border-b">
         <div className="container py-8">
@@ -75,92 +134,87 @@ export default async function IntelligencePage({ searchParams }: Props) {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <span className="inline-block w-1 h-5 bg-emerald-500 rounded-full" />
-                <span className="text-xs text-gray-400 uppercase tracking-widest">Daily Intelligence</span>
+                <span className="text-xs text-gray-400 uppercase tracking-widest">Intelligence Center</span>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">每日情报</h1>
-              <p className="text-sm text-gray-500 mt-1">
-                覆盖7大战略维度 · 实时采集全球21个核心信息源
-              </p>
+              <h1 className="text-2xl font-bold text-gray-900">{i18n.headerTitle}</h1>
+              <p className="text-sm text-gray-500 mt-1">{i18n.headerSubtitle}</p>
             </div>
             {hotCount > 0 && (
               <div className="flex items-center gap-1.5 bg-rose-50 border border-rose-100 rounded-lg px-3 py-2">
                 <span className="text-rose-500 text-sm">🔥</span>
-                <span className="text-sm font-medium text-rose-600">{hotCount} 条热点</span>
+                <span className="text-sm font-medium text-rose-600">{i18n.hotCount.replace('{n}', String(hotCount))}</span>
               </div>
             )}
           </div>
 
           {/* ── Filter bar ── */}
           <div className="mt-6 flex flex-wrap gap-3">
-            {/* Pillar filter */}
+            {/* Pillar chips */}
             <div className="flex flex-wrap gap-1.5">
               {PILLARS.map((p) => (
                 <a
                   key={p.value}
-                  href={`/intelligence?pillar=${p.value}&country=${country}${hotOnly ? '&hot=true' : ''}`}
+                  href={href({ ...f, pillar: p.value || undefined, tab: t })}
                   className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
                     pillar === p.value
                       ? 'bg-emerald-600 text-white border-emerald-600'
                       : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-300 hover:text-emerald-600'
                   }`}
                 >
-                  {p.labelZh}
+                  {p.label}
                 </a>
               ))}
             </div>
 
-            {/* Divider */}
             <div className="w-px bg-gray-200 self-stretch" />
 
-            {/* Country filter */}
+            {/* Country chips */}
             <div className="flex flex-wrap gap-1.5">
               {COUNTRIES.map((c) => (
                 <a
                   key={c.value}
-                  href={`/intelligence?pillar=${pillar}&country=${c.value}${hotOnly ? '&hot=true' : ''}`}
+                  href={href({ ...f, country: c.value || undefined, tab: t })}
                   className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
                     country === c.value
                       ? 'bg-blue-600 text-white border-blue-600'
                       : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300 hover:text-blue-600'
                   }`}
                 >
-                  {c.labelZh}
+                  {c.label}
                 </a>
               ))}
             </div>
 
             {/* Hot toggle */}
             <a
-              href={`/intelligence?pillar=${pillar}&country=${country}${hotOnly ? '' : '&hot=true'}`}
+              href={href({ ...f, hot: hotOnly ? undefined : 'true', tab: t })}
               className={`ml-auto px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
                 hotOnly
                   ? 'bg-rose-500 text-white border-rose-500'
                   : 'bg-white text-gray-500 border-gray-200 hover:border-rose-300 hover:text-rose-500'
               }`}
             >
-              🔥 仅看热点
+              {i18n.hotOnly}
             </a>
           </div>
         </div>
       </div>
 
-      {/* ── Cards grid ── */}
-      <div className="container py-8">
-        {items.length === 0 ? (
-          <div className="text-center py-20 text-gray-400 text-sm">
-            暂无符合条件的情报
-          </div>
-        ) : (
-          <>
-            <p className="text-xs text-gray-400 mb-4">共 {items.length} 条情报</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {items.map((item) => (
-                <IntelligenceCard key={item.id} item={item} lang="zh" />
-              ))}
-            </div>
-          </>
-        )}
-      </div>
+      {/* ── Content (client handles tabs + cards + pagination) ── */}
+      <IntelligencePageClient
+        items={items as Parameters<typeof IntelligencePageClient>[0]['items']}
+        hotCount={hotCount}
+        highlightsCount={highlightsCount}
+        lang={lang}
+        tab={tab}
+        page={page}
+        totalPages={totalPages}
+        tabHighlightsHref={href(f)}
+        tabAllHref={href({ ...f, tab: 'all' })}
+        prevPageHref={tab === 'all' && page > 1        ? href({ ...f, tab: 'all', page: String(page - 1) }) : null}
+        nextPageHref={tab === 'all' && page < totalPages ? href({ ...f, tab: 'all', page: String(page + 1) }) : null}
+        dict={i18n}
+      />
     </div>
   )
 }

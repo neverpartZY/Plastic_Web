@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-type Pillar = 'molds' | 'molding' | 'materials' | 'additives' | 'auxiliaries' | 'recycling' | 'reuse'
+type Pillar = 'molds' | 'molding' | 'recycled' | 'bio' | 'additives' | 'auxiliaries' | 'recycling' | 'reuse'
 
 export interface IntelligenceDetail {
   id: string
@@ -32,6 +32,8 @@ export interface IntelligenceDetail {
   tldrEn: string | null
   content: string
   contentZh: string | null
+  contentEn: string | null
+  lang: string | null
   category: string
   pillars: string | null
   countryCode: string | null
@@ -69,11 +71,12 @@ interface Props {
 const PILLAR_CONFIG: Record<Pillar, { labelZh: string; labelEn: string; color: string }> = {
   molds:       { labelZh: '模具',     labelEn: 'Molds',       color: 'bg-slate-100 text-slate-700 border-slate-200' },
   molding:     { labelZh: '成型',     labelEn: 'Molding',     color: 'bg-blue-50 text-blue-700 border-blue-200' },
-  materials:   { labelZh: '材料',     labelEn: 'Materials',   color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+  recycled:    { labelZh: '再生塑料', labelEn: 'Recycled',    color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+  bio:         { labelZh: '生物基',   labelEn: 'Bio-based',   color: 'bg-teal-50 text-teal-700 border-teal-200' },
   additives:   { labelZh: '助剂',     labelEn: 'Additives',   color: 'bg-purple-50 text-purple-700 border-purple-200' },
   auxiliaries: { labelZh: '辅料',     labelEn: 'Auxiliaries', color: 'bg-amber-50 text-amber-700 border-amber-200' },
   recycling:   { labelZh: '回收再生', labelEn: 'Recycling',   color: 'bg-green-50 text-green-700 border-green-200' },
-  reuse:       { labelZh: '重复使用', labelEn: 'Reuse',       color: 'bg-teal-50 text-teal-700 border-teal-200' },
+  reuse:       { labelZh: '重复使用', labelEn: 'Reuse',       color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
 }
 
 const CATEGORY_CONFIG: Record<string, { labelZh: string; labelEn: string }> = {
@@ -92,10 +95,6 @@ const COUNTRY_CONFIG: Record<string, { flag: string; labelZh: string; labelEn: s
   GLOBAL: { flag: '🌐',  labelZh: '全球',  labelEn: 'Global' },
 }
 
-function isHtml(str: string) {
-  return /<[a-z][\s\S]*>/i.test(str)
-}
-
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function ImportanceStars({ level }: { level: number }) {
@@ -108,7 +107,7 @@ function ImportanceStars({ level }: { level: number }) {
   )
 }
 
-function ShareButton() {
+function ShareButton({ lang }: { lang: 'zh' | 'en' }) {
   const [copied, setCopied] = useState(false)
   function handleCopy() {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -127,7 +126,7 @@ function ShareButton() {
       )}
     >
       {copied ? <Check className="h-4 w-4" /> : <Share2 className="h-4 w-4" />}
-      {copied ? '已复制链接' : '分享'}
+      {copied ? (lang === 'zh' ? '已复制' : 'Copied') : (lang === 'zh' ? '分享' : 'Share')}
     </button>
   )
 }
@@ -136,9 +135,12 @@ function RelatedCard({ item, lang }: { item: RelatedItem; lang: 'zh' | 'en' }) {
   const title   = lang === 'zh' ? (item.titleZh ?? item.title) : (item.titleEn ?? item.title)
   const summary = lang === 'zh' ? (item.summaryZh ?? item.summary) : item.summary
   const pillars = (item.pillars ?? '').split(',').filter(Boolean) as Pillar[]
-  const date = new Date(item.publishedAt).toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', { month: 'short', day: 'numeric' })
+  const date    = new Date(item.publishedAt).toLocaleDateString(
+    lang === 'zh' ? 'zh-CN' : 'en-US',
+    { month: 'short', day: 'numeric' },
+  )
   const firstPillar = pillars[0]
-  const pillarCfg = firstPillar ? PILLAR_CONFIG[firstPillar] : undefined
+  const pillarCfg   = firstPillar ? PILLAR_CONFIG[firstPillar] : undefined
 
   return (
     <Link
@@ -172,30 +174,35 @@ function RelatedCard({ item, lang }: { item: RelatedItem; lang: 'zh' | 'en' }) {
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export default function IntelligenceDetailContent({ item, related }: Props) {
-  const [lang, setLang] = useState<'zh' | 'en'>('zh')
-
-  const hasZh = !!(item.titleZh)
-  const hasEn = !!(item.titleEn)
+  // 有中文内容就默认显示中文（lang 字段反映的是原始文章语言，非 AI 精炼后语言）
+  const hasZh    = !!(item.titleZh || item.contentZh || item.summaryZh || item.tldrZh)
+  const hasEn    = !!(item.titleEn || item.contentEn || item.summaryEn || item.tldrEn)
   const canToggle = hasZh && hasEn
+  const defaultLang: 'zh' | 'en' = hasZh ? 'zh' : (item.lang as 'zh' | 'en') ?? 'zh'
+  const [lang, setLang] = useState<'zh' | 'en'>(defaultLang)
 
-  const title   = lang === 'zh' ? (item.titleZh   ?? item.title)   : (item.titleEn   ?? item.title)
-  const tldrRaw = lang === 'zh' ? (item.tldrZh ?? item.summaryZh ?? item.summary)
-                                : (item.tldrEn ?? item.summaryEn ?? item.summary)
-
-  // 解析结构化要点（• 分隔）；无结构则整段显示
-  const tldrPoints = tldrRaw
-    ? tldrRaw.split('\n').map(l => l.trim()).filter(l => l.startsWith('•')).map(l => l.slice(1).trim()).filter(Boolean)
-    : []
-  const tldrFallback = tldrPoints.length === 0 ? tldrRaw : null
-
+  const title   = lang === 'zh' ? (item.titleZh ?? item.title) : (item.titleEn ?? item.title)
   const pillars  = (item.pillars ?? '').split(',').filter(Boolean) as Pillar[]
   const category = CATEGORY_CONFIG[item.category] ?? { labelZh: item.category, labelEn: item.category }
   const country  = COUNTRY_CONFIG[item.countryCode ?? 'GLOBAL'] ?? COUNTRY_CONFIG.GLOBAL
 
   const publishedDate = new Date(item.publishedAt).toLocaleDateString(
     lang === 'zh' ? 'zh-CN' : 'en-US',
-    { year: 'numeric', month: 'long', day: 'numeric' }
+    { year: 'numeric', month: 'long', day: 'numeric' },
   )
+
+  // TLDR bullet points — primary content, with fallback to summary
+  const tldrRaw    = lang === 'zh' ? (item.tldrZh ?? item.summaryZh ?? item.summary)
+                                   : (item.tldrEn ?? item.summaryEn ?? item.summary)
+  const tldrPoints = tldrRaw
+    ? tldrRaw.split('\n').map(l => l.trim()).filter(l => l.startsWith('•')).map(l => l.slice(1).trim()).filter(Boolean)
+    : []
+  const tldrFallback = tldrPoints.length === 0 ? tldrRaw : null
+
+  // AI summary prose — only show when a dedicated field exists (not same as TLDR fallback)
+  const summaryText = lang === 'zh'
+    ? (item.summaryZh ?? item.contentZh ?? item.summary)
+    : (item.summaryEn ?? item.contentEn ?? item.summary)
 
   return (
     <div className="min-h-screen bg-white">
@@ -206,7 +213,7 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
           <nav className="flex items-center gap-2 text-sm text-gray-400 min-w-0">
             <Link href="/intelligence" className="hover:text-emerald-600 transition-colors flex items-center gap-1 shrink-0">
               <ArrowLeft className="h-3.5 w-3.5" />
-              {lang === 'zh' ? '情报墙' : 'Intelligence'}
+              {lang === 'zh' ? '情报中心' : 'Intelligence'}
             </Link>
             <span>/</span>
             <span className="truncate text-gray-600 text-xs">{title}</span>
@@ -256,7 +263,7 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight tracking-tight mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight tracking-tight mb-8">
           {item.isPremium && <Lock className="inline h-6 w-6 text-amber-500 mr-2 -mt-1" />}
           {title}
         </h1>
@@ -267,33 +274,28 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
             <Calendar className="h-4 w-4 shrink-0" />
             {publishedDate}
           </span>
-
-          {/* Source with link — required for traceability */}
+          <span className="flex items-center gap-1.5">
+            <span>{country.flag}</span>
+            <span>{lang === 'zh' ? country.labelZh : country.labelEn}</span>
+          </span>
           {item.source && (
             <span className="flex items-center gap-1.5">
               <Globe className="h-4 w-4 shrink-0" />
-              {lang === 'zh' ? '来源：' : 'Source: '}
               {item.sourceUrl ? (
                 <a
                   href={item.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-emerald-600 hover:text-emerald-700 transition-colors inline-flex items-center gap-1"
+                  className="text-emerald-600 hover:text-emerald-700 transition-colors inline-flex items-center gap-1"
                 >
                   {item.source}
                   <ExternalLink className="h-3 w-3" />
                 </a>
               ) : (
-                <span className="font-medium text-gray-600">{item.source}</span>
+                <span>{item.source}</span>
               )}
             </span>
           )}
-
-          <span className="flex items-center gap-1.5">
-            <span>{country.flag}</span>
-            <span>{lang === 'zh' ? country.labelZh : country.labelEn}</span>
-          </span>
-
           {item.isPremium && (
             <span className="flex items-center gap-1 text-amber-500">
               <Lock className="h-3.5 w-3.5" />
@@ -302,13 +304,13 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
           )}
         </div>
 
-        {/* ── TLDR Section ── */}
+        {/* ── TLDR bullet points — 先看要点 ── */}
         {(tldrPoints.length > 0 || tldrFallback) && (
           <div className="mb-10 rounded-xl border border-emerald-100 bg-emerald-50/60 p-5">
             <div className="flex items-center gap-2 mb-4">
               <Zap className="h-4 w-4 text-emerald-600 shrink-0" />
               <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest">
-                {lang === 'zh' ? '核心要点' : 'Key Takeaways'}
+                {lang === 'zh' ? '核心要点' : 'Key Points'}
               </span>
               <span className="text-[10px] text-emerald-400 ml-auto">AI · GLM</span>
             </div>
@@ -330,76 +332,24 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
           </div>
         )}
 
-        {/* ── Body content ── */}
-        {(() => {
-          // zh 用户优先显示中文正文；en 用户显示原文
-          const bodyZh = item.contentZh?.trim()
-          const bodyEn = item.content?.trim()
-          const displayBody = lang === 'zh' ? (bodyZh || bodyEn) : (bodyEn || bodyZh)
-          if (!displayBody) return null
-
-          return (
-            <div className="mb-10">
-              <div className="flex items-center gap-2 mb-5">
-                <span className="inline-block w-1 h-4 bg-gray-200 rounded-full" />
-                <span className="text-xs text-gray-400 uppercase tracking-widest">
-                  {lang === 'zh' ? '正文' : 'Full Article'}
-                </span>
-                {item.sourceUrl && (
-                  <a
-                    href={item.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ml-auto text-xs text-gray-400 hover:text-emerald-600 flex items-center gap-1 transition-colors"
-                  >
-                    {lang === 'zh' ? '查看来源' : 'Original source'}
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
-                )}
-              </div>
-
-              {isHtml(displayBody) ? (
-                <div
-                  className="prose-intelligence-html"
-                  /* eslint-disable-next-line react/no-danger */
-                  dangerouslySetInnerHTML={{ __html: displayBody }}
-                />
-              ) : (
-                <div className="space-y-4">
-                  {displayBody.split(/\n{2,}/).filter(Boolean).map((para, i) => (
-                    <p key={i} className="text-slate-700 text-base leading-loose">
-                      {para.trim()}
-                    </p>
-                  ))}
-                </div>
-              )}
+        {/* ── AI Summary prose — 详细摘要，仅在有专属字段时展示 ── */}
+        {summaryText && (
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="inline-block w-1 h-4 bg-emerald-400 rounded-full" />
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                {lang === 'zh' ? 'AI 摘要' : 'AI Summary'}
+              </span>
             </div>
-          )
-        })()}
-
-        {/* No body — prompt user to view source */}
-        {!item.content.trim() && item.sourceUrl && (
-          <div className="mb-10 rounded-xl border border-gray-100 bg-gray-50 p-5 flex items-center justify-between gap-4">
-            <p className="text-sm text-gray-500">
-              {lang === 'zh'
-                ? '完整原文请访问原始来源'
-                : 'Read the full article at the original source'}
+            <p className="text-gray-700 text-[17px] leading-loose">
+              {summaryText}
             </p>
-            <a
-              href={item.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition-colors"
-            >
-              {lang === 'zh' ? '阅读原文' : 'Read original'}
-              <ExternalLink className="h-3.5 w-3.5" />
-            </a>
           </div>
         )}
 
         {/* Related companies */}
         {item.companyLinks.length > 0 && (
-          <div className="mt-10 pt-6 border-t border-gray-100">
+          <div className="mb-10 pt-6 border-t border-gray-100">
             <p className="text-xs uppercase tracking-widest text-gray-400 mb-3">
               {lang === 'zh' ? '相关企业' : 'Related Companies'}
             </p>
@@ -424,9 +374,9 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:border-emerald-300 hover:text-emerald-600 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
-            {lang === 'zh' ? '返回情报墙' : 'Back to Intelligence'}
+            {lang === 'zh' ? '返回情报中心' : 'Back to Intelligence'}
           </Link>
-          <ShareButton />
+          <ShareButton lang={lang} />
         </div>
 
         {/* Related intelligence */}

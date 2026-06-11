@@ -7,8 +7,8 @@ import { mapPrismaTag, groupTagsByCategory } from '@/lib/utils'
 import type { Prisma } from '@prisma/client'
 
 export const metadata: Metadata = {
-  title: '产业资讯 — 六大支柱情报中心',
-  description: '按绿色机械、可持续材料、环保助剂、绿色辅料、循环再生、碳中和/政策六大支柱筛选，覆盖全球各地区产业情报。',
+  title: '产业资讯 — 八大维度情报中心',
+  description: '按模具、成型、再生塑料、生物基材料、助剂、辅料、回收再生、重复使用八大维度筛选，覆盖全球各地区产业情报。',
 }
 
 interface SearchParams {
@@ -123,14 +123,14 @@ export default async function NewsPage({
 
           <div className="inline-flex items-center gap-2 px-3 py-1 mb-5 rounded-full border border-cyan-200 bg-cyan-50 text-cyan-700 text-xs font-semibold tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-            六大支柱 · 全球地区 · 实时聚合
+            八大维度 · 全球地区 · 实时聚合
           </div>
 
           <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight">
             产业情报中心
           </h1>
           <p className="text-slate-500 text-base max-w-xl leading-relaxed">
-            按绿色机械、可持续材料、环保助剂等六大支柱分类，多地区视野覆盖全球可持续塑料产业动态
+            按模具、成型、再生塑料、生物基材料等八大维度分类，多地区视野覆盖全球可持续塑料产业动态
           </p>
 
           {/* Stats row */}

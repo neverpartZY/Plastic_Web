@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 
+import { createHash } from 'crypto'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -21,6 +22,8 @@ const items = [
     isPremium: false,
     source: '国家发展改革委',
     sourceUrl: 'https://www.ndrc.gov.cn',
+    urlHash: "6baa1b6b19a448b33ba6089606eb6a9e",
+
     translateStatus: 'translated',
     publishedAt: new Date('2026-04-26'),
   },
@@ -39,6 +42,7 @@ const items = [
     isPremium: false,
     source: 'Plastics Recyclers Europe',
     sourceUrl: 'https://www.plasticsrecyclers.eu',
+    urlHash: "657e734f35e98225961b53b0827715ee",
     translateStatus: 'translated',
     publishedAt: new Date('2026-04-25'),
   },
@@ -57,6 +61,7 @@ const items = [
     isPremium: false,
     source: '卓创资讯',
     sourceUrl: 'https://plastic.sci99.com',
+    urlHash: "6a7ba83b57d528d0cb22415b87b4d22a",
     translateStatus: 'translated',
     publishedAt: new Date('2026-04-26'),
   },
@@ -75,6 +80,7 @@ const items = [
     isPremium: false,
     source: 'APR',
     sourceUrl: 'https://www.plasticsrecycling.org',
+    urlHash: "60110ede2d24d3f20567ff440d4b8d78",
     translateStatus: 'translated',
     publishedAt: new Date('2026-04-24'),
   },
@@ -93,6 +99,7 @@ const items = [
     isPremium: false,
     source: '工业和信息化部',
     sourceUrl: 'https://www.miit.gov.cn',
+    urlHash: "dfbf0c65780ef7e71dd224f5d1896072",
     translateStatus: 'translated',
     publishedAt: new Date('2026-04-23'),
   },
@@ -111,6 +118,7 @@ const items = [
     isPremium: true,
     source: 'Sustainable Plastics',
     sourceUrl: 'https://www.sustainableplastics.com',
+    urlHash: "387737868da9ff6c60652def24002923",
     translateStatus: 'translated',
     publishedAt: new Date('2026-04-22'),
   },
@@ -129,6 +137,7 @@ const items = [
     isPremium: false,
     source: 'ICIS',
     sourceUrl: 'https://www.icis.com',
+    urlHash: "0dd5440a9cc1c5440ef8ca4ac2370f48",
     translateStatus: 'translated',
     publishedAt: new Date('2026-04-21'),
   },
@@ -147,6 +156,7 @@ const items = [
     isPremium: false,
     source: '中国模具工业协会',
     sourceUrl: 'https://www.cdmia.com.cn',
+    urlHash: "4c0b7cdb1ba8d5c78dc2e0393d3c43d1",
     translateStatus: 'translated',
     publishedAt: new Date('2026-04-20'),
   },

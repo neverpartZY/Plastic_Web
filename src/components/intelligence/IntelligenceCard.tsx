@@ -1,9 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Globe, Flame, Lock, ChevronRight, Languages } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -11,7 +10,8 @@ import { cn } from '@/lib/utils'
 type Pillar =
   | 'molds'
   | 'molding'
-  | 'materials'
+  | 'recycled'
+  | 'bio'
   | 'additives'
   | 'auxiliaries'
   | 'recycling'
@@ -19,24 +19,20 @@ type Pillar =
 
 export interface IntelligenceItem {
   id: string
-  // 双语字段
   titleZh: string | null
   titleEn: string | null
   summaryZh: string | null
   summaryEn: string | null
-  // fallback（原始采集）
   title: string
   summary: string
-  // 分类
-  pillars: string | null       // 逗号分隔，e.g. "recycling,materials"
+  pillars: string | null
   category: string
   countryCode: string | null
-  importance: number           // 1-5
+  importance: number
   isHot: boolean
   isPremium: boolean
   source: string | null
   publishedAt: string
-  // 关联企业（已 join）
   companies?: Array<{
     id: string
     name: string
@@ -47,20 +43,22 @@ export interface IntelligenceItem {
 
 interface Props {
   item: IntelligenceItem
-  lang?: 'zh' | 'en'          // 当前站点语言（来自 URL 或 Context）
+  lang?: 'zh' | 'en'
   className?: string
+  onDimensionSubscribe?: (dimension: Pillar) => void
 }
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
 const PILLAR_CONFIG: Record<Pillar, { labelZh: string; labelEn: string; color: string }> = {
-  molds:       { labelZh: '模具',   labelEn: 'Molds',       color: 'bg-slate-100 text-slate-700 border-slate-200' },
-  molding:     { labelZh: '成型',   labelEn: 'Molding',     color: 'bg-blue-50 text-blue-700 border-blue-200' },
-  materials:   { labelZh: '材料',   labelEn: 'Materials',   color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-  additives:   { labelZh: '助剂',   labelEn: 'Additives',   color: 'bg-purple-50 text-purple-700 border-purple-200' },
-  auxiliaries: { labelZh: '辅料',   labelEn: 'Auxiliaries', color: 'bg-amber-50 text-amber-700 border-amber-200' },
-  recycling:   { labelZh: '回收再生', labelEn: 'Recycling', color: 'bg-green-50 text-green-700 border-green-200' },
-  reuse:       { labelZh: '重复使用', labelEn: 'Reuse',     color: 'bg-teal-50 text-teal-700 border-teal-200' },
+  molds:       { labelZh: '模具',     labelEn: 'Molds',       color: 'bg-slate-100 text-slate-700 border-slate-200' },
+  molding:     { labelZh: '成型',     labelEn: 'Molding',     color: 'bg-blue-50 text-blue-700 border-blue-200' },
+  recycled:    { labelZh: '再生塑料', labelEn: 'Recycled',    color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+  bio:         { labelZh: '生物基',   labelEn: 'Bio-based',   color: 'bg-teal-50 text-teal-700 border-teal-200' },
+  additives:   { labelZh: '助剂',     labelEn: 'Additives',   color: 'bg-purple-50 text-purple-700 border-purple-200' },
+  auxiliaries: { labelZh: '辅料',     labelEn: 'Auxiliaries', color: 'bg-amber-50 text-amber-700 border-amber-200' },
+  recycling:   { labelZh: '回收再生', labelEn: 'Recycling',   color: 'bg-green-50 text-green-700 border-green-200' },
+  reuse:       { labelZh: '重复使用', labelEn: 'Reuse',      color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
 }
 
 const COUNTRY_CONFIG: Record<string, { flag: string; labelZh: string; labelEn: string }> = {
@@ -77,6 +75,14 @@ const CATEGORY_CONFIG: Record<string, { labelZh: string; labelEn: string }> = {
   tech:       { labelZh: '技术创新', labelEn: 'Tech' },
   enterprise: { labelZh: '企业动态', labelEn: 'Enterprise' },
   global:     { labelZh: '国际视野', labelEn: 'Global' },
+}
+
+function categoryLabel(category: string, lang: 'zh' | 'en'): string {
+  const direct = CATEGORY_CONFIG[category]
+  if (direct) return lang === 'zh' ? direct.labelZh : direct.labelEn
+  const byZh = Object.values(CATEGORY_CONFIG).find(c => c.labelZh === category)
+  if (byZh) return lang === 'zh' ? byZh.labelZh : byZh.labelEn
+  return category
 }
 
 // ── Sub-components ────────────────────────────────────────────────────────────
@@ -99,15 +105,21 @@ function ImportanceStars({ level }: { level: number }) {
   )
 }
 
-function PillarBadge({ pillar, lang }: { pillar: Pillar; lang: 'zh' | 'en' }) {
+function PillarBadge({ pillar, lang, onClick }: { pillar: Pillar; lang: 'zh' | 'en'; onClick?: () => void }) {
   const config = PILLAR_CONFIG[pillar]
   if (!config) return null
   return (
     <span
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onClick={onClick}
+      onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
       className={cn(
         'inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium border',
-        config.color
+        config.color,
+        onClick && 'cursor-pointer hover:opacity-80 transition-opacity'
       )}
+      title={onClick ? `订阅${config.labelZh}情报` : undefined}
     >
       {lang === 'zh' ? config.labelZh : config.labelEn}
     </span>
@@ -143,24 +155,16 @@ function CompanyRecommendations({
 
 // ── Main Component ────────────────────────────────────────────────────────────
 
-export default function IntelligenceCard({ item, lang: siteLang = 'zh', className }: Props) {
-  // 卡片内部可独立切换语言，不影响全局
+export default function IntelligenceCard({ item, lang: siteLang = 'zh', className, onDimensionSubscribe }: Props) {
   const [cardLang, setCardLang] = useState<'zh' | 'en'>(siteLang)
+  useEffect(() => { setCardLang(siteLang) }, [siteLang])
 
   const pillars = (item.pillars ?? '').split(',').filter(Boolean) as Pillar[]
   const country = COUNTRY_CONFIG[item.countryCode ?? 'GLOBAL'] ?? COUNTRY_CONFIG.GLOBAL
-  const category = CATEGORY_CONFIG[item.category] ?? { labelZh: item.category, labelEn: item.category }
+  const catLabel = categoryLabel(item.category, cardLang)
 
-  const title =
-    cardLang === 'zh'
-      ? (item.titleZh ?? item.title)
-      : (item.titleEn ?? item.title)
-
-  const summary =
-    cardLang === 'zh'
-      ? (item.summaryZh ?? item.summary)
-      : (item.summaryEn ?? item.summary)
-
+  const title = cardLang === 'zh' ? (item.titleZh ?? item.title) : (item.titleEn ?? item.title)
+  const summary = cardLang === 'zh' ? (item.summaryZh ?? item.summary) : (item.summaryEn ?? item.summary)
   const hasTranslation = cardLang === 'zh' ? !!item.titleEn : !!item.titleZh
   const date = new Date(item.publishedAt).toLocaleDateString(
     cardLang === 'zh' ? 'zh-CN' : 'en-US',
@@ -176,7 +180,6 @@ export default function IntelligenceCard({ item, lang: siteLang = 'zh', classNam
         className
       )}
     >
-      {/* Hot badge */}
       {item.isHot && (
         <div className="absolute -top-2 -right-2 z-10">
           <span className="flex items-center gap-0.5 bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow">
@@ -187,19 +190,22 @@ export default function IntelligenceCard({ item, lang: siteLang = 'zh', classNam
       )}
 
       <div className="p-4 flex flex-col gap-3 flex-1">
-
         {/* ── Row 1: Pillar badges + lang toggle ── */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap gap-1">
             {pillars.map((p) => (
-              <PillarBadge key={p} pillar={p} lang={cardLang} />
+              <PillarBadge
+                key={p}
+                pillar={p}
+                lang={cardLang}
+                onClick={onDimensionSubscribe ? () => onDimensionSubscribe(p) : undefined}
+              />
             ))}
             {pillars.length === 0 && (
               <PillarBadge pillar="recycling" lang={cardLang} />
             )}
           </div>
 
-          {/* Language toggle button */}
           <button
             onClick={() => setCardLang((l) => (l === 'zh' ? 'en' : 'zh'))}
             className={cn(
@@ -227,33 +233,23 @@ export default function IntelligenceCard({ item, lang: siteLang = 'zh', classNam
         </Link>
 
         {/* ── Row 3: Summary ── */}
-        <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
-          {summary}
-        </p>
+        <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{summary}</p>
 
         {/* ── Row 4: Meta row ── */}
         <div className="flex items-center justify-between gap-2 mt-auto">
           <div className="flex items-center gap-2 flex-wrap">
-            {/* Country flag + label */}
             <span className="flex items-center gap-1 text-[10px] text-gray-400">
               <span>{country.flag}</span>
               <span>{cardLang === 'zh' ? country.labelZh : country.labelEn}</span>
             </span>
-
-            {/* Category */}
             <span className="text-[10px] text-gray-400">
-              {cardLang === 'zh' ? category.labelZh : category.labelEn}
+              {catLabel}
             </span>
-
-            {/* Date */}
             <span className="text-[10px] text-gray-300">{date}</span>
           </div>
-
-          {/* Importance stars */}
           <ImportanceStars level={item.importance} />
         </div>
 
-        {/* ── Row 5: Source ── */}
         {item.source && (
           <div className="flex items-center gap-1 text-[10px] text-gray-300">
             <Globe className="h-2.5 w-2.5" />
@@ -261,13 +257,11 @@ export default function IntelligenceCard({ item, lang: siteLang = 'zh', classNam
           </div>
         )}
 
-        {/* ── Row 6: Company recommendations ── */}
         {item.companies && item.companies.length > 0 && (
           <CompanyRecommendations companies={item.companies} lang={cardLang} />
         )}
       </div>
 
-      {/* ── Footer CTA ── */}
       <Link
         href={`/intelligence/${item.id}`}
         className={cn(

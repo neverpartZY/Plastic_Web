@@ -19,6 +19,8 @@ model User {
   role         String   @default("user")
   isPremium    Boolean  @default(false)
   isActive     Boolean  @default(true)
+  emailVerified   DateTime?
+  verificationToken String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -215,6 +217,9 @@ model Intelligence {
   /// 正文中文翻译（GLM 翻译，供中文读者阅读）
   contentZh String?
 
+  /// 正文英文翻译（GLM 翻译，供英文读者阅读）
+  contentEn String?
+
   /// GLM 生成的 TLDR — 3条要点，每条以 • 开头
   tldrZh String?
   tldrEn String?
@@ -321,10 +326,11 @@ model Subscription {
   userId      String?
   email       String?
   phone       String?
-  channel     String   @default("email") // email|wechat|feishu|webhook
+  channel     String   @default("email") // email|webhook
   interests   String[] @default([])      // 订阅的维度/标签数组
   frequency   String   @default("daily") // realtime|daily|weekly
   webhookUrl  String?                  // Webhook地址
+  lang        String   @default("zh")   // zh|en
   lastSentAt  DateTime?
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -342,17 +348,54 @@ model Subscription {
 
 model PushLog {
   id             String   @id @default(cuid())
-  subscriptionId String
+  subscriptionId String?
+  leadId         String?
   intelligenceId String
   status         String   // sent|failed|webhook_error
   response       String?  // Webhook响应内容
   error          String?  // 错误信息
   createdAt      DateTime @default(now())
 
-  subscription  Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  lead         Lead?         @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
   @@index([subscriptionId, createdAt])
+  @@index([leadId, createdAt])
   @@index([intelligenceId])
+}
+
+// ─── 潜在客户（情报墙/导航栏订阅入口收集）─────────────────────────────────────
+
+model Lead {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  phone       String?
+  companyName String?
+  jobTitle    String?
+
+  /// 订阅的维度列表
+  interestedPillars String[] @default([])
+
+  /// 来源页面（utm_source 语义）
+  sourcePage String?
+
+  /// email | webhook
+  channel    String   @default("email")
+  frequency  String   @default("daily")
+  webhookUrl String?
+
+  /// 多语言偏好
+  lang       String   @default("zh")
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pushLogs PushLog[]
+
+  @@index([email])
+  @@index([sourcePage])
+  @@index([isActive])
 }
 
 // ─── 订阅者 ──────────────────────────────────────────────────────────────────
