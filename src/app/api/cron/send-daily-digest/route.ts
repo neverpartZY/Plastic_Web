@@ -64,9 +64,15 @@ async function sendOneDigest(params: {
   // ── 2. 按 interests 过滤并选择语言 ───────────────────────────────────
   const filtered = candidates
     .filter(item => {
-      if (!item.pillars) return false
-      const itemPillars = item.pillars.split(',').map(p => p.trim())
-      return interests.some(interest => itemPillars.includes(interest))
+      // 同时匹配 pillars（逗号分隔多维度）和 dimension（主维度）
+      const itemDims: string[] = []
+      if (item.pillars) {
+        itemDims.push(...item.pillars.split(',').map(p => p.trim()).filter(Boolean))
+      }
+      if (item.dimension && !itemDims.includes(item.dimension)) {
+        itemDims.push(item.dimension)
+      }
+      return interests.some(interest => itemDims.includes(interest))
     })
     .slice(0, MAX_ITEMS_PER_EMAIL)
     .map(item => {
@@ -139,8 +145,14 @@ async function sendOneDigest(params: {
 // ── GET: 手动触发（开发调试用）───────────────────────────────────────────
 
 export async function GET(req: NextRequest) {
-  // 注意：Vercel Cron 自动触发走的是内置认证，无需此处的 Bearer 校验
-  // 手动调试请在浏览器直接访问此 URL
+  // Vercel Cron 走内置认证（x-vercel-cron-secret），手动调试需要 CRON_SECRET
+  const cronSecret = process.env.CRON_SECRET
+  if (cronSecret) {
+    const auth = req.headers.get('authorization')
+    if (auth !== `Bearer ${cronSecret}`) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+  }
 
   try {
     // 用昨天 UTC 零点做起点，避免滚动窗口因 cron 秒级延迟导致空窗

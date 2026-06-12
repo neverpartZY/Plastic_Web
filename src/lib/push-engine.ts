@@ -231,7 +231,7 @@ export async function pushToSubscribers(
     where: { id: intelligenceId },
     select: {
       id: true, title: true, summary: true, source: true, sourceUrl: true,
-      dimension: true, region: true, importance: true, publishedAt: true, tags: true,
+      dimension: true, pillars: true, region: true, importance: true, publishedAt: true, tags: true,
     },
   })
 
@@ -252,13 +252,24 @@ export async function pushToSubscribers(
     tags:        intel.tags ?? [],
   }
 
-  // 构建查询条件：活跃订阅者 且 兴趣包含情报维度或任意标签
+  // 构建查询条件：活跃订阅者 且 兴趣包含情报维度（pillars/dimension/tags）
+  // 去重：同时从 dimension、pillars、tags 提取所有匹配维度
+  const matchDims = [intel.dimension ?? 'recycling']
+  if (intel.pillars) {
+    intel.pillars.split(',').forEach(d => {
+      const trimmed = d.trim()
+      if (trimmed && !matchDims.includes(trimmed)) matchDims.push(trimmed)
+    })
+  }
+  if (intel.tags) {
+    intel.tags.forEach(t => {
+      if (!matchDims.includes(t)) matchDims.push(t)
+    })
+  }
+
   const whereClause: Prisma.SubscriptionWhereInput = {
     isActive: true,
-    OR: [
-      { interests: { has: intel.dimension ?? 'recycling' } },
-      ...(intel.tags ?? []).map(tag => ({ interests: { has: tag } })),
-    ],
+    OR: matchDims.map(dim => ({ interests: { has: dim } })),
   }
 
   if (frequencyFilter) {

@@ -64,17 +64,31 @@ function parseDate(raw?: string): Date {
   return isNaN(d.getTime()) ? new Date() : d
 }
 
-// ── 新旧维度映射（保持前端 7-pillar 筛选器兼容）─────────────────────────────
+// ── 维度映射（LLM 中文输出 → 8-dimension key）────────────────────────────────
 
 const DIM_MAP: Record<string, string> = {
-  '物理回收':   'recycling',
-  '化学回收':   'recycling',
-  '生物基材料': 'bio',
-  '再生塑料':   'recycled',
-  '减碳':       'reuse',
-  '政策法规':   'recycling',
-  '可循环设计': 'reuse',
-  '行业标准':   'recycling',
+  '模具制造':    'molds',
+  '成型工艺':    'molding',
+  '再生塑料市场': 'recycled',
+  '生物基材料':  'bio',
+  '绿色助剂':    'additives',
+  '辅料升级':    'auxiliaries',
+  '回收再生技术': 'recycling',
+  '重复使用模式': 'reuse',
+  // 向后兼容旧的中文标签
+  '物理回收':    'recycling',
+  '化学回收':    'recycling',
+  '再生塑料':    'recycled',
+  '减碳':        'reuse',
+  '政策法规':    'recycling',
+  '可循环设计':  'reuse',
+  '行业标准':    'recycling',
+  '模具':        'molds',
+  '成型':        'molding',
+  '助剂':        'additives',
+  '辅料':        'auxiliaries',
+  '回收再生':    'recycling',
+  '重复使用':    'reuse',
 }
 
 // ── AI 精炼结果类型 ───────────────────────────────────────────────────────────
@@ -114,15 +128,25 @@ const SYSTEM_PROMPT = `你是一位专注于塑料循环经济的资深工业分
     "核心结论2，动词开头，≤30字",
     "核心结论3，动词开头，≤30字"
   ],
-  "dimensions": ["物理回收"],
+  "dimensions": ["回收再生技术"],
   "region": "GLOBAL",
   "score": 3,
   "tags": ["rPET", "PPWR"]
 }
 
 【字段规则】
-dimensions（从以下选 1-2 个）：
-  物理回收 | 化学回收 | 生物基材料 | 减碳 | 政策法规 | 可循环设计 | 行业标准
+dimensions（从以下选 1-2 个，应与文章内容最匹配的维度）：
+  模具制造 | 成型工艺 | 再生塑料市场 | 生物基材料 | 绿色助剂 | 辅料升级 | 回收再生技术 | 重复使用模式
+
+维度说明：
+  模具制造 = 模具设计/热流道/精密加工/模具钢材
+  成型工艺 = 注塑/挤出/吹膜/造粒工艺与设备
+  再生塑料市场 = PCR再生料/rPET/rPP/rPE品质标准与市场价格
+  生物基材料 = PLA/PHA/PBS等生物基聚合物与可降解材料
+  绿色助剂 = 稳定剂/增塑剂/阻燃剂/抗氧化剂等助剂
+  辅料升级 = 功能薄膜/绿色包装/表面处理等辅料
+  回收再生技术 = 机械回收/化学回收/酶解/智能分选
+  重复使用模式 = 可循环设计/减量策略/重复使用商业模式
 
 region（选 1 个）：CN | EU | US | UK | GLOBAL
 
@@ -144,7 +168,7 @@ async function refine(title: string, content: string, retries = 3): Promise<Refi
   const truncated = content.slice(0, 10_000)
   const prompt    = `原始标题：${title}\n\n正文内容：\n${truncated}`
 
-  const validDims   = ['物理回收', '化学回收', '生物基材料', '减碳', '政策法规', '可循环设计', '行业标准']
+  const validDims   = ['模具制造', '成型工艺', '再生塑料市场', '生物基材料', '绿色助剂', '辅料升级', '回收再生技术', '重复使用模式']
   const validRegions = ['CN', 'EU', 'US', 'UK', 'GLOBAL']
 
   for (let attempt = 1; attempt <= retries; attempt++) {
@@ -242,8 +266,8 @@ export async function POST(req: NextRequest) {
   const hash        = makeHash(url)
   const publishedAt = parseDate(date)
 
-  // pillars：新分类 → 旧7-pillar（前端筛选兼容），逗号分隔去重
-  const oldPillars = Array.from(new Set(report.dimensions.map(d => DIM_MAP[d] ?? 'recycling'))).join(',')
+  // pillars：LLM 中文维度 → 8-dimension key，逗号分隔去重
+  const pillarKeys = Array.from(new Set(report.dimensions.map(d => DIM_MAP[d] ?? 'recycling'))).join(',')
 
   // tags：英文关键词 + 新分类标签（供未来搜索）
   const allTags = Array.from(new Set([...report.tags, ...report.dimensions]))
@@ -277,8 +301,8 @@ export async function POST(req: NextRequest) {
     tldrEn:          tldrEn,
     summaryEn:       summaryEn,
     category:        report.dimensions[0] ?? '政策法规',
-    dimension:       oldPillars.split(',')[0],
-    pillars:         oldPillars,
+    dimension:       pillarKeys.split(',')[0],
+    pillars:         pillarKeys,
     region:          report.region,
     countryCode:     report.region,
     importance:      report.score,
