@@ -127,10 +127,10 @@ export default async function NewsPage({
           </div>
 
           <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight">
-            产业情报中心
+            情报中心
           </h1>
           <p className="text-slate-500 text-base max-w-xl leading-relaxed">
-            按模具、成型、再生塑料、生物基材料等八大维度分类，多地区视野覆盖全球可持续塑料产业动态
+            覆盖8大战略维度 · 实时采集全球21个核心信息源
           </p>
 
           {/* Stats row */}
