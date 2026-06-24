@@ -240,6 +240,13 @@ model Intelligence {
   /// pending | translated | failed
   translateStatus String @default("pending")
 
+  /// pending | processing | completed | failed — 精炼流水线状态
+  refineStatus String  @default("completed")
+  /// 精炼失败时的错误信息
+  refineError  String?
+  /// LLM token 用量记录 (JSON: TokenUsage[])
+  tokenUsage   Json?
+
   source        String?
   sourceUrl     String?
   crawlSourceId String?
@@ -278,6 +285,7 @@ model Intelligence {
   @@index([countryCode])
   @@index([importance])
   @@index([translateStatus])
+  @@index([refineStatus])
   @@index([urlHash])
   @@index([originalId])
 }
