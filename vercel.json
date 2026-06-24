@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/refine/process?batch=3",
-      "schedule": "*/15 * * * *"
+      "schedule": "57 3 * * *"
     }
   ]
 }
