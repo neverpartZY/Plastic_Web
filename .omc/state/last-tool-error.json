@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd \\\"D:\\\\AppData\\\\TestPrograme\\\\Plastic_Web\\\" && node -e \\\"\\nconst { PrismaClient } = require('@prisma/client');\\nconst p = new PrismaClient();\\n(async () => {\\n  const logs = await p.push...",
+  "error": "Exit code 1\nD:\\AppData\\TestPrograme\\Plastic_Web\\node_modules\\@prisma\\client\\runtime\\library.js:29\r\n`)}};function Ot(e){return new ki(Zs(e))}function Zs(e){let t=new At;for(let[r,n]of Object.entries(e)){let i=new bn(r,Xs(n));t.addField(i)}return t}function Xs(e){if(typeof e==\"string\")return new W(JSON.stringify(e));if(typeof e==\"number\"||typeof e==\"boolean\")return new W(String(e));if(typeof e==\"bigint\")return new W(`${e}n`);if(e===null)return new W(\"null\");if(e===void 0)return new W(\"undefined\");...",
+  "timestamp": "2026-05-09T02:12:24.978Z",
+  "retry_count": 1
+}

@@ -1,0 +1,466 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1778331428471,
+  "projectRoot": "D:\\AppData\\TestPrograme\\Plastic_Web",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "next",
+        "version": "14.2.20",
+        "category": "fullstack"
+      },
+      {
+        "name": "react",
+        "version": "18.3.1",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "18.3.1",
+        "category": "frontend"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "next lint",
+      "db:push": "prisma db push",
+      "db:migrate": "prisma migrate dev",
+      "db:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts",
+      "db:studio": "prisma studio",
+      "postinstall": "prisma generate"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "public",
+      "scripts",
+      "src"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "prisma": {
+      "path": "prisma",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1778331428438,
+      "keyFiles": [
+        "dev.db",
+        "schema.prisma",
+        "seed-intelligence.ts",
+        "seed.ts"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 1,
+      "lastAccessed": 1778331428439,
+      "keyFiles": [
+        "logo-email.svg"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 14,
+      "lastAccessed": 1778331428439,
+      "keyFiles": [
+        "backfill-concurrent.mjs",
+        "backfill-contenten-all.mjs",
+        "backfill-contentEn.mjs",
+        "backfill-tldren-concurrent.mjs",
+        "deduplicate-intelligence.mjs"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 1,
+      "lastAccessed": 1778331428448,
+      "keyFiles": [
+        "middleware.ts"
+      ]
+    },
+    "src\\app": {
+      "path": "src\\app",
+      "purpose": "Application code",
+      "fileCount": 4,
+      "lastAccessed": 1778331428449,
+      "keyFiles": [
+        "globals.css",
+        "layout.tsx",
+        "page.tsx"
+      ]
+    },
+    "src\\components": {
+      "path": "src\\components",
+      "purpose": "UI components",
+      "fileCount": 1,
+      "lastAccessed": 1778331428449,
+      "keyFiles": [
+        "ScrollRestorer.tsx"
+      ]
+    },
+    "src\\lib": {
+      "path": "src\\lib",
+      "purpose": "Library code",
+      "fileCount": 6,
+      "lastAccessed": 1778331428450,
+      "keyFiles": [
+        "auth.ts",
+        "mail.ts",
+        "prisma.ts"
+      ]
+    },
+    "src\\types": {
+      "path": "src\\types",
+      "purpose": "Type definitions",
+      "fileCount": 1,
+      "lastAccessed": 1778331428450,
+      "keyFiles": [
+        "index.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "src\\app\\api\\refine\\route.ts",
+      "accessCount": 48,
+      "lastAccessed": 1778294310396,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\(main)\\intelligence\\page.tsx",
+      "accessCount": 32,
+      "lastAccessed": 1778293941219,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\intelligence\\IntelligencePageClient.tsx",
+      "accessCount": 26,
+      "lastAccessed": 1778289508949,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\test-email-digest\\route.ts",
+      "accessCount": 25,
+      "lastAccessed": 1778220708188,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\intelligence\\llm.ts",
+      "accessCount": 25,
+      "lastAccessed": 1778242412072,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\intelligence\\keywords.ts",
+      "accessCount": 20,
+      "lastAccessed": 1778230323680,
+      "type": "file"
+    },
+    {
+      "path": "src",
+      "accessCount": 18,
+      "lastAccessed": 1778230100445,
+      "type": "directory"
+    },
+    {
+      "path": "src\\app\\api\\cron\\send-daily-digest\\route.ts",
+      "accessCount": 17,
+      "lastAccessed": 1778293030802,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\(main)\\intelligence\\[id]\\IntelligenceDetailContent.tsx",
+      "accessCount": 17,
+      "lastAccessed": 1778294232778,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\smart-deduplicate.mjs",
+      "accessCount": 16,
+      "lastAccessed": 1778068866840,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\subscribe\\route.ts",
+      "accessCount": 16,
+      "lastAccessed": 1778209271831,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\emails\\render-digest.ts",
+      "accessCount": 15,
+      "lastAccessed": 1778209284939,
+      "type": "file"
+    },
+    {
+      "path": "prisma\\schema.prisma",
+      "accessCount": 12,
+      "lastAccessed": 1778209774521,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\refine-all-contentzh.mjs",
+      "accessCount": 12,
+      "lastAccessed": 1778209829887,
+      "type": "file"
+    },
+    {
+      "path": ".env",
+      "accessCount": 9,
+      "lastAccessed": 1778235443441,
+      "type": "directory"
+    },
+    {
+      "path": "scripts\\deduplicate-intelligence.mjs",
+      "accessCount": 8,
+      "lastAccessed": 1778059712873,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\push-engine.ts",
+      "accessCount": 7,
+      "lastAccessed": 1778209264294,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\mail.ts",
+      "accessCount": 7,
+      "lastAccessed": 1778209264361,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\emails\\DailyDigestEmail.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1778209285113,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\intelligence\\classifier.ts",
+      "accessCount": 7,
+      "lastAccessed": 1778209800057,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\(main)\\intelligence\\[id]\\page.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1778294132876,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\translate-missing-summary-en.mjs",
+      "accessCount": 6,
+      "lastAccessed": 1778216223726,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\test-email\\route.ts",
+      "accessCount": 6,
+      "lastAccessed": 1778220707406,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\zhouyi\\.claude\\settings.json",
+      "accessCount": 5,
+      "lastAccessed": 1778209256729,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api\\intelligence\\route.ts",
+      "accessCount": 3,
+      "lastAccessed": 1778209799996,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\intelligence\\translator.ts",
+      "accessCount": 3,
+      "lastAccessed": 1778210086007,
+      "type": "directory"
+    },
+    {
+      "path": "scripts\\refine-contenten.mjs",
+      "accessCount": 3,
+      "lastAccessed": 1778216288175,
+      "type": "file"
+    },
+    {
+      "path": "test-email-template.mjs",
+      "accessCount": 2,
+      "lastAccessed": 1777517754656,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\fix-intelligence-data.mjs",
+      "accessCount": 2,
+      "lastAccessed": 1778057752084,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\zhouyi\\AppData\\Local\\Temp\\claude\\D--AppData-TestPrograme-Plastic-Web\\638ccbb7-37c4-49ed-8964-ab3bfa827803\\tasks\\b14gyndlw.output",
+      "accessCount": 2,
+      "lastAccessed": 1778067687317,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\fix-contentzh-lang.mjs",
+      "accessCount": 2,
+      "lastAccessed": 1778075225131,
+      "type": "file"
+    },
+    {
+      "path": "scripts",
+      "accessCount": 2,
+      "lastAccessed": 1778127988678,
+      "type": "directory"
+    },
+    {
+      "path": "generate-email-preview.mjs",
+      "accessCount": 2,
+      "lastAccessed": 1778133320521,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\test-send-email.mjs",
+      "accessCount": 2,
+      "lastAccessed": 1778133583782,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\api",
+      "accessCount": 2,
+      "lastAccessed": 1778143506260,
+      "type": "directory"
+    },
+    {
+      "path": "prisma\\seed-intelligence.ts",
+      "accessCount": 2,
+      "lastAccessed": 1778209829958,
+      "type": "file"
+    },
+    {
+      "path": "src\\app",
+      "accessCount": 2,
+      "lastAccessed": 1778230083091,
+      "type": "directory"
+    },
+    {
+      "path": "C:\\Users\\zhouyi\\.claude\\plugins\\cache\\omc\\oh-my-claudecode\\4.13.5\\skills\\omc-setup\\phases\\01-install-claude-md.md",
+      "accessCount": 1,
+      "lastAccessed": 1777515171203,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\zhouyi\\.claude\\plugins\\cache\\omc\\oh-my-claudecode\\4.13.5\\skills\\omc-setup\\phases\\02-configure.md",
+      "accessCount": 1,
+      "lastAccessed": 1777515331757,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\zhouyi\\.claude\\plugins\\cache\\omc\\oh-my-claudecode\\4.13.5\\skills\\omc-setup\\phases\\03-integrations.md",
+      "accessCount": 1,
+      "lastAccessed": 1777515683892,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\zhouyi\\.claude\\plugins\\cache\\omc\\oh-my-claudecode\\4.13.5\\skills\\omc-setup\\phases\\04-welcome.md",
+      "accessCount": 1,
+      "lastAccessed": 1777516072973,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\zhouyi\\AppData\\Local\\Packages\\MicrosoftWindows.Client.Core_cw5n1h2txyewy\\TempState\\ScreenClip\\{C0DCCBB8-3DAE-42ED-AC1B-A1DFD6F34BE7}.png",
+      "accessCount": 1,
+      "lastAccessed": 1777517602578,
+      "type": "file"
+    },
+    {
+      "path": "send-test-digest.cjs",
+      "accessCount": 1,
+      "lastAccessed": 1777517798197,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/intelligence",
+      "accessCount": 1,
+      "lastAccessed": 1778055906008,
+      "type": "directory"
+    },
+    {
+      "path": "src/app/api",
+      "accessCount": 1,
+      "lastAccessed": 1778056227697,
+      "type": "directory"
+    },
+    {
+      "path": "C:\\Users\\zhouyi\\AppData\\Local\\Temp\\claude\\D--AppData-TestPrograme-Plastic-Web\\638ccbb7-37c4-49ed-8964-ab3bfa827803\\tasks\\bti82adev.output",
+      "accessCount": 1,
+      "lastAccessed": 1778060540435,
+      "type": "file"
+    },
+    {
+      "path": "scripts\\push-replas.mjs",
+      "accessCount": 1,
+      "lastAccessed": 1778075150444,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\zhouyi\\.claude\\plugins\\cache\\omc\\oh-my-claudecode\\4.13.5\\skills\\autopilot\\SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1778133012487,
+      "type": "file"
+    },
+    {
+      "path": "public\\logo-email.svg",
+      "accessCount": 1,
+      "lastAccessed": 1778133138286,
+      "type": "file"
+    },
+    {
+      "path": "test-email-digest.mjs",
+      "accessCount": 1,
+      "lastAccessed": 1778133246448,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

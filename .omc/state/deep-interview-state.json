@@ -1,0 +1,55 @@
+{
+  "active": true,
+  "current_phase": "deep-interview",
+  "state": {
+    "interview_id": "proj-review-20260508",
+    "type": "brownfield",
+    "initial_idea": "总结、检查现在的项目：对 SustainPlastics Hub（国嘉基业情报平台）进行全面审查，产出修复行动计划",
+    "rounds": [
+      {
+        "round": 1,
+        "question": "你想要的"总结检查"最终产出是什么？",
+        "answer": "修复行动计划——先诊断问题，然后制定具体修复步骤和优先级排序",
+        "scores": {
+          "goal": 0.7,
+          "constraints": 0.2,
+          "criteria": 0.2,
+          "context": 0.6
+        },
+        "ambiguity": 0.565,
+        "weakest_dimension": "constraints",
+        "ontology": {
+          "entities": [
+            {"name": "项目代码库", "type": "core domain", "fields": ["前端", "后端", "数据库", "API"], "relationships": ["包含多个模块"]},
+            {"name": "问题", "type": "core domain", "fields": ["严重度", "位置", "类型"], "relationships": ["存在于代码库中"]},
+            {"name": "修复计划", "type": "core domain", "fields": ["步骤", "优先级", "预计工作量"], "relationships": ["针对问题生成"]}
+          ],
+          "stability_ratio": "N/A",
+          "new": 3,
+          "changed": 0,
+          "stable": 0,
+          "matching_reasoning": "首轮，所有实体均为新识别"
+        }
+      }
+    ],
+    "current_ambiguity": 0.565,
+    "threshold": 0.2,
+    "codebase_context": "Next.js 14 App Router + PostgreSQL(Neon) + Prisma 5.22 + Resend邮件 + Claude/GLM AI + Vercel部署。核心功能：情报中心、AI精炼管线、订阅系统、每日摘要邮件、用户注册/邮箱验证、推送引擎。已发现6个问题。",
+    "challenge_modes_used": [],
+    "ontology_snapshots": [
+      {
+        "round": 1,
+        "entities": [
+          {"name": "项目代码库", "type": "core domain", "fields": ["前端", "后端", "数据库", "API"], "relationships": ["包含多个模块"]},
+          {"name": "问题", "type": "core domain", "fields": ["严重度", "位置", "类型"], "relationships": ["存在于代码库中"]},
+          {"name": "修复计划", "type": "core domain", "fields": ["步骤", "优先级", "预计工作量"], "relationships": ["针对问题生成"]}
+        ],
+        "stability_ratio": "N/A",
+        "new": 3,
+        "changed": 0,
+        "stable": 0,
+        "matching_reasoning": "首轮"
+      }
+    ]
+  }
+}

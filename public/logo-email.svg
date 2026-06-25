@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <!-- Background circle - subtle green gradient -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <circle cx="40" cy="40" r="38" fill="url(#bgGrad)"/>
+  <!-- Stylized recycling arrows forming a 'G' shape -->
+  <g transform="translate(16,16) scale(0.6)" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Top arc -->
+    <path d="M44 8 C28 8, 12 18, 8 34 L8 44 L20 44 L20 34 C22 26, 32 20, 44 20 C52 20, 58 26, 58 34 C58 42, 52 50, 44 50 L44 62 L56 62 L56 50 C66 44, 76 32, 76 22 C76 10, 66 2, 50 2 L50 8 Z"/>
+    <!-- Leaf/eco accent - small leaf at top right -->
+    <path d="M56 2 C62 -2, 70 2, 68 10 C66 6, 60 4, 56 8 Z" fill="#a7f3d0" stroke="none"/>
+  </g>
+</svg>
