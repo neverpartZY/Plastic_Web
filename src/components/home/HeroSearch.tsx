@@ -17,7 +17,6 @@ const ZH: HeroDictionary = {
   searchPlaceholder: '搜索维度动态、企业、技术趋势...',
   searchBtn: '搜索',
   ctaPrimary: '情报中心',
-  ctaSecondary: '了解八大维度',
   stat1Num: '8',
   stat1Label: '大产业维度',
   stat2Num: '15,000+',
@@ -151,23 +150,15 @@ export default function HeroSearch({ dict }: Props) {
           </div>
         </form>
 
-        {/* ── CTA buttons ── */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button
-            onClick={() => router.push('/intelligence')}
-            className="relative overflow-hidden group/btn flex items-center gap-2 px-8 py-3.5 rounded-3xl bg-cyan-700 hover:bg-cyan-600 text-white text-[14px] font-semibold transition-colors duration-200 shadow-[0_4px_20px_rgba(8,145,178,0.30)] hover:shadow-[0_8px_28px_rgba(8,145,178,0.40)]"
-          >
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full skew-x-[-20deg] group-hover/btn:translate-x-[300%] transition-transform duration-700 ease-in-out pointer-events-none" />
-            {t.ctaPrimary}
-            <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
-          </button>
-          <button
-            onClick={() => router.push('/intelligence')}
-            className="flex items-center gap-2 px-8 py-3.5 rounded-3xl border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 text-[14px] font-semibold transition-all duration-200"
-          >
-            {t.ctaSecondary}
-          </button>
-        </div>
+        {/* ── CTA button ── */}
+        <button
+          onClick={() => router.push('/intelligence')}
+          className="relative overflow-hidden group/btn flex items-center gap-2 px-8 py-3.5 rounded-3xl bg-cyan-700 hover:bg-cyan-600 text-white text-[14px] font-semibold transition-colors duration-200 shadow-[0_4px_20px_rgba(8,145,178,0.30)] hover:shadow-[0_8px_28px_rgba(8,145,178,0.40)]"
+        >
+          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full skew-x-[-20deg] group-hover/btn:translate-x-[300%] transition-transform duration-700 ease-in-out pointer-events-none" />
+          {t.ctaPrimary}
+          <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
+        </button>
 
         {/* ── Eight dimension quick-access ── */}
         <div className="mt-14 mb-6">
