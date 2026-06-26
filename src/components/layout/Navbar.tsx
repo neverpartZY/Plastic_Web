@@ -404,6 +404,15 @@ export default function Navbar({ dict, lng }: NavbarProps) {
               <Database className="h-3.5 w-3.5 opacity-70" />
               {t.database}
             </Link>
+
+            {/* About — subtle, rightmost nav item */}
+            <Link
+              href="/about"
+              className="flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-xl transition-all duration-200 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50"
+            >
+              <span className="text-xs">ℹ</span>
+              关于我们
+            </Link>
           </nav>
 
           {/* ── Right action cluster ── */}
