@@ -92,6 +92,9 @@ export default function Footer({ dict }: { dict?: FooterDictionary }) {
               <li><Link href="/news?dimension=auxiliaries" className="hover:text-emerald-400 transition-colors">{t.links.auxiliaries}</Link></li>
               <li><Link href="/news?dimension=recycling"   className="hover:text-emerald-400 transition-colors">{t.links.recycling}</Link></li>
               <li><Link href="/news?dimension=reuse"       className="hover:text-emerald-400 transition-colors">{t.links.reuse}</Link></li>
+              <li className="pt-2 border-t border-slate-800">
+                <Link href="/about" className="hover:text-emerald-400 transition-colors text-emerald-500 font-medium">关于我们 →</Link>
+              </li>
             </ul>
           </div>
 
