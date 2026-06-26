@@ -6,8 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import {
   Search, Menu, X, ChevronDown, Bell, Languages, Check,
   LayoutDashboard, User, LogOut, Settings,
-  Newspaper, LayoutGrid, Zap, BookOpen, Users, Calendar, Cpu, TrendingUp, Database,
-  PenTool, Box, RotateCcw, Leaf, FlaskConical, Package, RefreshCw, Repeat2, BarChart3, Brain,
+  Zap,
 } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -70,125 +69,6 @@ const ZH: NavDictionary = {
   profile: '个人中心',
   adminPanel: '后台管理',
   signOut: '退出登录',
-}
-
-// ── Sub-components ────────────────────────────────────────────────────────────
-
-interface NavItem {
-  href: string
-  label: string
-  icon: React.ElementType
-  desc: string
-  iconBg: string
-  iconColor: string
-  badge?: string
-}
-
-function DropdownRow({ item }: { item: NavItem }) {
-  const Icon = item.icon
-  return (
-    <Link
-      href={item.href}
-      className="group flex items-start gap-3 px-3 py-2.5 rounded-2xl hover:bg-emerald-50 active:bg-emerald-100 transition-colors duration-150"
-    >
-      <div className={cn('mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full ring-4 ring-white transition-all duration-200 group-hover:scale-105 group-hover:ring-emerald-50', item.iconBg)}>
-        <Icon className={cn('h-4 w-4', item.iconColor)} />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <span className="text-[13px] font-semibold text-slate-800 group-hover:text-emerald-700 transition-colors duration-150 leading-none">
-            {item.label}
-          </span>
-          {item.badge && (
-            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-lime-500 text-white leading-none tracking-wide">
-              {item.badge}
-            </span>
-          )}
-        </div>
-        <p className="text-[11.5px] text-slate-500 mt-1 leading-snug">{item.desc}</p>
-      </div>
-    </Link>
-  )
-}
-
-function NavDropdown({
-  label, children, wide = false,
-}: {
-  label: string
-  children: React.ReactNode
-  wide?: boolean
-}) {
-  const [open, setOpen] = useState(false)
-  const closeTimer = useRef<ReturnType<typeof setTimeout>>()
-
-  const show = () => { clearTimeout(closeTimer.current); setOpen(true) }
-  const hide = () => { closeTimer.current = setTimeout(() => setOpen(false), 160) }
-
-  return (
-    <div className="relative" onMouseEnter={show} onMouseLeave={hide}>
-      <button
-        className="flex items-center gap-1 px-3 py-2 text-[13.5px] font-medium rounded-xl transition-all duration-200 select-none text-slate-600 hover:text-cyan-700 hover:bg-cyan-50"
-        aria-expanded={open}
-        aria-haspopup="true"
-      >
-        {label}
-        <ChevronDown
-          className={cn(
-            'h-3.5 w-3.5 opacity-50 transition-transform duration-200',
-            open && 'rotate-180 opacity-80',
-          )}
-        />
-      </button>
-
-      <div
-        className={cn(
-          'absolute top-full left-0 mt-2.5 z-50 rounded-3xl p-2',
-          'bg-white border border-slate-200/80',
-          'transition-all duration-[180ms] origin-top-left',
-          wide ? 'w-[460px]' : 'w-[280px]',
-          open
-            ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
-            : 'opacity-0 scale-[0.97] -translate-y-1.5 pointer-events-none',
-        )}
-        style={{
-          boxShadow: '0 20px 56px -8px rgba(8,145,178,0.10), 0 4px 16px -4px rgba(0,0,0,0.06)',
-        }}
-      >
-        {children}
-      </div>
-    </div>
-  )
-}
-
-// ── Dimension dropdown row (2-col grid) ───────────────────────────────────────
-
-interface PillarItem {
-  href: string
-  label: string
-  desc: string
-  icon: React.ElementType
-  iconBg: string
-  iconColor: string
-}
-
-function PillarRow({ item }: { item: PillarItem }) {
-  const Icon = item.icon
-  return (
-    <Link
-      href={item.href}
-      className="group flex items-start gap-2.5 px-2.5 py-2 rounded-2xl hover:bg-slate-50 active:bg-slate-100 transition-colors duration-150"
-    >
-      <div className={cn('mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 group-hover:scale-105', item.iconBg)}>
-        <Icon className={cn('h-3.5 w-3.5', item.iconColor)} />
-      </div>
-      <div className="flex-1 min-w-0">
-        <span className="block text-[12.5px] font-semibold text-slate-800 group-hover:text-emerald-700 transition-colors duration-150 leading-none mb-0.5">
-          {item.label}
-        </span>
-        <p className="text-[11px] text-slate-400 leading-snug">{item.desc}</p>
-      </div>
-    </Link>
-  )
 }
 
 // ── Language Switcher ─────────────────────────────────────────────────────────
@@ -325,31 +205,6 @@ export default function Navbar({ dict, lng }: NavbarProps) {
     setSearchQuery('')
   }
 
-  // ── Intelligence links ──────────────────────────────────────────────────────
-  // 情报中心下拉菜单：
-  //   1. 每日情报 → /intelligence  (AI 实时监测)
-  //   2. 产业地图 → /explore
-  //   3. 行业研报 → /think-tank   (深度分析，有 lead-gate)
-  //   4. 数据看板 → /dashboard    (趋势统计)
-  const intelligenceLinks: NavItem[] = [
-    { href: '/intelligence', label: t.intelligence, icon: Zap, desc: t.intelligenceDesc, iconBg: 'bg-violet-100', iconColor: 'text-violet-600' },
-    { href: href('/explore'),   label: t.explore,  icon: LayoutGrid, desc: t.exploreDesc, iconBg: 'bg-cyan-100',    iconColor: 'text-cyan-700' },
-    { href: href('/think-tank'),label: t.news,     icon: BookOpen,   desc: t.newsDesc,    iconBg: 'bg-emerald-100', iconColor: 'text-emerald-600' },
-    { href: href('/dashboard'), label: t.daily,    icon: BarChart3,  desc: t.dailyDesc,   iconBg: 'bg-amber-100',   iconColor: 'text-amber-600', badge: t.dailyBadge },
-  ]
-
-  // ── Eight Dimensions ────────────────────────────────────────────────────────
-  const dimensionItems: PillarItem[] = [
-    { href: href('/news?dimension=molds'),       label: t.molds,       desc: t.moldsDesc,       icon: PenTool,      iconBg: 'bg-blue-100',    iconColor: 'text-blue-700' },
-    { href: href('/news?dimension=molding'),     label: t.molding,     desc: t.moldingDesc,     icon: Box,          iconBg: 'bg-cyan-100',    iconColor: 'text-cyan-600' },
-    { href: href('/news?dimension=recycled'),    label: t.recycled,    desc: t.recycledDesc,    icon: RotateCcw,    iconBg: 'bg-purple-100',  iconColor: 'text-purple-600' },
-    { href: href('/news?dimension=bio'),         label: t.bio,         desc: t.bioDesc,         icon: Leaf,         iconBg: 'bg-green-100',   iconColor: 'text-green-600' },
-    { href: href('/news?dimension=additives'),   label: t.additives,   desc: t.additivesDesc,   icon: FlaskConical,  iconBg: 'bg-amber-100',   iconColor: 'text-amber-600' },
-    { href: href('/news?dimension=auxiliaries'), label: t.auxiliaries, desc: t.auxiliariesDesc, icon: Package,      iconBg: 'bg-orange-100',  iconColor: 'text-orange-600' },
-    { href: href('/news?dimension=recycling'),   label: t.recycling,   desc: t.recyclingDesc,   icon: RefreshCw,    iconBg: 'bg-emerald-100', iconColor: 'text-emerald-600' },
-    { href: href('/news?dimension=reuse'),       label: t.reuse,       desc: t.reuseDesc,       icon: Repeat2,      iconBg: 'bg-indigo-100',  iconColor: 'text-indigo-600' },
-  ]
-
   return (
     <>
       <header
@@ -375,42 +230,20 @@ export default function Navbar({ dict, lng }: NavbarProps) {
           {/* ── Desktop navigation ── */}
           <nav className="hidden md:flex items-center gap-0.5 flex-1 justify-center" aria-label="主导航">
 
-            {/* Intelligence Hub */}
-            <NavDropdown label={t.intelligence}>
-              {intelligenceLinks.map(item => (
-                <DropdownRow key={item.href} item={item} />
-              ))}
-            </NavDropdown>
-
-            {/* Eight Dimensions — wide 2-col mega menu */}
-            <NavDropdown label={t.dimensions} wide>
-              <div className="px-2 pt-1.5 pb-2">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.08em] px-1 mb-2">
-                  {t.dimensions}
-                </p>
-                <div className="grid grid-cols-2 gap-0.5">
-                  {dimensionItems.slice(0, 8).map(item => (
-                    <PillarRow key={item.href} item={item} />
-                  ))}
-                </div>
-              </div>
-            </NavDropdown>
-
-            {/* Database */}
+            {/* Intelligence — simple link, no dropdown */}
             <Link
-              href={href('/database')}
-              className="flex items-center gap-1.5 px-3 py-2 text-[13.5px] font-medium rounded-xl transition-all duration-200 text-slate-600 hover:text-cyan-700 hover:bg-cyan-50"
+              href="/intelligence"
+              className="flex items-center gap-1.5 px-3 py-2 text-[13.5px] font-medium rounded-xl transition-all duration-200 text-slate-600 hover:text-violet-700 hover:bg-violet-50"
             >
-              <Database className="h-3.5 w-3.5 opacity-70" />
-              {t.database}
+              <Zap className="h-3.5 w-3.5 opacity-70" />
+              {t.intelligence}
             </Link>
 
-            {/* About — subtle, rightmost nav item */}
+            {/* About */}
             <Link
               href="/about"
               className="flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-xl transition-all duration-200 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50"
             >
-              <span className="text-xs">ℹ</span>
               关于我们
             </Link>
           </nav>
@@ -550,46 +383,23 @@ export default function Navbar({ dict, lng }: NavbarProps) {
 
                 <nav className="flex-1 overflow-y-auto px-2 py-2 space-y-0.5">
 
-                  <p className="px-3 pt-3 pb-1.5 text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.1em]">
-                    {t.intelligence}
-                  </p>
-                  {intelligenceLinks.map(({ href: h, label, icon: Icon, iconBg, iconColor }) => (
-                    <Link key={h} href={h} onClick={() => setMobileOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-2xl hover:bg-cyan-50 active:bg-cyan-100 transition-colors"
-                    >
-                      <div className={cn('h-7 w-7 rounded-xl flex items-center justify-center flex-shrink-0', iconBg)}>
-                        <Icon className={cn('h-3.5 w-3.5', iconColor)} />
-                      </div>
-                      <span className="text-[13px] font-medium text-slate-700">{label}</span>
-                    </Link>
-                  ))}
+                  <Link href="/intelligence" onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-2xl hover:bg-violet-50 active:bg-violet-100 transition-colors"
+                  >
+                    <div className="h-7 w-7 rounded-xl bg-violet-100 flex items-center justify-center flex-shrink-0">
+                      <Zap className="h-3.5 w-3.5 text-violet-600" />
+                    </div>
+                    <span className="text-[13px] font-medium text-slate-700">{t.intelligence}</span>
+                  </Link>
 
-                  <p className="px-3 pt-4 pb-1.5 text-[10.5px] font-bold text-slate-400 uppercase tracking-[0.1em]">
-                    {t.dimensions}
-                  </p>
-                  {dimensionItems.map(({ href: h, label, icon: Icon, iconBg, iconColor }) => (
-                    <Link key={h} href={h} onClick={() => setMobileOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-2xl hover:bg-cyan-50 active:bg-cyan-100 transition-colors"
-                    >
-                      <div className={cn('h-7 w-7 rounded-xl flex items-center justify-center flex-shrink-0', iconBg)}>
-                        <Icon className={cn('h-3.5 w-3.5', iconColor)} />
-                      </div>
-                      <span className="text-[13px] font-medium text-slate-700">{label}</span>
-                    </Link>
-                  ))}
-
-                  <div className="pt-2">
-                    <Link
-                      href={href('/database')}
-                      onClick={() => setMobileOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-2xl hover:bg-cyan-50 active:bg-cyan-100 transition-colors"
-                    >
-                      <div className="h-7 w-7 rounded-xl bg-cyan-700/10 flex items-center justify-center flex-shrink-0">
-                        <Database className="h-3.5 w-3.5 text-cyan-700" />
-                      </div>
-                      <span className="text-[13px] font-semibold text-cyan-700">{t.database}</span>
-                    </Link>
-                  </div>
+                  <Link href="/about" onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-2xl hover:bg-emerald-50 active:bg-emerald-100 transition-colors"
+                  >
+                    <div className="h-7 w-7 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs">ℹ</span>
+                    </div>
+                    <span className="text-[13px] font-medium text-slate-700">关于我们</span>
+                  </Link>
 
                   <div className="border-t border-slate-100 mt-2 pt-3">
                     {session ? (
