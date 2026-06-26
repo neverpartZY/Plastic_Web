@@ -162,7 +162,7 @@ export default function HeroSearch({ dict }: Props) {
             <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
           </button>
           <button
-            onClick={() => router.push('/about')}
+            onClick={() => router.push('/intelligence')}
             className="flex items-center gap-2 px-8 py-3.5 rounded-3xl border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 text-[14px] font-semibold transition-all duration-200"
           >
             {t.ctaSecondary}
