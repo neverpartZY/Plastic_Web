@@ -64,7 +64,6 @@ export interface HeroDictionary {
   searchPlaceholder: string
   searchBtn: string
   ctaPrimary: string
-  ctaSecondary: string
   stat1Num: string
   stat1Label: string
   stat2Num: string
