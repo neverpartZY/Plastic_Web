@@ -162,7 +162,7 @@ export default function HeroSearch({ dict }: Props) {
             <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
           </button>
           <button
-            onClick={() => router.push('/database')}
+            onClick={() => router.push('/about')}
             className="flex items-center gap-2 px-8 py-3.5 rounded-3xl border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 text-[14px] font-semibold transition-all duration-200"
           >
             {t.ctaSecondary}
@@ -176,7 +176,7 @@ export default function HeroSearch({ dict }: Props) {
             {DIMENSIONS.map(({ label, icon: Icon, color, bg, border, query: dimQuery }) => (
               <button
                 key={dimQuery}
-                onClick={() => router.push(`/news?dimension=${dimQuery}`)}
+                onClick={() => router.push(`/intelligence?dimension=${dimQuery}`)}
                 className="group flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border text-[12.5px] font-semibold transition-all duration-200 hover:scale-[1.03] hover:shadow-sm"
                 style={{ background: bg, borderColor: border, color }}
               >
