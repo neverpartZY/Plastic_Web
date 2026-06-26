@@ -131,7 +131,11 @@
       "PowerShell(vercel integration *)",
       "PowerShell($env:HTTPS_PROXY = 'http://127.0.0.1:7897'; $headers = @{ Authorization = \"Bearer vcp_6b7L0nNdiXb9Io9oJXfFpgAUHF8e9SJKfIFnAIpBeCWZ4NAvyr4Mbj0X\" }; curl.exe -s \"https://api.vercel.com/v9/projects/prj_glroMHeahjcJcNUNnBtN88CQpeY7\" -H \"Authorization: Bearer vcp_6b7L0nNdiXb9Io9oJXfFpgAUHF8e9SJKfIFnAIpBeCWZ4NAvyr4Mbj0X\" --max-time 10 | python -m json.tool 2>$null)",
       "PowerShell(git *)",
-      "PowerShell(vercel deploy *)"
+      "PowerShell(vercel deploy *)",
+      "PowerShell(npm i *)",
+      "Bash(npm ls *)",
+      "Bash(npm root *)",
+      "Bash(ls \"$\\(npm root -g\\)/oh-my-claude-sisyphus/\")"
     ]
   }
 }

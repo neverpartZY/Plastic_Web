@@ -39,6 +39,7 @@ export default function SubscribeModal({ open, onClose, initialDimension }: Subs
   const [email, setEmail] = useState('')
   const [webhookUrl, setWebhookUrl] = useState('')
   const [channel, setChannel] = useState<'email' | 'webhook'>('email')
+  const [lang, setLang] = useState<'zh' | 'en'>('zh')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
@@ -78,6 +79,7 @@ export default function SubscribeModal({ open, onClose, initialDimension }: Subs
         webhookUrl: channel === 'webhook' ? webhookUrl : undefined,
         interests: selectedDimensions,
         frequency,
+        lang,
         sourcePage: 'intelligence-card-subscribe',
       }),
       })
@@ -207,6 +209,33 @@ export default function SubscribeModal({ open, onClose, initialDimension }: Subs
                 />
               </div>
             )}
+
+            {/* Language selector */}
+            <div>
+              <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wide mb-2.5">
+                日报语言
+              </p>
+              <div className="flex rounded-xl border border-gray-200 p-1 gap-1">
+                {([
+                  { value: 'zh', label: '中' },
+                  { value: 'en', label: 'EN' },
+                ] as const).map(({ value, label }) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => setLang(value)}
+                    className={cn(
+                      'flex-1 py-2 rounded-lg text-[13px] font-medium transition-all duration-150',
+                      lang === value
+                        ? 'bg-emerald-600 text-white shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700'
+                    )}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* Frequency selector */}
             <div>
