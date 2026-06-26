@@ -215,10 +215,10 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             : 'bg-transparent border-b border-transparent',
         )}
       >
-        <div className="container h-full flex items-center justify-between gap-6">
+        <div className="container h-full flex items-center gap-6">
 
-          {/* ── Logo ── */}
-          <Link href={href('/')} className="group flex items-center gap-2.5 flex-shrink-0">
+          {/* ── Logo — fixed width for centering ── */}
+          <Link href={href('/')} className="group flex items-center gap-2.5 flex-shrink-0 w-[160px]">
             <div className="h-8 w-8 rounded-2xl bg-gradient-to-br from-emerald-600 to-cyan-700 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105 group-hover:rotate-[-3deg]">
               <span className="text-white font-black text-[11px] leading-none select-none">绿</span>
             </div>
@@ -227,15 +227,15 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             </span>
           </Link>
 
-          {/* ── Desktop navigation ── */}
-          <nav className="hidden md:flex items-center gap-0.5 flex-1 justify-center" aria-label="主导航">
+          {/* ── Desktop navigation — truly centered ── */}
+          <nav className="hidden md:flex items-center gap-1 flex-1 justify-center" aria-label="主导航">
 
-            {/* Intelligence — simple link, no dropdown */}
+            {/* Intelligence — centered main link */}
             <Link
               href="/intelligence"
-              className="flex items-center gap-1.5 px-3 py-2 text-[13.5px] font-medium rounded-xl transition-all duration-200 text-slate-600 hover:text-violet-700 hover:bg-violet-50"
+              className="flex items-center gap-2 px-4 py-2 text-[14px] font-semibold rounded-xl transition-all duration-200 text-slate-700 hover:text-violet-700 hover:bg-violet-50"
             >
-              <Zap className="h-3.5 w-3.5 opacity-70" />
+              <Zap className="h-4 w-4" />
               {t.intelligence}
             </Link>
 
@@ -248,8 +248,8 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             </Link>
           </nav>
 
-          {/* ── Right action cluster ── */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          {/* ── Right action cluster — fixed width for centering ── */}
+          <div className="flex items-center gap-2 flex-shrink-0 w-[160px] justify-end">
 
             {searchOpen ? (
               <form onSubmit={handleSearch} className="flex items-center">
