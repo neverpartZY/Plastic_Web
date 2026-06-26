@@ -7,7 +7,7 @@ import HeroSearch from '@/components/home/HeroSearch'
 import Features from '@/components/home/Features'
 import EightModulesGrid from '@/components/home/SixModulesGrid'
 import DataEcosystem from '@/components/home/DataEcosystem'
-import MatrixHub from '@/components/home/MatrixHub'
+
 
 interface Props {
   params: { lng: string }
@@ -42,7 +42,7 @@ export default async function LngHomePage({ params }: Props) {
       <Features dict={dict.features} />
       <EightModulesGrid dict={dict.eightModules} />
       <DataEcosystem dict={dict.dataEcosystem} />
-      <MatrixHub />
+
     </>
   )
 }

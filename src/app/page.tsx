@@ -3,7 +3,7 @@ import HeroSearch from '@/components/home/HeroSearch'
 import Features from '@/components/home/Features'
 import SixModulesGrid from '@/components/home/SixModulesGrid'
 import DataEcosystem from '@/components/home/DataEcosystem'
-import MatrixHub from '@/components/home/MatrixHub'
+
 import NewsFeed from '@/components/home/NewsFeed'
 import TagCloud from '@/components/home/TagCloud'
 import IntelligenceFeed from '@/components/home/IntelligenceFeed'
@@ -66,7 +66,7 @@ export default async function HomePage() {
       <Features />
       <SixModulesGrid />
       <DataEcosystem />
-      <MatrixHub />
+
       <TagCloud tags={tags} />
       <div className="border-t" />
       <IntelligenceFeed items={intelligence} />
