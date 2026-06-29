@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
     const interests = allDimensions
 
     // 按 interests 过滤
-    function matchItem(item: any) {
+    const matchItem = (item: any) => {
       const dims: string[] = []
       if (item.pillars) dims.push(...item.pillars.split(',').map((p: string) => p.trim()).filter(Boolean))
       if (item.dimension && !dims.includes(item.dimension)) dims.push(item.dimension)
