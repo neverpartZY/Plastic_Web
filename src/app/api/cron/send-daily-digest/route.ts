@@ -3,8 +3,9 @@
  *
  * Cron Job: 每日情报自动化分发
  *
- * 筛选算法：捞取过去 24 小时内 importance >= 3 的情报，
+ * 筛选算法：捞取过去 24 小时内的情报，
  * 按订阅者 interests 标签精准匹配，多语言自动处理。
+ * 新增：跨维度高分推荐（打破信息茧房）。
  */
 
 export const dynamic = 'force-dynamic'
@@ -16,12 +17,14 @@ import { renderDailyDigestEmail } from '@/lib/emails/render-digest'
 
 // ── 常量 ─────────────────────────────────────────────────────────────────
 
-/** 最低重要性评分（1-5星） */
-const MIN_IMPORTANCE = 3
+/** 最低重要性评分（1-5星），设为 1 不排除任何内容 */
+const MIN_IMPORTANCE = 1
 /** 摘要最大长度（日志截取用） */
 const MAX_SUMMARY_LEN = 200
-/** 邮件中最多展示条目数 */
-const MAX_ITEMS_PER_EMAIL = 10
+/** 跨维度推荐最低分 */
+const CROSS_DIMENSION_MIN_SCORE = 4
+/** 跨维度推荐最大条数 */
+const MAX_CROSS_DIMENSION_ITEMS = 3
 
 // ── 工具函数 ─────────────────────────────────────────────────────────────
 
@@ -74,7 +77,6 @@ async function sendOneDigest(params: {
       }
       return interests.some(interest => itemDims.includes(interest))
     })
-    .slice(0, MAX_ITEMS_PER_EMAIL)
     .map(item => {
       // 选择对应语言字段
       const title   = lang === 'zh' && item.titleZh   ? item.titleZh   : item.title
@@ -86,12 +88,38 @@ async function sendOneDigest(params: {
         sourceUrl:   item.sourceUrl ?? `https://greenplastic.ai/intelligence/${item.id}`,
         source:      item.source,
         publishedAt: item.publishedAt.toISOString(),
+        importance:  item.importance,
+        pillar:      item.dimension ?? undefined,
       }
     })
 
   if (filtered.length === 0) {
     return { email, status: 'skipped', reason: 'no_matching_interests' }
   }
+
+  // ── 2b. 跨维度推荐：高分但非本维度的内容 ─────────────────────────
+  const filteredIds = new Set(filtered.map(f => f.id))
+  const crossDimensionItems = candidates
+    .filter(item => {
+      if (filteredIds.has(item.id)) return false
+      if (item.importance < CROSS_DIMENSION_MIN_SCORE) return false
+      return true
+    })
+    .slice(0, MAX_CROSS_DIMENSION_ITEMS)
+    .map(item => {
+      const title   = lang === 'zh' && item.titleZh   ? item.titleZh   : item.title
+      const summary = lang === 'zh' && item.summaryZh ? item.summaryZh : item.summary
+      return {
+        id:          item.id,
+        title:       title ?? item.title,
+        summary:     truncate(summary ?? item.summary ?? '', MAX_SUMMARY_LEN),
+        sourceUrl:   item.sourceUrl ?? `https://greenplastic.ai/intelligence/${item.id}`,
+        source:      item.source,
+        publishedAt: item.publishedAt.toISOString(),
+        importance:  item.importance,
+        pillar:      item.dimension ?? undefined,
+      }
+    })
 
   // ── 3. 渲染邮件 HTML ────────────────────────────────────────────────────
   const unsubscribeUrl = `https://greenplastic.ai/unsubscribe?email=${encodeURIComponent(email)}`
@@ -103,6 +131,7 @@ async function sendOneDigest(params: {
     frequency,
     interests,
     items: filtered,
+    crossDimensionItems: crossDimensionItems.length > 0 ? crossDimensionItems : undefined,
     unsubscribeUrl,
   })
 
@@ -115,8 +144,9 @@ async function sendOneDigest(params: {
     const { id: msgId } = await sendIndustryEmail({ to, subject, html, lang })
 
     // ── 5. 记录 PushLog ────────────────────────────────────────────────────
+    const allItems = [...filtered, ...crossDimensionItems]
     await prisma.pushLog.createMany({
-      data: filtered.map(item => ({
+      data: allItems.map(item => ({
         leadId:         null, // 订阅者可能是 Lead 也可能是 User
         intelligenceId: item.id,
         status:         'sent',
@@ -124,7 +154,7 @@ async function sendOneDigest(params: {
       })),
     })
 
-    return { email, status: 'sent', count: filtered.length, msgId }
+    return { email, status: 'sent', count: filtered.length, crossCount: crossDimensionItems.length, msgId }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
     console.error(`[send-daily-digest] email failed for ${email}: ${msg}`)

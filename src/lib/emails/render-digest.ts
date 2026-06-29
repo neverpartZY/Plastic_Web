@@ -20,6 +20,7 @@ export interface DailyDigestEmailProps {
   frequency: string
   interests: string[]
   items: DigestItem[]
+  crossDimensionItems?: DigestItem[]
   unsubscribeUrl: string
 }
 
@@ -72,6 +73,7 @@ export function renderDailyDigestEmail(props: DailyDigestEmailProps): string {
     frequency: _frequency,
     interests,
     items,
+    crossDimensionItems,
     unsubscribeUrl,
   } = props
 
@@ -113,6 +115,43 @@ export function renderDailyDigestEmail(props: DailyDigestEmailProps): string {
     </section>`
   }).join('')
 
+  // ── 跨维度亮点 ───────────────────────────────────────────────────────────
+  const crossSectionLabel = isZh ? '🌐 跨维度亮点' : '🌐 Cross-Dimension Highlights'
+  const crossSectionDesc = isZh
+    ? '以下高分资讯来自其他维度，也许您也会感兴趣'
+    : 'High-impact updates from other dimensions you may find interesting'
+
+  let crossSectionHtml = ''
+  if (crossDimensionItems && crossDimensionItems.length > 0) {
+    const crossItemsHtml = crossDimensionItems.map((item, index) => {
+      const s = getPillarStyle(item.pillar)
+      const pillarLabel = item.pillar ?? ''
+      const date = new Date(item.publishedAt).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
+
+      return `
+    <section style="padding:16px 36px;border-left:4px solid ${s.border};background:#fafafa;margin:8px 0">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+        <span style="background:${s.bg};color:${s.text};border:1px solid ${s.border};border-radius:12px;padding:2px 8px;font-size:10px;font-weight:700">${escapeHtml(pillarLabel)}</span>
+        ${item.source ? `<span style="color:${SLATE_400};font-size:11px">${escapeHtml(item.source)}</span>` : ''}
+        <span style="color:${SLATE_400};font-size:11px;margin-left:auto">${date}</span>
+      </div>
+      <a href="${escapeHtml(item.sourceUrl)}" style="color:#0f172a;font-size:15px;font-weight:700;text-decoration:none;line-height:1.4;display:block;margin-bottom:6px">${escapeHtml(item.title)}</a>
+      <p style="color:${SLATE_700};font-size:12.5px;line-height:1.6;margin:0 0 8px">${escapeHtml(item.summary)}</p>
+      ${item.importance ? `<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">${getImportanceDots(item.importance)}</div>` : ''}
+      <a href="${escapeHtml(item.sourceUrl)}" style="display:inline-block;background:#6366f1;color:#fff;border-radius:6px;padding:6px 14px;font-size:11px;font-weight:700;text-decoration:none">${viewArticle} →</a>
+    </section>`
+    }).join('')
+
+    crossSectionHtml = `
+  <!-- Cross-Dimension Highlights -->
+  <div style="padding:8px 36px 20px">
+    <div style="height:1px;background:linear-gradient(90deg,#e2e8f0,#c7d2fe,#e2e8f0);margin:20px 0 16px"></div>
+    <h2 style="color:#4338ca;font-size:17px;font-weight:800;margin:0 0 4px;letter-spacing:-0.2px">${crossSectionLabel}</h2>
+    <p style="color:${SLATE_400};font-size:12px;margin:0 0 8px">${crossSectionDesc}</p>
+    ${crossItemsHtml}
+  </div>`
+  }
+
   return `<!DOCTYPE html>
 <html lang="${lang}">
 <head>
@@ -140,6 +179,7 @@ export function renderDailyDigestEmail(props: DailyDigestEmailProps): string {
   <div style="height:1px;background:linear-gradient(90deg,#e2e8f0,#f1f5f9,#e2e8f0);margin:0 36px"></div>
   <!-- Items -->
   <div style="padding:8px 0">${itemsHtml}</div>
+  ${crossSectionHtml}
   <!-- Footer -->
   <div style="padding:24px 36px;background:#f8fafc;border-top:1px solid #e2e8f0;text-align:center">
     <p style="color:${EMERALD};font-size:14px;font-weight:800;margin:0 0 4px">🌿 国嘉基业</p>

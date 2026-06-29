@@ -48,7 +48,7 @@ export default function HeroSearch({ dict }: Props) {
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault()
-    if (query.trim()) router.push(`/news?q=${encodeURIComponent(query.trim())}`)
+    if (query.trim()) router.push(`/intelligence?q=${encodeURIComponent(query.trim())}&tab=all`)
   }
 
   return (
@@ -167,7 +167,7 @@ export default function HeroSearch({ dict }: Props) {
             {DIMENSIONS.map(({ label, icon: Icon, color, bg, border, query: dimQuery }) => (
               <button
                 key={dimQuery}
-                onClick={() => router.push(`/intelligence?dimension=${dimQuery}`)}
+                onClick={() => router.push(`/intelligence?pillar=${dimQuery}`)}
                 className="group flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border text-[12.5px] font-semibold transition-all duration-200 hover:scale-[1.03] hover:shadow-sm"
                 style={{ background: bg, borderColor: border, color }}
               >

@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import { isValidLocale } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
@@ -19,7 +20,9 @@ export default async function LngLayout({ children, params }: Props) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar dict={dict.nav} lng={lng} />
+      <Suspense fallback={<div className="h-16" />}>
+        <Navbar dict={dict.nav} lng={lng} />
+      </Suspense>
       <main className="flex-1 pt-16">{children}</main>
       <Footer dict={dict.footer} />
     </div>

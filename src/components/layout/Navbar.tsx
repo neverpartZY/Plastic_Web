@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import type { NavDictionary } from '@/i18n/types'
 import NavbarSubscribeModal from '@/components/layout/NavbarSubscribeModal'
 
@@ -181,11 +181,17 @@ export default function Navbar({ dict, lng }: NavbarProps) {
   const t = dict ?? ZH
   const { data: session } = useSession()
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const urlQ = searchParams.get('q') ?? ''
   const [scrolled, setScrolled] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState(urlQ)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [subscribeModalOpen, setSubscribeModalOpen] = useState(false)
+
+  // Sync search input with URL query when it changes
+  useEffect(() => { setSearchQuery(urlQ) }, [urlQ])
 
   const href = (path: string) => (lng ? `/${lng}${path}` : path)
 
@@ -200,9 +206,9 @@ export default function Navbar({ dict, lng }: NavbarProps) {
     e.preventDefault()
     const q = searchQuery.trim()
     if (!q) return
-    router.push(`/news?q=${encodeURIComponent(q)}`)
+    router.push(`/intelligence?q=${encodeURIComponent(q)}&tab=all`)
     setSearchOpen(false)
-    setSearchQuery('')
+    // 不清除 searchQuery，让 URL 同步后自动回填
   }
 
   return (

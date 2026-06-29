@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const PAGE_SIZE = 20
 
 interface Props {
-  searchParams: { pillar?: string; country?: string; hot?: string; tab?: string; page?: string }
+  searchParams: { pillar?: string; country?: string; hot?: string; tab?: string; page?: string; q?: string }
 }
 
 function href(params: Record<string, string | undefined>): string {
@@ -35,6 +35,7 @@ async function getIntelligence(
   hotOnly: boolean,
   tab: 'highlights' | 'all',
   page: number,
+  q: string,
 ) {
   const now = new Date()
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
@@ -43,12 +44,12 @@ async function getIntelligence(
   if (pillar)  where.pillars     = { contains: pillar }
   if (country) where.countryCode = country
   if (hotOnly) where.isHot       = true
+  if (q)       where.OR          = [{ title: { contains: q } }, { titleZh: { contains: q } }, { summary: { contains: q } }]
 
-  // highlights：昨天 UTC 零点至今 + importance≥3（日历日，与 cron 一致，无空窗）
+  // highlights：昨天 UTC 零点至今，不设重要性门槛
   if (tab === 'highlights') {
     const now = new Date()
     where.publishedAt = { gte: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 1)) }
-    where.importance  = { gte: 3 }
   }
 
   const [totalCount, items] = await Promise.all([
@@ -80,6 +81,7 @@ export default async function IntelligencePage({ searchParams }: Props) {
   const hotOnly = searchParams.hot === 'true'
   const tab     = searchParams.tab === 'all' ? 'all' : 'highlights'
   const page    = Math.max(1, parseInt(searchParams.page ?? '1'))
+  const q       = searchParams.q ?? ''
 
   const headersList = headers()
   const lang = (headersList.get('x-lng') as 'zh' | 'en') ?? 'zh'
@@ -87,14 +89,13 @@ export default async function IntelligencePage({ searchParams }: Props) {
   const dict = await getDictionary(locale)
   const i18n = dict.pages.intelligence
 
-  const { items, totalCount, totalPages } = await getIntelligence(pillar, country, hotOnly, tab, page)
+  const { items, totalCount, totalPages } = await getIntelligence(pillar, country, hotOnly, tab, page, q)
   const hotCount = items.filter(i => i.isHot).length
 
   // 始终查询 highlights 真实数量（昨天 UTC 零点至今 + importance≥3 + 相同筛选条件）
   const now = new Date()
   const highlightsWhere: Record<string, unknown> = {
     publishedAt: { gte: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 1)) },
-    importance:  { gte: 3 },
   }
   if (pillar)  highlightsWhere.pillars     = { contains: pillar }
   if (country) highlightsWhere.countryCode = country
@@ -120,6 +121,7 @@ export default async function IntelligencePage({ searchParams }: Props) {
     pillar:  pillar  || undefined,
     country: country || undefined,
     hot:     hotOnly ? 'true' : undefined,
+    q:       q || undefined,
   }
   const t = tab === 'all' ? 'all' : undefined
 
@@ -137,7 +139,31 @@ export default async function IntelligencePage({ searchParams }: Props) {
                 <span className="text-xs text-gray-400 uppercase tracking-widest">Intelligence Center</span>
               </div>
               <h1 className="text-2xl font-bold text-gray-900">{i18n.headerTitle}</h1>
-              <p className="text-sm text-gray-500 mt-1">{i18n.headerSubtitle}</p>
+              <p className="text-sm text-gray-500 mt-1">
+                {q ? `搜索"${q}" · ${totalCount} 条结果` : i18n.headerSubtitle}
+              </p>
+
+              {/* ── Inline search bar ── */}
+              <form action="/intelligence" method="GET" className="mt-4 flex items-center gap-2 max-w-lg">
+                <input type="hidden" name="tab" value="all" />
+                <div className="relative flex-1">
+                  <input
+                    name="q"
+                    defaultValue={q}
+                    placeholder="搜索资讯标题、摘要关键词..."
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all"
+                  />
+                  <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  {q && (
+                    <a href={href({ ...f, q: undefined, tab: 'all' })} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </a>
+                  )}
+                </div>
+                <button type="submit" className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-colors">
+                  搜索
+                </button>
+              </form>
             </div>
             {hotCount > 0 && (
               <div className="flex items-center gap-1.5 bg-rose-50 border border-rose-100 rounded-lg px-3 py-2">

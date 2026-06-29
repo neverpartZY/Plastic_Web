@@ -1,4 +1,5 @@
 import { headers } from 'next/headers'
+import { Suspense } from 'react'
 import { isValidLocale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/dictionaries'
 import Navbar from '@/components/layout/Navbar'
@@ -13,7 +14,9 @@ export default async function MainLayout({ children }: { children: React.ReactNo
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar dict={dict.nav} lng={locale} />
+      <Suspense fallback={<div className="h-16" />}>
+        <Navbar dict={dict.nav} lng={locale} />
+      </Suspense>
       <main className="flex-1 pt-16">{children}</main>
       <Footer dict={dict.footer} />
     </div>

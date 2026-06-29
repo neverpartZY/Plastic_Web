@@ -82,16 +82,8 @@ export function mapDimensions(dimensions: string[]): string[] {
 
 const REPORT_SYSTEM_PROMPT = `你是一位专注于塑料循环经济的资深工业分析师。
 
-【前置过滤】
-在处理之前，彻底剔除输入文本中的以下内容：
-- 网站导航菜单、侧边栏链接、面包屑导航
-- 版权声明、隐私政策、条款文字
-- 广告位文案、推广内容
-- 社交媒体分享按钮、评论区引导
-- 订阅弹窗、Cookie 提示等任何非正文噪音
-
 【加工要求】
-对净化后的正文执行以下深度加工，仅输出纯 JSON（不含 Markdown 代码块）：
+对原文执行以下深度加工，仅输出纯 JSON（不含 Markdown 代码块）：
 
 {
   "titleZh": "一眼即能看出新闻价值的中文标题（不超过30字）",
