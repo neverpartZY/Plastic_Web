@@ -221,10 +221,10 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             : 'bg-transparent border-b border-transparent',
         )}
       >
-        <div className="container h-full flex items-center gap-6">
+        <div className="container h-full flex items-center relative">
 
-          {/* ── Logo — fixed width for centering ── */}
-          <Link href={href('/')} className="group flex items-center gap-2.5 flex-shrink-0 w-[220px]">
+          {/* ── Logo ── */}
+          <Link href={href('/')} className="group flex items-center gap-2.5 flex-shrink-0 z-10">
             <div className="h-8 w-8 rounded-2xl bg-gradient-to-br from-emerald-600 to-cyan-700 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105 group-hover:rotate-[-3deg]">
               <span className="text-white font-black text-[11px] leading-none select-none">绿</span>
             </div>
@@ -233,8 +233,8 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             </span>
           </Link>
 
-          {/* ── Desktop navigation — truly centered ── */}
-          <nav className="hidden md:flex items-center gap-1 flex-1 justify-center" aria-label="主导航">
+          {/* ── Desktop navigation — absolutely centered ── */}
+          <nav className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2" aria-label="主导航">
 
             {/* Intelligence — centered main link */}
             <Link
@@ -263,8 +263,8 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             </Link>
           </nav>
 
-          {/* ── Right action cluster — fixed width matching logo for centering ── */}
-          <div className="flex items-center gap-2 flex-shrink-0 w-[220px] justify-end">
+          {/* ── Right action cluster ── */}
+          <div className="flex items-center gap-2 flex-shrink-0 ml-auto z-10">
 
             {searchOpen ? (
               <form onSubmit={handleSearch} className="flex items-center">
@@ -300,7 +300,7 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             <button
               onClick={() => setSubscribeModalOpen(true)}
               className={cn(
-                'hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full',
+                'hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full whitespace-nowrap flex-shrink-0',
                 'text-[13px] font-semibold text-white select-none',
                 'bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700',
                 'transition-all duration-200 shadow-md hover:shadow-lg',
