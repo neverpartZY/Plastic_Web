@@ -233,10 +233,8 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             </span>
           </Link>
 
-          {/* ── Desktop navigation — perfectly centered by grid ── */}
-          <nav className="hidden md:flex items-center gap-1 justify-self-center" aria-label="主导航">
-
-            {/* Intelligence — centered main link */}
+          {/* ── Desktop navigation — 情报中心 alone at exact center ── */}
+          <nav className="hidden md:flex items-center justify-self-center" aria-label="主导航">
             <Link
               href="/intelligence"
               className="flex items-center gap-2 px-4 py-2 text-[14px] font-semibold rounded-xl transition-all duration-200 text-slate-700 hover:text-violet-700 hover:bg-violet-50"
@@ -244,27 +242,30 @@ export default function Navbar({ dict, lng }: NavbarProps) {
               <Zap className="h-4 w-4" />
               {t.intelligence}
             </Link>
+          </nav>
+
+          {/* ── Right cluster: secondary nav + actions ── */}
+          <div className="flex items-center gap-2 flex-shrink-0 justify-self-end">
 
             {/* Trading */}
             <Link
               href="/trading"
-              className="flex items-center gap-2 px-4 py-2 text-[14px] font-semibold rounded-xl transition-all duration-200 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50"
+              className="hidden md:flex items-center gap-1.5 px-3 py-2 text-[13px] font-medium rounded-xl transition-all duration-200 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50"
             >
-              <Package className="h-4 w-4 text-emerald-500" />
+              <Package className="h-3.5 w-3.5" />
               交易中心
             </Link>
 
             {/* About */}
             <Link
               href="/about"
-              className="flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-xl transition-all duration-200 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50"
+              className="hidden md:flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-xl transition-all duration-200 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50"
             >
               关于我们
             </Link>
-          </nav>
 
-          {/* ── Right action cluster ── */}
-          <div className="flex items-center gap-2 flex-shrink-0 justify-self-end">
+            {/* Separator */}
+            <div className="hidden md:block w-px h-5 bg-gray-200 mx-1" />
 
             {searchOpen ? (
               <form onSubmit={handleSearch} className="flex items-center">
