@@ -221,10 +221,10 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             : 'bg-transparent border-b border-transparent',
         )}
       >
-        <div className="container h-full flex items-center relative">
+        <div className="container h-full grid grid-cols-[1fr_auto_1fr] items-center">
 
           {/* ── Logo ── */}
-          <Link href={href('/')} className="group flex items-center gap-2.5 flex-shrink-0 z-10">
+          <Link href={href('/')} className="group flex items-center gap-2.5 flex-shrink-0 justify-self-start">
             <div className="h-8 w-8 rounded-2xl bg-gradient-to-br from-emerald-600 to-cyan-700 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105 group-hover:rotate-[-3deg]">
               <span className="text-white font-black text-[11px] leading-none select-none">绿</span>
             </div>
@@ -233,8 +233,8 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             </span>
           </Link>
 
-          {/* ── Desktop navigation — absolutely centered ── */}
-          <nav className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2" aria-label="主导航">
+          {/* ── Desktop navigation — perfectly centered by grid ── */}
+          <nav className="hidden md:flex items-center gap-1 justify-self-center" aria-label="主导航">
 
             {/* Intelligence — centered main link */}
             <Link
@@ -264,7 +264,7 @@ export default function Navbar({ dict, lng }: NavbarProps) {
           </nav>
 
           {/* ── Right action cluster ── */}
-          <div className="flex items-center gap-2 flex-shrink-0 ml-auto z-10">
+          <div className="flex items-center gap-2 flex-shrink-0 justify-self-end">
 
             {searchOpen ? (
               <form onSubmit={handleSearch} className="flex items-center">
