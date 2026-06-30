@@ -1,9 +1,0 @@
-{
-  "name": "publishDemand",
-  "version": "1.0.0",
-  "description": "发布塑料需求信息并自动匹配供应",
-  "main": "index.js",
-  "dependencies": {
-    "wx-server-sdk": "latest"
-  }
-}
