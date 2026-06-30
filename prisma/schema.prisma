@@ -533,6 +533,9 @@ model TradingListing {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
+  supplyMatches TradingMatch[] @relation("MatchSupply")
+  demandMatches TradingMatch[] @relation("MatchDemand")
+
   @@index([type])
   @@index([material])
   @@index([status])

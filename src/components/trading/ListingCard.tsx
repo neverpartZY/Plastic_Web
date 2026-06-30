@@ -7,13 +7,13 @@ interface Listing {
   form: string
   quantity: number
   price: number
-  price_negotiable: number
+  priceNegotiable: number
   location: string
   specs: string
   notes: string
-  waste_or_recycled: string
+  wasteOrRecycled: string
   status: string
-  created_at: string
+  createdAt: string
 }
 
 export default function ListingCard({ listing }: { listing: Listing }) {
