@@ -135,7 +135,19 @@
       "PowerShell(npm i *)",
       "Bash(npm ls *)",
       "Bash(npm root *)",
-      "Bash(ls \"$\\(npm root -g\\)/oh-my-claude-sisyphus/\")"
+      "Bash(ls \"$\\(npm root -g\\)/oh-my-claude-sisyphus/\")",
+      "Skill(deep-research)",
+      "Bash(Remove-Item \"D:\\\\AppData\\\\TestPrograme\\\\Plastic_Web\\\\.tmp-update-digest.js\" -ErrorAction SilentlyContinue)",
+      "Bash(Write-Output \"Cleaned up temp file\")",
+      "Bash(mv .env.local .env.local.bak)",
+      "Bash(taskkill /F /IM \"node.exe\")",
+      "Bash(mv .env.local.bak .env.local)",
+      "Bash(rm -f .tmp-send-digest.ts .tmp-query-intel.ts)",
+      "Bash(grep -o 'message\\\\\\\\\":\\\\\\\\\"[^\"]*')",
+      "Bash(rm -rf .next)",
+      "Bash(rm -rf node_modules/.prisma .next)",
+      "Bash(unzip -l \"D:/AppData/WorkBuddy/Claw/outputs/RePlasMatch_完整程序.zip\")",
+      "PowerShell(Get-Process *)"
     ]
   }
 }

@@ -495,3 +495,80 @@ model ServiceApplication {
   @@index([status])
   @@index([eventId])
 }
+
+// ─── 交易中心：用户（手机号登录）────────────────────────────────────────────────
+
+model TradingUser {
+  id        Int      @id @default(autoincrement())
+  name      String
+  role      String   /// 打包站 | 再生工厂 | 制品·改性·色母 | 贸易商
+  phone     String   @unique
+  location  String   @default("")
+  company   String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  listings TradingListing[]
+
+  @@index([phone])
+}
+
+// ─── 交易中心：供需发布 ─────────────────────────────────────────────────────────
+
+model TradingListing {
+  id               Int      @id @default(autoincrement())
+  user             TradingUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           Int
+  type             String   /// supply | demand
+  wasteOrRecycled  String   /// 废塑料 | 再生料
+  material         String
+  form             String   @default("")
+  quantity         Float    @default(0)
+  price            Float    @default(0)
+  priceNegotiable  Int      @default(0)  /// 0=固定价 1=面议
+  location         String   @default("")
+  specs            String   @default("")
+  notes            String   @default("")
+  status           String   @default("active")  /// active | closed
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([type])
+  @@index([material])
+  @@index([status])
+  @@index([userId])
+}
+
+// ─── 交易中心：撮合匹配 ─────────────────────────────────────────────────────────
+
+model TradingMatch {
+  id              Int      @id @default(autoincrement())
+  supplyId        Int
+  demandId        Int
+  score           Int      @default(0)
+  dimensionScores Json     /// { category: 50, form: 5, location: 15, price: 10, quantity: 10 }
+  status          String   @default("pending")  /// pending | contacted | deal
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([supplyId])
+  @@index([demandId])
+  @@index([status])
+}
+
+// ─── 交易中心：行情价格 ─────────────────────────────────────────────────────────
+
+model TradingPrice {
+  id         Int      @id @default(autoincrement())
+  category   String    /// PET | PP | HDPE | LDPE | ABS | PC
+  material   String
+  priceAvg   Float    @default(0)
+  priceLow   Float    @default(0)
+  priceHigh  Float    @default(0)
+  trend      String   @default("flat")  /// up | down | flat
+  changePct  Float    @default(0)
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+
+  @@index([category])
+}

@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import {
   Search, Menu, X, ChevronDown, Bell, Languages, Check,
   LayoutDashboard, User, LogOut, Settings,
-  Zap,
+  Zap, Package,
 } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -243,6 +243,15 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             >
               <Zap className="h-4 w-4" />
               {t.intelligence}
+            </Link>
+
+            {/* Trading */}
+            <Link
+              href="/trading"
+              className="flex items-center gap-2 px-4 py-2 text-[14px] font-semibold rounded-xl transition-all duration-200 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50"
+            >
+              <Package className="h-4 w-4 text-emerald-500" />
+              交易中心
             </Link>
 
             {/* About */}
