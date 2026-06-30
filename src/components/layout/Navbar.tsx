@@ -224,7 +224,7 @@ export default function Navbar({ dict, lng }: NavbarProps) {
         <div className="container h-full flex items-center gap-6">
 
           {/* ── Logo — fixed width for centering ── */}
-          <Link href={href('/')} className="group flex items-center gap-2.5 flex-shrink-0 w-[160px]">
+          <Link href={href('/')} className="group flex items-center gap-2.5 flex-shrink-0 w-[220px]">
             <div className="h-8 w-8 rounded-2xl bg-gradient-to-br from-emerald-600 to-cyan-700 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105 group-hover:rotate-[-3deg]">
               <span className="text-white font-black text-[11px] leading-none select-none">绿</span>
             </div>
@@ -263,8 +263,8 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             </Link>
           </nav>
 
-          {/* ── Right action cluster — fixed width for centering ── */}
-          <div className="flex items-center gap-2 flex-shrink-0 w-[160px] justify-end">
+          {/* ── Right action cluster — fixed width matching logo for centering ── */}
+          <div className="flex items-center gap-2 flex-shrink-0 w-[220px] justify-end">
 
             {searchOpen ? (
               <form onSubmit={handleSearch} className="flex items-center">
