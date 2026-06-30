@@ -551,6 +551,9 @@ model TradingMatch {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  supply TradingListing @relation("MatchSupply", fields: [supplyId], references: [id], onDelete: Cascade)
+  demand TradingListing @relation("MatchDemand", fields: [demandId], references: [id], onDelete: Cascade)
+
   @@index([supplyId])
   @@index([demandId])
   @@index([status])

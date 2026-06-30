@@ -147,7 +147,8 @@
       "Bash(rm -rf .next)",
       "Bash(rm -rf node_modules/.prisma .next)",
       "Bash(unzip -l \"D:/AppData/WorkBuddy/Claw/outputs/RePlasMatch_完整程序.zip\")",
-      "PowerShell(Get-Process *)"
+      "PowerShell(Get-Process *)",
+      "Bash(git rm *)"
     ]
   }
 }
