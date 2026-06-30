@@ -35,7 +35,7 @@ export default function Footer({ dict }: { dict?: FooterDictionary }) {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
           {/* Brand column */}
           <div className="col-span-1 md:col-span-2">
@@ -80,24 +80,6 @@ export default function Footer({ dict }: { dict?: FooterDictionary }) {
             </div>
           </div>
 
-          {/* Quick nav */}
-          <div>
-            <h4 className="font-semibold mb-4 text-sm text-white">{t.quickNav}</h4>
-            <ul className="space-y-2.5 text-sm text-slate-400">
-              <li><Link href="/news?dimension=molds"       className="hover:text-emerald-400 transition-colors">{t.links.molds}</Link></li>
-              <li><Link href="/news?dimension=molding"     className="hover:text-emerald-400 transition-colors">{t.links.molding}</Link></li>
-              <li><Link href="/news?dimension=recycled"    className="hover:text-emerald-400 transition-colors">{t.links.recycled}</Link></li>
-              <li><Link href="/news?dimension=bio"         className="hover:text-emerald-400 transition-colors">{t.links.bio}</Link></li>
-              <li><Link href="/news?dimension=additives"   className="hover:text-emerald-400 transition-colors">{t.links.additives}</Link></li>
-              <li><Link href="/news?dimension=auxiliaries" className="hover:text-emerald-400 transition-colors">{t.links.auxiliaries}</Link></li>
-              <li><Link href="/news?dimension=recycling"   className="hover:text-emerald-400 transition-colors">{t.links.recycling}</Link></li>
-              <li><Link href="/news?dimension=reuse"       className="hover:text-emerald-400 transition-colors">{t.links.reuse}</Link></li>
-              <li className="pt-2 border-t border-slate-800">
-                <Link href="/about" className="hover:text-emerald-400 transition-colors text-emerald-500 font-medium">关于我们 →</Link>
-              </li>
-            </ul>
-          </div>
-
           {/* Hot tags */}
           <div>
             <h4 className="font-semibold mb-4 text-sm text-white">{t.hotTags}</h4>
@@ -105,13 +87,16 @@ export default function Footer({ dict }: { dict?: FooterDictionary }) {
               {['CBAM', 'PCR', 'PLA', '化学回收', '欧盟', '碳关税', 'ESG', '智能分选', '双碳'].map((tag) => (
                 <Link
                   key={tag}
-                  href={`/news?q=${encodeURIComponent(tag)}`}
+                  href={`/intelligence?q=${encodeURIComponent(tag)}&tab=all`}
                   className="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 hover:bg-emerald-600/20 hover:text-emerald-400 hover:border-emerald-600/40 transition-colors"
                 >
                   {tag}
                 </Link>
               ))}
             </div>
+            <Link href="/about" className="inline-flex items-center gap-1 mt-6 text-sm text-emerald-500 hover:text-emerald-400 font-medium transition-colors">
+              关于我们 →
+            </Link>
           </div>
         </div>
 
