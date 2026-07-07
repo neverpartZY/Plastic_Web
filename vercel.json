@@ -5,8 +5,8 @@
       "schedule": "57 23 * * *"
     },
     {
-      "path": "/api/refine/process?batch=3",
-      "schedule": "57 3 * * *"
+      "path": "/api/refine/process?batch=5",
+      "schedule": "57 22 * * *"
     }
   ]
 }
