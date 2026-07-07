@@ -3,10 +3,6 @@
     {
       "path": "/api/cron/send-daily-digest",
       "schedule": "57 23 * * *"
-    },
-    {
-      "path": "/api/refine/process?batch=5",
-      "schedule": "57 22 * * *"
     }
   ]
 }
