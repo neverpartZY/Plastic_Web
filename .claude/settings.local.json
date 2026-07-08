@@ -148,7 +148,16 @@
       "Bash(rm -rf node_modules/.prisma .next)",
       "Bash(unzip -l \"D:/AppData/WorkBuddy/Claw/outputs/RePlasMatch_完整程序.zip\")",
       "PowerShell(Get-Process *)",
-      "Bash(git rm *)"
+      "Bash(git rm *)",
+      "Bash(npm outdated *)",
+      "Bash(nslookup *)",
+      "Bash(Remove-Item \"D:\\\\AppData\\\\TestPrograme\\\\Plastic_Web\\\\src\\\\lib\\\\intelligence\\\\llm.ts\" -Force)",
+      "Bash(Remove-Item \"D:\\\\AppData\\\\TestPrograme\\\\Plastic_Web\\\\src\\\\lib\\\\intelligence\\\\pipeline.ts\" -Force)",
+      "Bash(Remove-Item \"D:\\\\AppData\\\\TestPrograme\\\\Plastic_Web\\\\src\\\\lib\\\\intelligence\\\\translator.ts\" -Force)",
+      "Bash(Remove-Item \"D:\\\\AppData\\\\TestPrograme\\\\Plastic_Web\\\\src\\\\lib\\\\intelligence\\\\classifier.ts\" -Force)",
+      "Bash(Remove-Item \"D:\\\\AppData\\\\TestPrograme\\\\Plastic_Web\\\\src\\\\app\\\\api\\\\refine\\\\process\\\\route.ts\" -Force)",
+      "PowerShell(npx tsc --noEmit 2>&1 | Select-Object -First 30)",
+      "PowerShell($totalPages = 36; $found = $null; for \\($p = 1; $p -le $totalPages; $p++\\) { $response = Invoke-RestMethod -Uri \"https://greenplastic.ai/api/intelligence?limit=50&page=$p\" -Method Get; foreach \\($item in $response.items\\) { $all = \"$\\($item.title\\) $\\($item.titleZh\\) $\\($item.summary\\) $\\($item.summaryZh\\)\".ToLower\\(\\); if \\($all -match '食品接触'\\) { $found = $item; break } }; if \\($found\\) { Write-Output \"Found on page $p\"; break } }; if \\($found\\) { Write-Output \"ID: $\\($found.id\\)\"; Write-Output \"Title: $\\($found.title\\)\"; Write-Output \"TitleZh: $\\($found.titleZh\\)\"; Write-Output \"PublishedAt: $\\($found.publishedAt\\)\" } else { Write-Output \"NOT FOUND in any page\" })"
     ]
   }
 }

@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"curl -s \\\"https://greenplastic.ai/api/intelligence?limit=50&pillar=recycling\\\" 2>&1 | python3 -c \\\"\\nimport sys, json\\nd = json.load(sys.stdin)\\nfor i in d['items']:\\n    if 'PPWR' in (i.g...",
+  "error": "Exit code 49",
+  "timestamp": "2026-07-08T05:56:24.587Z",
+  "retry_count": 1
+}

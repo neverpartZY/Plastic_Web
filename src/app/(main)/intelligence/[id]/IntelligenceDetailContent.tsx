@@ -312,7 +312,7 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
               <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest">
                 {lang === 'zh' ? '核心要点' : 'Key Points'}
               </span>
-              <span className="text-[10px] text-emerald-400 ml-auto">AI · GLM</span>
+              <span className="text-[10px] text-emerald-400 ml-auto">AI</span>
             </div>
 
             {tldrPoints.length > 0 ? (
