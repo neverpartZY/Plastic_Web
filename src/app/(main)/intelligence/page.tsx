@@ -40,7 +40,7 @@ async function getIntelligence(
   const now = new Date()
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
 
-  const where: Record<string, unknown> = {}
+  const where: Record<string, unknown> = { refineStatus: 'completed' }
   if (pillar)  where.pillars     = { contains: pillar }
   if (country) where.countryCode = country
   if (hotOnly) where.isHot       = true
@@ -96,6 +96,7 @@ export default async function IntelligencePage({ searchParams }: Props) {
   const now = new Date()
   const highlightsWhere: Record<string, unknown> = {
     publishedAt: { gte: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 1)) },
+    refineStatus: 'completed',
   }
   if (pillar)  highlightsWhere.pillars     = { contains: pillar }
   if (country) highlightsWhere.countryCode = country
