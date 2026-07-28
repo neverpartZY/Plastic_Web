@@ -112,7 +112,7 @@ export default function AiSearchModal({
                 ref={inputRef}
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                placeholder="搜索塑料循环经济知识库..."
+                placeholder="基于知识库问答：搜索塑料循环经济知识库..."
                 className="flex-1 h-10 bg-transparent px-3 text-[14px] focus:outline-none text-slate-900 placeholder:text-slate-400"
               />
               {query && (
@@ -194,7 +194,7 @@ export default function AiSearchModal({
             <div className="py-12 text-center">
               <Sparkles className="h-10 w-10 mx-auto text-emerald-200 mb-3" />
               <p className="text-[13px] text-slate-400">输入问题，搜索国嘉基业知识库</p>
-              <p className="text-[11px] text-slate-300 mt-1">例如：PPWR对再生含量有什么要求？</p>
+              <p className="text-[11px] text-slate-300 mt-1">基于知识库问答 · 例如：PPWR对再生含量有什么要求？</p>
             </div>
           )}
 
