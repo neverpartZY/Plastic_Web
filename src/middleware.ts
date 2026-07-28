@@ -39,18 +39,18 @@ export async function middleware(req: NextRequest) {
   // ── 1. Skip internal Next.js & API paths ──────────────────────────────────
   if (isInternalPath(pathname)) return NextResponse.next()
 
-  // ── 2. Detect locale prefix and derive "working" path ─────────────────────
+  // ── 2. Strip locale prefix to get the "real" path for auth checks ─────────
   const firstSegment = pathname.split('/')[1]
   const hasLocale = isValidLocale(firstSegment)
-  const workingPathname = hasLocale
+  const realPath = hasLocale
     ? (pathname.replace(`/${firstSegment}`, '') || '/')
     : pathname
 
-  // ── 3. Auth guard — check against locale-free path ────────────────────────
+  // ── 3. Auth guard for protected routes ────────────────────────────────────
   const isProtected =
-    workingPathname.startsWith('/dashboard') ||
-    workingPathname.startsWith('/profile') ||
-    workingPathname.startsWith('/admin')
+    realPath.startsWith('/dashboard') ||
+    realPath.startsWith('/profile') ||
+    realPath.startsWith('/admin')
 
   if (isProtected) {
     const token = await getToken({
@@ -64,29 +64,27 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(loginUrl)
     }
 
-    if (workingPathname.startsWith('/admin') && token.role !== 'admin') {
+    if (realPath.startsWith('/admin') && token.role !== 'admin') {
       return NextResponse.redirect(new URL('/', req.url))
     }
   }
 
-  // ── 4. Root path → redirect to detected locale ───────────────────────────
+  // ── 4. Locale-prefixed path → forward, set x-lng header ──────────────────
+  if (hasLocale) {
+    const res = NextResponse.next()
+    res.headers.set('x-lng', firstSegment)
+    return res
+  }
+
+  // ── 5. Root path → redirect to detected locale ───────────────────────────
   if (pathname === '/') {
     const locale = detectLocale(req)
     return NextResponse.redirect(new URL(`/${locale}`, req.url))
   }
 
-  // ── 5. Forward / rewrite with x-lng header ───────────────────────────────
-  const locale = hasLocale ? firstSegment : detectLocale(req)
-
-  let res: NextResponse
-  if (hasLocale) {
-    // Rewrite away locale prefix so Next.js routing can match the real route
-    const url = req.nextUrl.clone()
-    url.pathname = workingPathname
-    res = NextResponse.rewrite(url)
-  } else {
-    res = NextResponse.next()
-  }
+  // ── 6. All other paths (/news, /explore, …) → pass through ───────────────
+  const locale = detectLocale(req)
+  const res = NextResponse.next()
   res.headers.set('x-lng', locale)
   return res
 }

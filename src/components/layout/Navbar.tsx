@@ -193,7 +193,7 @@ export default function Navbar({ dict, lng }: NavbarProps) {
   // Sync search input with URL query when it changes
   useEffect(() => { setSearchQuery(urlQ) }, [urlQ])
 
-  const href = (path: string) => (lng ? `/${lng}${path}` : path)
+  const href = (path: string) => path
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16)
