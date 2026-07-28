@@ -47,7 +47,7 @@ export default function ImaTestPage() {
 
     // Test 1: 凭证
     try {
-      const r = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/ask', {
+      const r = await fetch('/api/ask'', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: 'test' }),
@@ -105,7 +105,7 @@ export default function ImaTestPage() {
     }
 
     // Test 4: 端到端
-    const okCount = tests.filter(t => t.status === 'ok').length
+    const okResults = [0,1,2].filter(i => { const t = document.querySelector(...); return false; }).length; // 改为直接统计前3个测试的结果
     if (okCount >= 2) {
       update(4, 'ok', `${okCount}/4 测试通过，整体连通性正常`)
     } else {
