@@ -47,7 +47,7 @@ export default function ImaTestPage() {
 
     // Test 1: 凭证
     try {
-      const r = await fetch('/api/ask'', {
+      const r = await fetch('/api/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: 'test' }),
