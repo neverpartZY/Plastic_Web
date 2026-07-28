@@ -49,13 +49,13 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    const items = imaData.data?.knowledge_list || []
+    // IMA API 返回的字段可能是 knowledge_list 或 info_list
+    const items = imaData.data?.info_list || imaData.data?.knowledge_list || []
 
-    // 对每条搜索结果获取摘要（如果 title + snippet 不够有用，可额外调 get_media_info）
     const results = items.map((item: any) => ({
       title: item.title || '',
-      snippet: item.snippet || '',
-      mediaId: item.media_id || '',
+      snippet: item.highlight_content || item.snippet || '',
+      mediaId: item.media_id || item.id || '',
       mediaType: item.media_type || 0,
       score: item.score || 0,
       url: item.url || '',
