@@ -179,9 +179,9 @@ export default function AiSearchModal({
                     <p className="text-[13px] font-semibold text-slate-800 line-clamp-2">
                       {item.title}
                     </p>
-                    {item.snippet && (
+                    {(item.snippet || item.title) && (
                       <p className="text-[12px] text-slate-500 mt-1 line-clamp-3 leading-relaxed">
-                        {item.snippet}
+                        {item.snippet || '点击查看详情'}
                       </p>
                     )}
                   </div>
