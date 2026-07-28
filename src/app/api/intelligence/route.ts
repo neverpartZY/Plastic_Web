@@ -91,3 +91,53 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({ items: mapped, total, page, limit, totalPages: Math.ceil(total / limit) })
 }
+
+export async function POST(req: NextRequest) {
+  const session = await (await import('next-auth')).getServerSession(
+    (await import('@/lib/auth')).authOptions
+  )
+  if (!session?.user || session.user.role !== 'admin') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+  }
+
+  const body = await req.json()
+  const { intelligenceSchema } = await import('@/lib/validations')
+  const parsed = intelligenceSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 })
+  }
+
+  const data = parsed.data
+  const tagArray = Array.isArray(data.tags) ? data.tags : (data.tags ? String(data.tags).split(',').map((s: string) => s.trim()).filter(Boolean) : [])
+
+  const item = await prisma.intelligence.create({
+    data: {
+      title: data.title,
+      titleZh: data.titleZh || null,
+      titleEn: data.titleEn || null,
+      summary: data.summary || '',
+      summaryZh: data.summaryZh || null,
+      summaryEn: data.summaryEn || null,
+      content: data.content || '',
+      contentZh: data.contentZh || null,
+      contentEn: data.contentEn || null,
+      tldrZh: data.tldrZh || null,
+      tldrEn: data.tldrEn || null,
+      category: data.category || 'tech',
+      pillars: data.pillars || null,
+      countryCode: data.countryCode || null,
+      importance: data.importance ?? 3,
+      isHot: data.isHot ?? false,
+      isPremium: data.isPremium ?? false,
+      refineStatus: data.refineStatus || 'completed',
+      source: data.source || null,
+      sourceUrl: data.sourceUrl || null,
+      dimension: data.dimension || null,
+      region: data.region || null,
+      tags: tagArray,
+      urlHash: `manual-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
+    },
+  })
+
+  return NextResponse.json({ ok: true, id: item.id })
+}

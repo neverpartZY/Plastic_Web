@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "entries": {
+    "466399dafa2d20f60587180bad0a07358eb7f2bce724df0ff682f038ad33f5ad": {
+      "last_emitted_at_ms": 1784602055579,
+      "message": "Read multiple files in parallel when possible for faster analysis."
+    },
+    "d82a50bb1e8ec09209aff832f62d5c4656e77f00e200c49380467695fa47609a": {
+      "last_emitted_at_ms": 1784602048802,
+      "message": "Spawning agent: Explore (inherit) | Task: Explore intelligence API routes"
+    },
+    "459c54e5f35d6a58dcd90d2aecc21fa6d1f35d241bc5b134c506f87dc7b6d67b": {
+      "last_emitted_at_ms": 1784602047228,
+      "message": "Combine searches in parallel when investigating multiple patterns."
+    },
+    "792be28ef60091d9cb90e2f74f25638995b2322e49d5e861590ed2c21faef21d": {
+      "last_emitted_at_ms": 1784602042039,
+      "message": "Spawning agent: Explore (inherit) | Task: Explore daily digest data flow"
+    }
+  },
+  "updated_at": "2026-07-21T02:47:35.579Z"
+}

@@ -157,7 +157,14 @@
       "Bash(Remove-Item \"D:\\\\AppData\\\\TestPrograme\\\\Plastic_Web\\\\src\\\\lib\\\\intelligence\\\\classifier.ts\" -Force)",
       "Bash(Remove-Item \"D:\\\\AppData\\\\TestPrograme\\\\Plastic_Web\\\\src\\\\app\\\\api\\\\refine\\\\process\\\\route.ts\" -Force)",
       "PowerShell(npx tsc --noEmit 2>&1 | Select-Object -First 30)",
-      "PowerShell($totalPages = 36; $found = $null; for \\($p = 1; $p -le $totalPages; $p++\\) { $response = Invoke-RestMethod -Uri \"https://greenplastic.ai/api/intelligence?limit=50&page=$p\" -Method Get; foreach \\($item in $response.items\\) { $all = \"$\\($item.title\\) $\\($item.titleZh\\) $\\($item.summary\\) $\\($item.summaryZh\\)\".ToLower\\(\\); if \\($all -match '食品接触'\\) { $found = $item; break } }; if \\($found\\) { Write-Output \"Found on page $p\"; break } }; if \\($found\\) { Write-Output \"ID: $\\($found.id\\)\"; Write-Output \"Title: $\\($found.title\\)\"; Write-Output \"TitleZh: $\\($found.titleZh\\)\"; Write-Output \"PublishedAt: $\\($found.publishedAt\\)\" } else { Write-Output \"NOT FOUND in any page\" })"
+      "PowerShell($totalPages = 36; $found = $null; for \\($p = 1; $p -le $totalPages; $p++\\) { $response = Invoke-RestMethod -Uri \"https://greenplastic.ai/api/intelligence?limit=50&page=$p\" -Method Get; foreach \\($item in $response.items\\) { $all = \"$\\($item.title\\) $\\($item.titleZh\\) $\\($item.summary\\) $\\($item.summaryZh\\)\".ToLower\\(\\); if \\($all -match '食品接触'\\) { $found = $item; break } }; if \\($found\\) { Write-Output \"Found on page $p\"; break } }; if \\($found\\) { Write-Output \"ID: $\\($found.id\\)\"; Write-Output \"Title: $\\($found.title\\)\"; Write-Output \"TitleZh: $\\($found.titleZh\\)\"; Write-Output \"PublishedAt: $\\($found.publishedAt\\)\" } else { Write-Output \"NOT FOUND in any page\" })",
+      "mcp__plugin_claude-mem_mcp-search__search",
+      "mcp__plugin_claude-mem_mcp-search__get_observations",
+      "PowerShell(npx tsc --noEmit --pretty 2>&1 | Select-Object -First 30)",
+      "PowerShell(npx prisma db seed)",
+      "PowerShell(Test-NetConnection *)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://neondb_owner:npg_NEFklPdSU0X3@ep-steep-tooth-aniwkmkl-pooler.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require\"; npx prisma db seed)",
+      "PowerShell(npx vercel env ls 2>&1)"
     ]
   }
 }

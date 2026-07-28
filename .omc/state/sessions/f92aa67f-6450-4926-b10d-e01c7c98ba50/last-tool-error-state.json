@@ -1,0 +1,7 @@
+{
+  "tool_name": "PowerShell",
+  "tool_input_preview": "{\"command\":\"Set-Location 'D:\\\\AppData\\\\TestPrograme\\\\Plastic_Web'; node -e \\\"const { PrismaClient } = require('@prisma/client'); const p = new PrismaClient(); p.intelligence.count().then(c => { consol...",
+  "error": "Exit code 1\nnode : [eval]:1\r\nAt line:1 char:354\r\n+ ... astic_Web'; node -e \"const { PrismaClient } = require('@prisma/client ...\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: ([eval]:1:String) [], RemoteException\r\n    + FullyQualifiedErrorId : NativeCommandError\r\n \r\nconst { PrismaClient } = require('@prisma/client'); const p = new PrismaClient(); p.intelligence.count().then(c => { co\r\nnsole.log('OK, count:', c); p.\\(); }...",
+  "timestamp": "2026-07-23T08:51:38.122Z",
+  "retry_count": 1
+}

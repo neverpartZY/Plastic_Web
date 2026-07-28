@@ -1,0 +1,7 @@
+{
+  "tool_name": "PowerShell",
+  "tool_input_preview": "{\"command\":\"npx tsc --noEmit 2>&1 | Select-Object -First 30\",\"timeout\":60000,\"description\":\"TypeScript type check\"}",
+  "error": "Exit code 2\nsrc/app/api/intelligence/[id]/route.ts(65,5): error TS2322: Type '{ version: { increment: number; }; tags?: string | string[] | undefined; region?: string | undefined; dimension?: string | undefined; sourceUrl?: string | undefined; source?: string | undefined; ... 17 more ...; title?: string | undefined; }' is not assignable to type '(Without<IntelligenceUpdateInput, IntelligenceUncheckedUpdateInput> & IntelligenceUncheckedUpdateInput) | (Without<...> & IntelligenceUpdateInput)'.\r\n  ...",
+  "timestamp": "2026-07-28T06:24:52.115Z",
+  "retry_count": 1
+}

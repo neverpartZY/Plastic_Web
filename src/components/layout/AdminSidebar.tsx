@@ -2,12 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Newspaper, Tag, Users, ChevronRight } from 'lucide-react'
+import { LayoutDashboard, Globe, Tag, Users, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const links = [
   { href: '/admin', label: '概览', icon: LayoutDashboard, exact: true },
-  { href: '/admin/news', label: '新闻管理', icon: Newspaper },
+  { href: '/admin/intelligence', label: '情报管理', icon: Globe },
   { href: '/admin/tags', label: '标签管理', icon: Tag },
   { href: '/admin/users', label: '用户管理', icon: Users },
 ]

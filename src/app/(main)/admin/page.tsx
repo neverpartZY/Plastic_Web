@@ -1,34 +1,30 @@
 import { prisma } from '@/lib/prisma'
-import { Newspaper, Tag, Users, Eye } from 'lucide-react'
+import { Globe, Tag, Users, Flame } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: '后台管理' }
 
 export default async function AdminDashboardPage() {
-  const [newsCount, userCount, tagCount, totalViews] = await Promise.all([
-    prisma.news.count({ where: { isPublished: true } }),
+  const [intelCount, userCount, tagCount, hotCount] = await Promise.all([
+    prisma.intelligence.count(),
     prisma.user.count(),
     prisma.tag.count(),
-    prisma.news.aggregate({ _sum: { viewCount: true } }),
+    prisma.intelligence.count({ where: { isHot: true } }),
   ])
 
   const stats = [
-    { label: '已发布文章', value: newsCount, icon: Newspaper, href: '/admin/news', color: 'text-blue-600' },
+    { label: '情报总数', value: intelCount, icon: Globe, href: '/admin/intelligence', color: 'text-blue-600' },
     { label: '注册用户', value: userCount, icon: Users, href: '/admin/users', color: 'text-green-600' },
     { label: '标签总数', value: tagCount, icon: Tag, href: '/admin/tags', color: 'text-purple-600' },
-    { label: '总阅读量', value: (totalViews._sum.viewCount ?? 0).toLocaleString(), icon: Eye, href: '/admin/news', color: 'text-amber-600' },
+    { label: '热门情报', value: hotCount, icon: Flame, href: '/admin/intelligence?hot=true', color: 'text-orange-500' },
   ]
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">后台概览</h1>
-        <Button asChild>
-          <Link href="/admin/news/new">发布新文章</Link>
-        </Button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -51,7 +47,7 @@ export default async function AdminDashboardPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[
-          { href: '/admin/news', label: '管理文章', desc: '增删改查所有新闻文章' },
+          { href: '/admin/intelligence', label: '管理情报', desc: '查看、编辑和审核情报内容' },
           { href: '/admin/tags', label: '管理标签', desc: '维护标签分类体系' },
           { href: '/admin/users', label: '管理用户', desc: '查看用户列表及状态' },
         ].map(({ href, label, desc }) => (

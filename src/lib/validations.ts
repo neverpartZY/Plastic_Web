@@ -42,8 +42,35 @@ export const dashboardSchema = z.object({
   isDefault: z.boolean().default(false),
 })
 
+export const intelligenceSchema = z.object({
+  title: z.string().min(1, '标题不能为空'),
+  titleZh: z.string().optional().default(''),
+  titleEn: z.string().optional().default(''),
+  summary: z.string().default(''),
+  summaryZh: z.string().optional().default(''),
+  summaryEn: z.string().optional().default(''),
+  content: z.string().default(''),
+  contentZh: z.string().optional().default(''),
+  contentEn: z.string().optional().default(''),
+  tldrZh: z.string().optional().default(''),
+  tldrEn: z.string().optional().default(''),
+  category: z.string().default('tech'),
+  pillars: z.string().optional().default(''),
+  countryCode: z.string().optional().default(''),
+  importance: z.number().int().min(1).max(5).default(3),
+  isHot: z.boolean().default(false),
+  isPremium: z.boolean().default(false),
+  refineStatus: z.string().default('completed'),
+  source: z.string().optional().default(''),
+  sourceUrl: z.string().optional().default(''),
+  dimension: z.string().optional().default(''),
+  region: z.string().optional().default(''),
+  tags: z.union([z.array(z.string()), z.string()]).optional().default([]),
+})
+
 export type RegisterInput = z.infer<typeof registerSchema>
 export type LoginInput = z.infer<typeof loginSchema>
 export type NewsInput = z.infer<typeof newsSchema>
 export type TagInput = z.infer<typeof tagSchema>
 export type DashboardInput = z.infer<typeof dashboardSchema>
+export type IntelligenceInput = z.infer<typeof intelligenceSchema>
