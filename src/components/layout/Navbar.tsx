@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import {
   Search, Menu, X, ChevronDown, Bell, Languages, Check,
   LayoutDashboard, User, LogOut, Settings,
-  Zap, Package,
+  Zap, Package, Sparkles,
 } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import type { NavDictionary } from '@/i18n/types'
 import NavbarSubscribeModal from '@/components/layout/NavbarSubscribeModal'
+import AiSearchModal from '@/components/layout/AiSearchModal'
 
 // ── Default Chinese strings ───────────────────────────────────────────────────
 
@@ -189,6 +190,7 @@ export default function Navbar({ dict, lng }: NavbarProps) {
   const [searchQuery, setSearchQuery] = useState(urlQ)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [subscribeModalOpen, setSubscribeModalOpen] = useState(false)
+  const [aiSearchOpen, setAiSearchOpen] = useState(false)
 
   // Sync search input with URL query when it changes
   useEffect(() => { setSearchQuery(urlQ) }, [urlQ])
@@ -293,6 +295,16 @@ export default function Navbar({ dict, lng }: NavbarProps) {
                 <Search className="h-[17px] w-[17px]" />
               </button>
             )}
+
+            {/* AI Search button */}
+            <button
+              onClick={() => setAiSearchOpen(true)}
+              className="h-8 px-3 flex items-center gap-1.5 rounded-2xl transition-colors text-emerald-600 hover:bg-emerald-50 border border-emerald-200 text-[12px] font-semibold"
+              title="AI 知识库搜索"
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">AI</span>
+            </button>
 
             <LangSwitcher lng={lng} />
 
@@ -476,6 +488,10 @@ export default function Navbar({ dict, lng }: NavbarProps) {
       <NavbarSubscribeModal
         open={subscribeModalOpen}
         onClose={() => setSubscribeModalOpen(false)}
+      />
+      <AiSearchModal
+        open={aiSearchOpen}
+        onClose={() => setAiSearchOpen(false)}
       />
     </>
   )
