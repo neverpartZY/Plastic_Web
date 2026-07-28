@@ -297,14 +297,27 @@ export default function Navbar({ dict, lng }: NavbarProps) {
             )}
 
             {/* AI Search button */}
-            <button
-              onClick={() => setAiSearchOpen(true)}
-              className="h-8 px-3 flex items-center gap-1.5 rounded-2xl transition-colors text-emerald-600 hover:bg-emerald-50 border border-emerald-200 text-[12px] font-semibold"
-              title="AI 知识库搜索"
-            >
-              <Sparkles className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">AI</span>
-            </button>
+            <div className="relative group">
+              <button
+                onClick={() => setAiSearchOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 rounded-2xl transition-all duration-200
+                  bg-gradient-to-r from-emerald-500 to-cyan-600 text-white
+                  hover:from-emerald-400 hover:to-cyan-500
+                  active:from-emerald-600 active:to-cyan-700
+                  shadow-md hover:shadow-lg active:shadow-sm
+                  text-[13px] font-bold"
+              >
+                <Sparkles className="h-4 w-4" />
+                <span>AI 搜索</span>
+              </button>
+              {/* Tooltip */}
+              <div className="absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                <div className="bg-slate-800 text-white text-[11px] px-3 py-1.5 rounded-xl whitespace-nowrap shadow-lg">
+                  根据国嘉基业·LLM Wiki进行回答
+                  <div className="absolute -top-1 right-4 w-2 h-2 bg-slate-800 rotate-45" />
+                </div>
+              </div>
+            </div>
 
             <LangSwitcher lng={lng} />
 
