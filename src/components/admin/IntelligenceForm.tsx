@@ -40,7 +40,7 @@ const PILLAR_OPTIONS = [
 ]
 
 const COUNTRY_CODES = [
-  { value: '', label: '不限' },
+  { value: 'ALL', label: '不限' },
   { value: 'CN', label: '中国' },
   { value: 'EU', label: '欧盟' },
   { value: 'US', label: '美国' },
@@ -74,7 +74,7 @@ export default function IntelligenceForm({ defaultValues }: Props) {
       content: '',
       category: 'tech',
       pillars: '',
-      countryCode: '',
+      countryCode: 'ALL',
       importance: 3,
       isHot: false,
       isPremium: false,
@@ -108,10 +108,9 @@ export default function IntelligenceForm({ defaultValues }: Props) {
     const url = isEdit ? `/api/intelligence/${defaultValues!.id}` : '/api/intelligence'
     const method = isEdit ? 'PATCH' : 'POST'
 
-    const tagArray = Array.isArray(data.tags) ? data.tags : (data.tags ? String(data.tags).split(',').map((s: string) => s.trim()).filter(Boolean) : [])
     const payload = {
       ...data,
-      tags: tagArray,
+      tags: Array.isArray(data.tags) ? data.tags.join(',') : (String(data.tags || '')),
     }
 
     const res = await fetch(url, {

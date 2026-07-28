@@ -29,7 +29,7 @@ export default async function EditIntelligencePage({
     tldrEn: item.tldrEn ?? '',
     category: item.category,
     pillars: item.pillars ?? '',
-    countryCode: item.countryCode ?? '',
+    countryCode: item.countryCode ?? 'ALL',
     importance: item.importance,
     isHot: item.isHot,
     isPremium: item.isPremium,

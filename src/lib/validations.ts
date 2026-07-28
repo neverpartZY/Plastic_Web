@@ -56,7 +56,7 @@ export const intelligenceSchema = z.object({
   tldrEn: z.string().optional().default(''),
   category: z.string().default('tech'),
   pillars: z.string().optional().default(''),
-  countryCode: z.string().optional().default(''),
+  countryCode: z.string().optional().default('ALL'),
   importance: z.number().int().min(1).max(5).default(3),
   isHot: z.boolean().default(false),
   isPremium: z.boolean().default(false),
