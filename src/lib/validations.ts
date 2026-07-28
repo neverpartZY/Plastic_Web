@@ -65,7 +65,7 @@ export const intelligenceSchema = z.object({
   sourceUrl: z.string().optional().default(''),
   dimension: z.string().optional().default(''),
   region: z.string().optional().default(''),
-  tags: z.union([z.array(z.string()), z.string()]).optional().default([]),
+  tags: z.string().optional().default(''),
 })
 
 export type RegisterInput = z.infer<typeof registerSchema>
