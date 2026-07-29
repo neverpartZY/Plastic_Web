@@ -4,7 +4,7 @@
  */
 import { NextRequest, NextResponse } from 'next/server'
 
-const KB_ID = 'cbS6_lBGSoDYC6oH9t2e-7yN6SbUQkGodQAstAulh5s='
+const KB_ID = '7457220757303832'
 const IMA_BASE = 'https://ima.qq.com'
 
 function getCreds() {
