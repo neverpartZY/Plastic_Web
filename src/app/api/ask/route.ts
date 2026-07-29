@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     const searchData = await callIMA(creds, 'openapi/wiki/v1/search_knowledge', {
       query: query.trim(),
       knowledge_base_id: KB_ID,
-      limit: 10,
+
     })
 
     if (searchData.code !== 0) {
