@@ -104,12 +104,12 @@ export default function ImaTestPage() {
       update(2, 'fail', e.message)
     }
 
-    // Test 4: 端到端
-    const okResults = [0,1,2].filter(i => { const t = document.querySelector(...); return false; }).length; // 改为直接统计前3个测试的结果
-    if (okCount >= 2) {
-      update(4, 'ok', `${okCount}/4 测试通过，整体连通性正常`)
+    // Test 4: 端到端 — 统计前4个测试的通过数（索引0-3对应Test 1-4）
+    const okResults = tests.slice(0, 4).filter(t => t.status === 'ok').length;
+    if (okResults >= 2) {
+      update(4, 'ok', `${okResults}/4 测试通过，整体连通性正常`)
     } else {
-      update(4, 'fail', `仅 ${okCount}/4 通过，存在连接问题`)
+      update(4, 'fail', `仅 ${okResults}/4 通过，存在连接问题`)
     }
 
     setRunning(false)
