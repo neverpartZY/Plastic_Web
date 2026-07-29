@@ -4,7 +4,7 @@
  */
 import { NextRequest, NextResponse } from 'next/server'
 
-const KB_ID = '7457220757303832'
+const KB_ID = 'cbS6_lBGSoDYC6oH9t2e-7yN6SbUQkGodQAstAulh5s='
 const IMA_BASE = 'https://ima.qq.com'
 
 function getCreds() {
@@ -54,12 +54,27 @@ export async function POST(req: NextRequest) {
 
     const creds = getCreds()
 
-    // 步骤1：搜索知识库
-    const searchData = await callIMA(creds, 'openapi/wiki/v1/search_knowledge', {
-      query: query.trim(),
-      knowledge_base_id: KB_ID,
-      limit: 10,
-    })
+    // 步骤1：搜索知识库 — 原查询优先，0 结果时自动降级
+    const rawQuery = query.trim()
+
+    const doSearch = async (q: string) => {
+      return callIMA(creds, 'openapi/wiki/v1/search_knowledge', {
+        query: q,
+        knowledge_base_id: KB_ID,
+        limit: 10,
+      })
+    }
+
+    let searchData = await doSearch(rawQuery)
+
+    // 降级策略：原查询 0 结果时，用核心关键词重试
+    if (searchData.code === 0 && (searchData.data?.info_list?.length ?? 0) === 0 && rawQuery.length > 6) {
+      // 去掉常见虚词前缀（最新的、最近的、2026年、2025年等时间+虚词）
+      const fallbackQuery = rawQuery.replace(/^(最新[的]?|最近[的]?|当前[的]?|\d{4}年[的]?)\s*/, '').trim()
+      if (fallbackQuery && fallbackQuery !== rawQuery) {
+        searchData = await doSearch(fallbackQuery)
+      }
+    }
 
     if (searchData.code !== 0) {
       return NextResponse.json({ error: searchData.msg || '搜索失败', results: [] })
