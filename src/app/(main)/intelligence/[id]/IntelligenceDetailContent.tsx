@@ -201,8 +201,11 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
 
   // AI summary prose — only show when a dedicated field exists (not same as TLDR fallback)
   const summaryText = lang === 'zh'
-    ? (item.summaryZh ?? item.contentZh ?? item.summary)
-    : (item.summaryEn ?? item.contentEn ?? item.summary)
+    ? (item.summaryZh ?? item.summary)
+    : (item.summaryEn ?? item.summary)
+
+  // Original article content
+  const contentText = lang === 'zh' ? item.contentZh : (item.contentEn ?? item.contentZh)
 
   return (
     <div className="min-h-screen bg-white">
@@ -344,6 +347,21 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
             <p className="text-gray-700 text-[17px] leading-loose">
               {summaryText}
             </p>
+          </div>
+        )}
+
+        {/* ── Original article content ── */}
+        {contentText && (
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-4 pt-6 border-t border-gray-100">
+              <span className="inline-block w-1 h-4 bg-amber-400 rounded-full" />
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                {lang === 'zh' ? '原文' : 'Original'}
+              </span>
+            </div>
+            <div className="text-gray-700 text-[16px] leading-relaxed whitespace-pre-wrap">
+              {contentText}
+            </div>
           </div>
         )}
 
