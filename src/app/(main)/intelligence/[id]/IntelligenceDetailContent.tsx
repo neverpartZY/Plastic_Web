@@ -15,6 +15,7 @@ import {
   Zap,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import ReactMarkdown from 'react-markdown'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -359,8 +360,34 @@ export default function IntelligenceDetailContent({ item, related }: Props) {
                 {lang === 'zh' ? '原文' : 'Original'}
               </span>
             </div>
-            <div className="text-gray-700 text-[16px] leading-relaxed whitespace-pre-wrap">
-              {contentText}
+            <div className="text-gray-700 text-[16px] leading-relaxed">
+              <ReactMarkdown
+                components={{
+                  strong: ({ children }) => <strong className="font-semibold text-gray-900">{children}</strong>,
+                  h1: ({ children }) => <h1 className="text-xl font-bold mt-6 mb-3 text-gray-900">{children}</h1>,
+                  h2: ({ children }) => <h2 className="text-lg font-bold mt-6 mb-2 text-gray-900">{children}</h2>,
+                  h3: ({ children }) => <h3 className="text-base font-bold mt-5 mb-2 text-gray-900">{children}</h3>,
+                  ul: ({ children }) => <ul className="list-disc pl-5 space-y-1 my-3">{children}</ul>,
+                  ol: ({ children }) => <ol className="list-decimal pl-5 space-y-1 my-3">{children}</ol>,
+                  li: ({ children }) => <li className="text-gray-700">{children}</li>,
+                  p: ({ children, ...props }) => {
+                    const text = children?.toString() || '';
+                    if (text.startsWith('**') && text.endsWith('**')) {
+                      return <p className="mb-3 font-semibold text-gray-800 leading-relaxed">{children}</p>;
+                    }
+                    return <p className="mb-3 leading-relaxed">{children}</p>;
+                  },
+                  table: ({ children }) => (
+                    <div className="overflow-x-auto my-4">
+                      <table className="min-w-full text-sm border-collapse border border-gray-200">{children}</table>
+                    </div>
+                  ),
+                  th: ({ children }) => <th className="border border-gray-200 bg-gray-50 px-3 py-2 text-left font-semibold text-gray-700">{children}</th>,
+                  td: ({ children }) => <td className="border border-gray-200 px-3 py-2 text-gray-700">{children}</td>,
+                }}
+              >
+                {contentText}
+              </ReactMarkdown>
             </div>
           </div>
         )}
